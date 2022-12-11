@@ -89,6 +89,11 @@ public partial class Walk : BaseMechanic
 			var dest = (ctrl.Position + ctrl.Velocity * Time.Delta).WithZ( ctrl.Position.z );
 			var pm = ctrl.TraceBBox( ctrl.Position, dest );
 
+			if ( pm.Normal.z > 0f )
+			{
+				ctrl.Velocity *= 0.9f;
+			}
+
 			if ( pm.Fraction == 1 )
 			{
 				ctrl.Position = pm.EndPosition;
