@@ -46,6 +46,7 @@ public partial class PlayerController : BaseNetworkable
 		Mechanics.Add( new Crouch() );
 		Mechanics.Add( new Slide() );
 		Mechanics.Add( new HeavyLand() );
+		Mechanics.Add( new Vault() );
 	}
 
 	/// <summary>
@@ -77,6 +78,8 @@ public partial class PlayerController : BaseNetworkable
 	[ConVar.Replicated( "playercontroller_debug" )]
 	public static bool Debug { get; set; } = false;
 
+	public float BodyGirth => 32f;
+
 	/// <summary>
 	/// The player's hull, we'll use this to calculate stuff like collision.
 	/// </summary>
@@ -84,7 +87,7 @@ public partial class PlayerController : BaseNetworkable
 	{
 		get
 		{
-			var girth = 16f;
+			var girth = BodyGirth * 0.5f;
 			var baseHeight = EyeHeight;
 			var mins = new Vector3( -girth, -girth, 0 );
 			var maxs = new Vector3( +girth, +girth, baseHeight * 1.1f );

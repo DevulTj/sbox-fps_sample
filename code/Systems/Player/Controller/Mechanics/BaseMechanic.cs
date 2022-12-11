@@ -1,5 +1,6 @@
 using Sandbox;
 using System;
+using System.Dynamic;
 
 namespace Facepunch.Gunfight.Mechanics;
 
@@ -158,5 +159,72 @@ public partial class BaseMechanic : BaseNetworkable
 	public override string ToString()
 	{
 		return $"{Name}: IsActive({IsActive})";
+	}
+
+	protected WallInfo GetWallInfo( Vector3 direction )
+	{
+		var trace = Controller.TraceBBox( Controller.Position, Controller.Position + direction * 32f );
+		if ( !trace.Hit ) return default;
+
+		Vector3 tracePos;
+		var height = ApproximateWallHeight( Controller.Position, trace.Normal, 500f, 32f, 128, out tracePos, out float absoluteHeight );
+
+		return new WallInfo()
+		{
+			Hit = true,
+			Height = height,
+			AbsoluteHeight = absoluteHeight,
+			Distance = trace.Distance,
+			Normal = trace.Normal,
+			Trace = trace,
+			TracePos = tracePos,
+		};
+	}
+
+	private static int MaxWallTraceIterations => 40;
+	private static float ApproximateWallHeight( Vector3 startPos, Vector3 wallNormal, float maxHeight, float maxDist, int precision, out Vector3 tracePos, out float absoluteHeight )
+	{
+		tracePos = Vector3.Zero;
+		absoluteHeight = startPos.z;
+
+		var step = maxHeight / precision;
+
+		float currentHeight = 0f;
+		var foundWall = false;
+		for ( int i = 0; i < Math.Min( precision, MaxWallTraceIterations ); i++ )
+		{
+			startPos.z += step;
+			currentHeight += step;
+			var trace = Trace.Ray( startPos, startPos - wallNormal * maxDist )
+				.WorldOnly()
+				.Run();
+
+			if ( PlayerController.Debug )
+				DebugOverlay.TraceResult( trace );
+
+			if ( !trace.Hit && !foundWall ) continue;
+			if ( trace.Hit )
+			{
+				tracePos = trace.HitPosition;
+
+				foundWall = true;
+				continue;
+			}
+
+			absoluteHeight = startPos.z;
+			return currentHeight;
+		}
+		return 0f;
+	}
+
+	public struct WallInfo
+	{
+		public bool Hit;
+		public float Distance;
+		public Vector3 Normal;
+		public float Height;
+		public float AbsoluteHeight;
+		public TraceResult Trace;
+		public Vector3 TracePos;
 	}
 }
