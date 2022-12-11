@@ -1,9 +1,6 @@
 ﻿using Sandbox;
-using Sandbox.UI.Construct;
 using System;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 //
 // You don't need to put things in a namespace, but it doesn't hurt.
@@ -21,6 +18,10 @@ public partial class GunfightGameManager : GameManager
 {
 	public GunfightGameManager()
 	{
+		if ( Game.IsServer )
+		{
+			_ = new Hud();
+		}
 	}
 
 	/// <summary>
