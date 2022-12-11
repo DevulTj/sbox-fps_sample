@@ -9,13 +9,8 @@ public partial class Recoil : WeaponComponent, ISingletonComponent
 
 	public void AddRecoil( float x, float y )
 	{
-		CurrentRecoil += new Vector2( x, y );
+		CurrentRecoil += new Vector2( x, y ) * Time.Delta;
 		TimeUntilRemove = 0.2f;
-	}
-
-	public void RemoveRecoil( float x, float y )
-	{
-		CurrentRecoil -= new Vector2( x, y );
 	}
 
 	public override void Simulate( IClient cl, Player player )
@@ -29,11 +24,12 @@ public partial class Recoil : WeaponComponent, ISingletonComponent
 
 		if ( pitchOffset > 0f )
 		{
+			pitchOffset *= 10f;
 			var newPitch = (CurrentRecoil.y - pitchOffset).Clamp( 0f, float.MaxValue );
 			CurrentRecoil = CurrentRecoil.WithY( newPitch );
 		}
 
 		CurrentRecoil = CurrentRecoil.Clamp( 0, 100 );
-		DebugOverlay.ScreenText( $"{CurrentRecoil}", 50, 0 );
+		DebugOverlay.ScreenText( $"{CurrentRecoil}", 25, 0 );
 	}
 }
