@@ -21,6 +21,11 @@ public partial class Player : AnimatedEntity
 	[Net, Predicted] public Inventory Inventory { get; set; }
 
 	/// <summary>
+	/// Time since the player last took damage.
+	/// </summary>
+	[Net, Predicted] public TimeSince TimeSinceDamage { get; set; }
+
+	/// <summary>
 	/// Accessor for getting a player's active weapon.
 	/// </summary>
 	public Weapon ActiveWeapon => Inventory.ActiveWeapon;
@@ -28,7 +33,12 @@ public partial class Player : AnimatedEntity
 	/// <summary>
 	/// A camera is known only to the local client. This cannot be used on the server.
 	/// </summary>
-	public PlayerCamera PlayerCamera { get; set; }
+	public PlayerCamera PlayerCamera { get; protected set; }
+
+	/// <summary>
+	/// The information for the last piece of damage this player took.
+	/// </summary>
+	public DamageInfo LastDamage { get; protected set; }
 
 	/// <summary>
 	/// A cached model used for all players.
@@ -46,6 +56,8 @@ public partial class Player : AnimatedEntity
 		EnableDrawing = true;
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
+		EnableLagCompensation = true;
+		EnableHitboxes = true;
 
 		Tags.Add( "player" );
 	}
@@ -55,10 +67,14 @@ public partial class Player : AnimatedEntity
 	/// </summary>
 	public void Respawn()
 	{
+		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, new Vector3( -16, -16, 0 ), new Vector3( 16, 16, 72 ) );
+
+		Health = 100;
+
 		Controller = new PlayerController();
 		Animator = new CitizenAnimator();
-		Inventory = new Inventory( this );
 
+		Inventory = new Inventory( this );
 		Inventory.AddWeapon( WeaponData.CreateInstance( "AKM" ) );
 
 		ClientRespawn( To.Single( Client ) );
@@ -113,5 +129,50 @@ public partial class Player : AnimatedEntity
 
 		// Simulate our active weapon if we can.
 		Inventory?.ActiveWeapon?.FrameSimulate( cl );
+	}
+
+	[ClientRpc]
+	public void SetAudioEffect( string effectName, float strength, float velocity = 20f, float fadeOut = 4f )
+	{
+		Audio.SetEffect( effectName, strength, velocity: 20.0f, fadeOut: 4.0f * strength );
+	}
+
+	public override void TakeDamage( DamageInfo info )
+	{
+		if ( LifeState != LifeState.Alive )
+			return;
+
+		// Check for headshot damage
+		var isHeadshot = info.Hitbox.HasTag( "head" );
+		if ( isHeadshot )
+		{
+			info.Damage *= 2.5f;
+		}
+
+		// Check if we got hit by a bullet, if we did, play a sound.
+		if ( info.HasTag( "bullet" ) )
+		{
+			Sound.FromScreen( To.Single( Client ), "sounds/player/damage_taken_shot.sound" );
+		}
+
+		// Play a deafening effect if we get hit by blast damage.
+		if ( info.HasTag( "blast" ) )
+		{
+			SetAudioEffect( To.Single( Client ), "flasthbang", info.Damage.LerpInverse( 0, 60 ) );
+		}
+
+		if ( Health > 0 && info.Damage > 0 )
+		{
+			TimeSinceDamage = 0;
+			Health -= info.Damage;
+
+			if ( Health <= 0 )
+			{
+				Health = 0;
+				OnKilled();
+			}
+		}
+
+		this.ProceduralHitReaction( info, 0.05f );
 	}
 }

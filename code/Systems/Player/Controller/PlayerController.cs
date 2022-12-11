@@ -64,7 +64,7 @@ public partial class PlayerController : BaseNetworkable
 	/// <summary>
 	/// This'll set LocalEyePosition when we Simulate.
 	/// </summary>
-	public float EyeHeight => BestMechanic?.EyeHeight ?? 72f;
+	public float EyeHeight => BestMechanic?.EyeHeight ?? 64f;
 
 	public Vector3 MoveInputScale => BestMechanic?.MoveInputScale ?? Vector3.One;
 

@@ -45,7 +45,7 @@ public partial class GunfightGameManager : GameManager
 		if ( randomSpawnPoint != null )
 		{
 			var tx = randomSpawnPoint.Transform;
-			tx.Position = tx.Position + Vector3.Up * 50.0f; // raise it up
+			tx.Position = tx.Position + Vector3.Up * 10.0f; // raise it up
 			pawn.Transform = tx;
 		}
 	}
