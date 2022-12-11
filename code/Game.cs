@@ -49,6 +49,14 @@ public partial class GunfightGameManager : GameManager
 			tx.Position = tx.Position + Vector3.Up * 10.0f; // raise it up
 			pawn.Transform = tx;
 		}
+
+		Chat.AddChatEntry( To.Everyone, client.Name, "joined the game", client.SteamId, true );
+	}
+
+	public override void ClientDisconnect( IClient client, NetworkDisconnectionReason reason )
+	{
+		base.ClientDisconnect( client, reason );
+		Chat.AddChatEntry( To.Everyone, client.Name, "left the game", client.SteamId, true );
 	}
 
 	public override void DoPlayerDevCam( IClient client )
