@@ -95,6 +95,8 @@ public partial class Player : AnimatedEntity
 		ResetInterpolation();
 
 		ClientRespawn( To.Single( Client ) );
+
+		UpdateClothes();
 	}
 
 	/// <summary>
