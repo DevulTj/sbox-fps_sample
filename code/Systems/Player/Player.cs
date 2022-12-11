@@ -29,7 +29,7 @@ public partial class Player : AnimatedEntity
 	/// <summary>
 	/// Accessor for getting a player's active weapon.
 	/// </summary>
-	public Weapon ActiveWeapon => Inventory.ActiveWeapon;
+	public Weapon ActiveWeapon => Inventory?.ActiveWeapon;
 
 	/// <summary>
 	/// A camera is known only to the local client. This cannot be used on the server.

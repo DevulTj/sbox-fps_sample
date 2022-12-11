@@ -69,12 +69,12 @@
 @code 
 {
     public Player Player => Game.LocalPawn as Player;
-    public Weapon Weapon => Player.ActiveWeapon;
-    public Ammo AmmoComponent => Weapon.GetComponent<Ammo>();
+    public Weapon Weapon => Player?.ActiveWeapon;
+    public Ammo AmmoComponent => Weapon?.GetComponent<Ammo>();
 
     protected override int BuildHash()
     {
-        return HashCode.Combine( AmmoComponent.AmmoCount, Player.Health );
+        return HashCode.Combine( AmmoComponent?.AmmoCount, Player?.Health );
     }
 
     protected string HealthClasses()
