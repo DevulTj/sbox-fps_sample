@@ -1,0 +1,83 @@
+@using Sandbox;
+@using System;
+@using Facepunch.Gunfight.WeaponSystem;
+
+@namespace Facepunch.Gunfight
+
+<style>
+    Info {
+        position: absolute;
+        bottom: 64px;
+        right: 64px;
+        flex-direction: column-reverse;
+
+        .text {
+            color: white;
+            font-weight: 700;
+            font-size: 32px;
+            justify-content: center;
+            align-items: center;
+            align-content: stretch;
+
+            text-shadow: 2px 2px 5px rgba( black, 0.3 );
+        }
+
+        .icon {
+            color: white;
+            font-size: 20px;
+            font-family: Material Icons;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        .reserve {
+            color: lightgrey;
+            font-size: 24px;
+        }
+
+        .row {
+            margin-top: 12px;
+            justify-content: flex-end;
+        }
+    }
+</style>
+
+<root>
+    @if ( AmmoComponent != null )
+    {
+        <div class="row">
+            <label class="text @AmmoClasses()">@AmmoComponent.AmmoCount</label>
+            <label class="text reserve">@AmmoComponent.Data.MaximumAmmo</label>
+            <label class="icon">backpack</label>
+        </div>
+    }
+
+    <div class="row">
+        <label class="text @HealthClasses()">@Player.Health</label>
+        <label class="text reserve">100</label>
+        <label class="icon">monitor_heart</label>
+    </div>
+</root>
+
+@code 
+{
+    public Player Player => Game.LocalPawn as Player;
+    public Weapon Weapon => Player.ActiveWeapon;
+    public Ammo AmmoComponent => Weapon.GetComponent<Ammo>();
+
+    protected override int BuildHash()
+    {
+        return HashCode.Combine( AmmoComponent.AmmoCount, Player.Health );
+    }
+
+    protected string HealthClasses()
+    {
+        return Player.Health < 25f ? "low" : "";
+    }
+
+    protected string AmmoClasses()
+    {
+        return ( (float)AmmoComponent.AmmoCount / (float)AmmoComponent.Data.MaximumAmmo ) < 0.25f ? "low" : "";
+    }
+}

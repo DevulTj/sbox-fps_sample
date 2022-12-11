@@ -6,7 +6,7 @@ public partial class Ammo : WeaponComponent, ISingletonComponent
 {
 	[Net] public int AmmoCount { get; set; }
 
-	protected ComponentData Data => Weapon.WeaponData.Ammo;
+	public ComponentData Data => Weapon.WeaponData.Ammo;
 
 	public bool IsFull
 	{

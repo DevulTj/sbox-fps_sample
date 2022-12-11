@@ -1,7 +1,7 @@
+using Facepunch.Gunfight;
 using Sandbox;
 using Sandbox.UI;
 
-[Library]
 public partial class Hud : HudEntity<RootPanel>
 {
 	public Hud()
@@ -11,5 +11,6 @@ public partial class Hud : HudEntity<RootPanel>
 
 		RootPanel.StyleSheet.Load( "/UI/Hud.scss" );
 		RootPanel.AddChild<Chat>();
+		RootPanel.AddChild<Info>();
 	}
 }

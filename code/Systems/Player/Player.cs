@@ -265,4 +265,10 @@ public partial class Player : AnimatedEntity
 	{
 		(ConsoleSystem.Caller.Pawn as Player)?.TakeDamage( DamageInfo.Generic( 1000f ) );
 	}
+
+	[ConCmd.Server( "sethp" )]
+	public static void SetHP( float value )
+	{
+		(ConsoleSystem.Caller.Pawn as Player).Health = value;
+	}
 }
