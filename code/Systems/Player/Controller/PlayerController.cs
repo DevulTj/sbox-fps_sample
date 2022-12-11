@@ -15,6 +15,7 @@ public partial class PlayerController : BaseNetworkable
 	public Entity GroundEntity { get; set; }
 	public Vector3 BaseVelocity { get; set; }
 	public Vector3 GroundNormal { get; set; }
+	public float CurrentGroundAngle { get; set; }
 
 	/// <summary>
 	/// A list of mechanics used by the player controller.
@@ -190,6 +191,9 @@ public partial class PlayerController : BaseNetworkable
 
 		result = result.Normal * inSpeed;
 		result *= GetWishSpeed();
+
+		var ang = CurrentGroundAngle.Remap( 0, 45, 1, 0.6f );
+		result *= ang;
 
 		return result;
 	}

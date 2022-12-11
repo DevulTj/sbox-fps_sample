@@ -1,4 +1,5 @@
 using Sandbox;
+using System.Diagnostics;
 
 namespace Facepunch.Gunfight.Mechanics;
 
@@ -89,11 +90,6 @@ public partial class Walk : BaseMechanic
 			var dest = (ctrl.Position + ctrl.Velocity * Time.Delta).WithZ( ctrl.Position.z );
 			var pm = ctrl.TraceBBox( ctrl.Position, dest );
 
-			if ( pm.Normal.z > 0f )
-			{
-				ctrl.Velocity *= 0.9f;
-			}
-
 			if ( pm.Fraction == 1 )
 			{
 				ctrl.Position = pm.EndPosition;
@@ -162,8 +158,12 @@ public partial class Walk : BaseMechanic
 			ClearGroundEntity();
 			return;
 		}
-
+		
 		var pm = Controller.TraceBBox( vBumpOrigin, point, 4.0f );
+
+		var angle = Vector3.GetAngle( Vector3.Up, pm.Normal );
+		Controller.CurrentGroundAngle = angle;
+
 		if ( pm.Entity == null || Vector3.GetAngle( Vector3.Up, pm.Normal ) > GroundAngle )
 		{
 			ClearGroundEntity();
