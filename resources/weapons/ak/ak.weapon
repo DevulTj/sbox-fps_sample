@@ -67,5 +67,17 @@
 			MaximumAmmo = 30
 			AllowChamber = true
 		}
+		Recoil = 
+		{
+			Presets = 
+			[
+				"-15,40",
+				"15,40",
+				"5,36",
+			]
+			RecoveryTime = 0.2
+			MaxRecoil = 100
+			DecayFactor = 50
+		}
 	}
 }

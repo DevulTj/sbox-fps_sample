@@ -38,6 +38,7 @@ public partial class WeaponData : GameResource
 	public Aim.ComponentData Aim { get; set; }
 	public Reload.ComponentData Reload { get; set; }
 	public Ammo.ComponentData Ammo { get; set; }
+	public Recoil.ComponentData Recoil { get; set; }
 
 	protected override void PostLoad()
 	{

@@ -40,8 +40,7 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 
 		AmmoComponent?.TakeAmmo();
 
-		var boolean = Game.Random.Int( 0, 1 );
-		Weapon.GetComponent<Recoil>()?.AddRecoil( boolean == 0 ? -8f : 12f, 40 );
+		Weapon.GetComponent<Recoil>()?.AddRecoil();
 	}
 
 	[ClientRpc]
