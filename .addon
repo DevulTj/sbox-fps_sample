@@ -24,6 +24,6 @@
     "ProjectTemplate": null,
     "Summary": "A first person shooter sample project.",
     "Description": "",
-    "Public": false
+    "Public": true
   }
 }

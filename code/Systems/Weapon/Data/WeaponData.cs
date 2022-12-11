@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Facepunch.Gunfight.WeaponSystem;
 
-[GameResource( "Weapon Data", "gwd", "A data asset for a weapon.",
+[GameResource( "Weapon", "weapon", "A data asset for a weapon.",
 	Icon = "track_changes", IconBgColor = "#4953a7", IconFgColor = "#2a3060" )]
 public partial class WeaponData : GameResource
 {
