@@ -47,7 +47,13 @@
     @if ( AmmoComponent != null )
     {
         <div class="row">
-            <label class="text @AmmoClasses()">@AmmoComponent.AmmoCount</label>
+            <label class="text @AmmoClasses()">@AmmoComponent.AmmoCount.Clamp( 0, AmmoComponent.Data.MaximumAmmo )</label>
+
+            @if ( AmmoComponent.AmmoCount > AmmoComponent.Data.MaximumAmmo )
+            {
+                <label class="text">+ @(AmmoComponent.AmmoCount - AmmoComponent.Data.MaximumAmmo)</label>
+            }
+
             <label class="text reserve">@AmmoComponent.Data.MaximumAmmo</label>
             <label class="icon">backpack</label>
         </div>
