@@ -1,0 +1,70 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	data = 
+	{
+		Name = "AKM"
+		Model = resource:"models/akm/w_akm.vmdl"
+		ViewModel = resource:"models/akm/fp_akm.vmdl"
+		Icon = resource:"models/akm/w_akm.vmdl.png"
+		HoldType = "Rifle"
+		Handedness = "Both"
+		Components = 
+		[
+			"PrimaryFire",
+			"Aim",
+			"Reload",
+			"Ammo",
+		]
+		ViewModelData = 
+		{
+			OverallWeight = 0.1
+			WeightReturnForce = 100
+			WeightDamping = 18
+			AccelerationDamping = 15
+			VelocityScale = 10
+			RotationalPivotForce = 10
+			RotationalScale = 5
+			WalkCycleOffset = "-2,25,0"
+			BobAmount = "25,50"
+			GlobalLerpPower = 1
+			GlobalPositionOffset = "1,-0.5,0.8"
+			GlobalAngleOffset = "0,0,2"
+			CrouchPositionOffset = "-3,1,0"
+			CrouchAngleOffset = "2,0,-15"
+			SlideAngleOffset = "2,0,-15"
+			AvoidancePositionOffset = "-5,0,0"
+			AvoidanceAngleOffset = "2,0,-25"
+			SprintPositionOffset = "0,-2,-1"
+			SprintAngleOffset = "10.3,41.72,-7.53"
+			BurstSprintPositionOffset = "-2,-2,-1"
+			BurstSprintAngleOffset = "10.3,41.72,-7.53"
+			AimPositionOffset = "-0.79,2.7,0.68"
+			AimAngleOffset = "0.59,-1.62,0.5"
+		}
+		PrimaryFire = 
+		{
+			BaseDamage = 15
+			BulletRange = 5000
+			BulletCount = 1
+			BulletForce = 100
+			BulletSize = 2
+			BulletSpread = 0.1
+			FireDelay = 0.1
+			FireSound = resource:"sounds/guns/akm/akm.shoot.sound"
+			DryFireSound = resource:"sounds/guns/gun_dryfire.sound"
+		}
+		Aim = 
+		{
+		}
+		Reload = 
+		{
+			ReloadTime = 2.5
+		}
+		Ammo = 
+		{
+			DefaultAmmo = 30
+			MaximumAmmo = 30
+			AllowChamber = true
+		}
+	}
+}

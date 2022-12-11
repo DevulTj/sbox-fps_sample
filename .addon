@@ -1,0 +1,29 @@
+{
+  "Title": "FPS Sample",
+  "Type": "game",
+  "Org": "devultj",
+  "Ident": "template_fps",
+  "Tags": "",
+  "Schema": 1,
+  "HasAssets": true,
+  "AssetsPath": "",
+  "ResourcePaths": [],
+  "HasCode": true,
+  "CodePath": "/code/",
+  "Metadata": {
+    "MaxPlayers": 64,
+    "MinPlayers": 1,
+    "GameNetworkType": "Multiplayer",
+    "MapSelect": "Unrestricted",
+    "MapList": [
+      "facepunch.flatgrass"
+    ],
+    "RankType": "None",
+    "PerMapRanking": false,
+    "LeaderboardType": "None",
+    "ProjectTemplate": null,
+    "Summary": "A first person shooter sample project.",
+    "Description": "",
+    "Public": false
+  }
+}
