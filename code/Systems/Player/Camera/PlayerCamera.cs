@@ -16,5 +16,7 @@ public partial class PlayerCamera
 		Camera.FieldOfView = Game.Preferences.FieldOfView;
 		Camera.FirstPersonViewer = player;
 		Camera.ZNear = 0.5f;
+
+		UpdatePostProcess();
 	}
 }

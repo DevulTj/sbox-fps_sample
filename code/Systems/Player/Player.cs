@@ -1,5 +1,6 @@
 using Facepunch.Gunfight.WeaponSystem;
 using Sandbox;
+using System.Linq;
 
 namespace Facepunch.Gunfight;
 
@@ -75,12 +76,23 @@ public partial class Player : AnimatedEntity
 		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, new Vector3( -16, -16, 0 ), new Vector3( 16, 16, 72 ) );
 
 		Health = 100;
+		LifeState = LifeState.Alive;
+		EnableAllCollisions = true;
+		EnableDrawing = true;
+
+		// Re-enable all children.
+		Children.OfType<ModelEntity>()
+			.ToList()
+			.ForEach( x => x.EnableDrawing = true );
 
 		Controller = new PlayerController();
 		Animator = new CitizenAnimator();
 
 		Inventory = new Inventory( this );
 		Inventory.AddWeapon( WeaponData.CreateInstance( "AKM" ) );
+
+		GameManager.Current?.MoveToSpawnpoint( this );
+		ResetInterpolation();
 
 		ClientRespawn( To.Single( Client ) );
 	}
@@ -181,6 +193,38 @@ public partial class Player : AnimatedEntity
 		this.ProceduralHitReaction( info, 0.05f );
 	}
 
+	private async void AsyncRespawn()
+	{
+		await GameTask.DelaySeconds( 3f );
+		Respawn();
+	}
+
+	public override void OnKilled()
+	{
+		if ( LifeState == LifeState.Alive )
+		{
+			CreateRagdoll( Controller.Velocity, LastDamage.Position, LastDamage.Force,
+				LastDamage.BoneIndex, LastDamage.HasTag( "bullet" ), LastDamage.HasTag( "blast" ) );
+
+			LifeState = LifeState.Dead;
+			EnableAllCollisions = false;
+			EnableDrawing = false;
+
+			Controller = null;
+			Animator = null;
+
+			Inventory.Delete();
+			Inventory = null;
+
+			// Disable all children as well.
+			Children.OfType<ModelEntity>()
+				.ToList()
+				.ForEach( x => x.EnableDrawing = false );
+
+			AsyncRespawn();
+		}
+	}
+
 	/// <summary>
 	/// Called clientside every time we fire the footstep anim event.
 	/// </summary>
@@ -212,5 +256,11 @@ public partial class Player : AnimatedEntity
 	protected float GetFootstepVolume()
 	{
 		return Controller.Velocity.WithZ( 0 ).Length.LerpInverse( 0.0f, 200.0f ) * 1f;
+	}
+
+	[ConCmd.Server( "kill" )]
+	public static void DoSuicide()
+	{
+		(ConsoleSystem.Caller.Pawn as Player)?.TakeDamage( DamageInfo.Generic( 1000f ) );
 	}
 }

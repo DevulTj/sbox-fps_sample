@@ -1,6 +1,7 @@
 using Facepunch.Gunfight.WeaponSystem;
 using Sandbox;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Facepunch.Gunfight;
 
@@ -74,5 +75,10 @@ public partial class Inventory : BaseNetworkable
 		weapon.SetParent( Owner, true );
 		weapon.Owner = Owner;
 		weapon.EnableDrawing = true;
+	}
+
+	public void Delete()
+	{
+		Weapons.ToList().ForEach( x => x.Delete() );
 	}
 }

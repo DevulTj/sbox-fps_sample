@@ -61,4 +61,9 @@ public partial class Weapon : AnimatedEntity
 	{
 		SimulateComponents( cl );
 	}
+
+	protected override void OnDestroy()
+	{
+		ViewModelEntity?.Delete();
+	}
 }
