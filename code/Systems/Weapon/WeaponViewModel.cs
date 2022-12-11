@@ -39,7 +39,7 @@ public partial class WeaponViewModel : AnimatedEntity
 			return;
 
 		Camera.Main.SetViewModelCamera( 80f, 1, 500 );
-
+		AddRecoilEffects();
 		AddEffects();
 	}
 

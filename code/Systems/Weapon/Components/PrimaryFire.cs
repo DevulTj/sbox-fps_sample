@@ -39,6 +39,9 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 		ShootBullet( Data.BulletSpread, Data.BulletForce, Data.BulletSize, Data.BulletCount, Data.BulletRange );
 
 		AmmoComponent?.TakeAmmo();
+
+		var boolean = Game.Random.Int( 0, 1 );
+		Weapon.GetComponent<Recoil>()?.AddRecoil( boolean == 0 ? -0.2f : 0.3f, 1 );
 	}
 
 	[ClientRpc]
@@ -169,10 +172,12 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 		//
 		Game.SetRandomSeed( Time.Tick );
 
+		var recoil = Weapon.GetComponent<Recoil>();
+
 		for ( int i = 0; i < bulletCount; i++ )
 		{
 			var rot = Rotation.LookAt( Player.AimRay.Forward );
-			rot *= Rotation.From( new Angles( 0, 0, 0 ) );
+			rot *= Rotation.From( new Angles( -recoil.CurrentRecoil.y, recoil.CurrentRecoil.x, 0 ) );
 
 			var forward = rot.Forward;
 			forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
