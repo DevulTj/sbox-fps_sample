@@ -35,6 +35,8 @@
 			SlideAngleOffset = "2,0,-15"
 			AvoidancePositionOffset = "-5,0,0"
 			AvoidanceAngleOffset = "2,0,-25"
+			SprintPositionOffset = "0,2,3"
+			SprintAngleOffset = "15,0,0"
 			AimPositionOffset = "1.396,3.037,1.63"
 			AimAngleOffset = "-0.995,-0.18,9.934"
 		}
@@ -45,7 +47,7 @@
 			BulletCount = 1
 			BulletForce = 100
 			BulletSize = 2
-			FireDelay = 0.3
+			FireDelay = 0.2
 			FireSound = resource:"sounds/guns/m1911/pistol_shoot.sound"
 			DryFireSound = resource:"sounds/guns/gun_dryfire.sound"
 		}
@@ -66,13 +68,13 @@
 		{
 			Presets = 
 			[
-				"-15,40",
-				"15,40",
-				"5,36",
+				"-30,60",
+				"30,60",
+				"15,55",
 			]
-			RecoveryTime = 0.2
+			RecoveryTime = 0.3
 			MaxRecoil = 100
-			DecayFactor = 50
+			DecayFactor = 80
 		}
 	}
 }
