@@ -46,10 +46,11 @@ public partial class Weapon : AnimatedEntity
 	/// </summary>
 	public void OnDeploy( Player player )
 	{
+		SetParent( player, true );
 		Owner = player;
+
 		EnableDrawing = true;
 
-		SetParent( Owner, true );
 		CreateViewModel( To.Single( player ) );
 	}
 
