@@ -17,6 +17,7 @@ public partial class Crouch : BaseMechanic
 	{
 		if ( !Input.Down( InputButton.Duck ) ) return false;
 		if ( !Controller.GroundEntity.IsValid() ) return false;
+		if ( Controller.IsMechanicActive<Sprint>() ) return false;
 
 		return true;
 	}

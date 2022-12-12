@@ -57,6 +57,7 @@ public partial class Player : AnimatedEntity
 	public override void Spawn()
 	{
 		Model = PlayerModel;
+		Predictable = true;
 
 		// Default properties
 		EnableDrawing = true;
