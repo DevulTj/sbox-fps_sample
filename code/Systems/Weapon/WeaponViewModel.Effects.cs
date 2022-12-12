@@ -124,7 +124,7 @@ public partial class WeaponViewModel
 		//LerpTowards( ref burstSprintLerp, burstSprint && !sliding ? 1 : 0, 8f );
 
 		LerpTowards( ref crouchLerp, isCrouching && !isAiming && !isSliding ? 1 : 0, 7f );
-		LerpTowards( ref slideLerp, isSliding ? ((float)timeSinceFired).Remap( 0, 0.2f, 0, 1 ).Clamp( 0, 1 ) : 0, 7f );
+		LerpTowards( ref slideLerp, isSliding ? ((float)timeSinceFired).Remap( 0.35f, 0.65f, 0, 1 ).Clamp( 0, 1 ) : 0, 7f );
 		LerpTowards( ref airLerp, (isGrounded ? 0 : 1) * (1 - aimLerp), 10f );
 		//LerpTowards( ref speedLerp, (aim || sliding || sprint) ? 0.0f : speed, 10f );
 		//LerpTowards( ref vaultLerp, (vaulting) ? 1.0f : 0.0f, 10f );
