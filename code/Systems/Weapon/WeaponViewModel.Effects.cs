@@ -212,6 +212,9 @@ public partial class WeaponViewModel
 			rotationOffsetTarget *= Rotation.From( Data.CrouchAngleOffset * crouchLerp );
 			ApplyPositionOffset( Data.CrouchPositionOffset, crouchLerp );
 
+			// Air
+			ApplyPositionOffset( new( 0, 0, 1 ), airLerp );
+
 			// Avoidance
 			rotationOffsetTarget *= Rotation.From( Data.AvoidanceAngleOffset * avoidance );
 			ApplyPositionOffset( Data.AvoidancePositionOffset, avoidance );
