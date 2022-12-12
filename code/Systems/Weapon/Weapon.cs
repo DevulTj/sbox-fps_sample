@@ -29,7 +29,7 @@ public partial class Weapon : AnimatedEntity
 	/// </summary>
 	public void OnHolster( Player player )
 	{
-		//
+		EnableDrawing = false;
 	}
 
 	/// <summary>
@@ -46,6 +46,10 @@ public partial class Weapon : AnimatedEntity
 	/// </summary>
 	public void OnDeploy( Player player )
 	{
+		Owner = player;
+		EnableDrawing = true;
+
+		SetParent( Owner, true );
 		CreateViewModel( To.Single( player ) );
 	}
 

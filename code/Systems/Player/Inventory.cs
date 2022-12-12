@@ -56,9 +56,6 @@ public partial class Inventory : BaseNetworkable
 			}
 
 			currentWeapon.OnHolster( Owner );
-			// Make the weapon invisible to everyone.
-			currentWeapon.EnableDrawing = false;
-
 			ActiveWeapon = null;
 		}
 
@@ -70,11 +67,6 @@ public partial class Inventory : BaseNetworkable
 
 		ActiveWeapon = weapon;
 		weapon?.OnDeploy( Owner );
-
-		// Parent the weapon to its new owner, and make it visible to everyone.
-		weapon.SetParent( Owner, true );
-		weapon.Owner = Owner;
-		weapon.EnableDrawing = true;
 	}
 
 	public void Delete()
