@@ -1,0 +1,104 @@
+@using Sandbox;
+@using System;
+@using Sandbox.UI;
+@using System.Linq;
+
+@namespace Sandbox.UI
+@inherits Panel;
+
+<style>
+    Players {
+        flex-direction: column;
+        position: absolute;
+        left: 32px;
+        top: 32px;
+        transition: all 0.2s ease;
+
+        > .header {
+            > .hostname {
+                color: white;
+                font-family: Poppins;
+                font-size: 24px;
+                font-weight: 700;
+                margin-bottom: 32px;
+            }
+        }
+
+        > .list {
+            margin-left: 8px;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+
+            > .entry {
+                color: white;
+                font-family: Poppins;
+                font-size: 18px;
+                font-weight: 600;
+                justify-content: flex-start;
+                align-items: center;
+                align-content: stretch;
+                height: 30px;
+                margin-bottom: 4px;
+
+                > .name {
+                    padding-left: 8px;
+                }
+
+                > .ping {
+                    right: 0;
+                    position: absolute;
+                    padding-left: 32px;
+                }
+
+                > .avatar {
+                    margin-left: 2px;
+                    border-radius: 100px;
+                    width: 24px;
+                    height: 24px;
+                }
+
+                border-radius: 4px;
+                background-image: linear-gradient( to right, rgba( black, 0.5 ), rgba( black, 0 ) ); 
+            }
+        }
+
+        transform-origin: top left;
+        transform: scale(1.1);
+        opacity: 0;
+        &.open {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+</style>
+
+<root>
+    <div class="header">
+        <label class="hostname">@Game.Server.ServerTitle</label>
+    </div>
+
+    <div class="list">
+        @foreach( var cl in Game.Clients )
+        {
+            <div class="entry">
+                <img class="avatar" src=@($"avatar:{cl.SteamId}") />
+                <label class="name">@cl.Name</label>
+                <label class="ping">@(cl.Ping)ms</label>
+            </div>
+        }
+    </div>
+</root>
+
+@code
+{
+    protected override int BuildHash()
+    {
+        return HashCode.Combine( string.Join( "", Game.Clients.Select( x => new Tuple<long, int>( x.SteamId, x.Ping ) ) ) );
+    }
+
+    public override void Tick()
+    {
+        SetClass( "open", Input.Down( InputButton.Score ) );
+    }
+}
