@@ -1,4 +1,3 @@
-using Facepunch.Gunfight.CameraModifiers;
 using Sandbox;
 
 namespace Facepunch.Gunfight.Mechanics;
@@ -32,9 +31,6 @@ public partial class Jump : BaseMechanic
 	{
 		WindupComplete = 0.1f;
 		Lock = true;
-
-		_ = new CameraModifiers.JumpModifier();
-
 		Simulate();
 	}
 
