@@ -36,7 +36,6 @@ public partial class WeaponData : GameResource
 	// Component Information
 	public PrimaryFire.ComponentData PrimaryFire { get; set; }
 	public Aim.ComponentData Aim { get; set; }
-	public Reload.ComponentData Reload { get; set; }
 	public Ammo.ComponentData Ammo { get; set; }
 	public Recoil.ComponentData Recoil { get; set; }
 

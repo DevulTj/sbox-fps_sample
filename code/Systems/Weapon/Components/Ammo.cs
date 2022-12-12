@@ -6,6 +6,9 @@ public partial class Ammo : WeaponComponent, ISingletonComponent
 {
 	[Net] public int AmmoCount { get; set; }
 
+	protected bool ReloadLock { get; set; } = false;
+	public TimeUntil TimeUntilReloaded { get; set; }
+
 	public ComponentData Data => Weapon.WeaponData.Ammo;
 
 	public bool IsFull
@@ -47,10 +50,66 @@ public partial class Ammo : WeaponComponent, ISingletonComponent
 		return false;
 	}
 
+	/////
+	/// Reloading
+	/////
+	protected override bool CanActivate( Player player )
+	{
+		return Input.Pressed( InputButton.Reload );
+	}
+
+	protected override void OnActivated( Player player )
+	{
+		if ( Weapon.GetComponent<Ammo>()?.IsFull ?? false )
+		{
+			return;
+		}
+
+		TimeUntilReloaded = Data.ReloadTime;
+		ReloadLock = true;
+
+		StartReloading();
+	}
+
+	public override void Simulate( IClient cl, Player player )
+	{
+		base.Simulate( cl, player );
+
+		if ( ReloadLock && TimeUntilReloaded )
+		{
+			FinishReloading( player );
+			ReloadLock = false;
+		}
+	}
+
+	protected void StartReloading()
+	{
+		Player?.SetAnimParameter( "b_reload", true );
+		Weapon.Tags.Set( "reloading", true );
+
+		using ( Prediction.Off() )
+			StartReloadEffects( To.Single( Player.Client ) );
+	}
+
+	[ClientRpc]
+	public static void StartReloadEffects()
+	{
+		WeaponViewModel.Current?.SetAnimParameter( "reload", true );
+	}
+
+	protected void FinishReloading( Player player )
+	{
+		Weapon.Tags.Set( "reloading", false );
+		Weapon.GetComponent<Ammo>().Fill();
+	}
+
 	public struct ComponentData
 	{
 		public int DefaultAmmo { get; set; }
 		public int MaximumAmmo { get; set; }
 		public bool AllowChamber { get; set; }
+
+		[Category( "Reloading" )]
+		public float ReloadTime { get; set; }
 	}
 }

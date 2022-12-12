@@ -57,15 +57,12 @@
 		Aim = 
 		{
 		}
-		Reload = 
-		{
-			ReloadTime = 2.5
-		}
 		Ammo = 
 		{
 			DefaultAmmo = 30
 			MaximumAmmo = 30
 			AllowChamber = true
+			ReloadTime = 2.25
 		}
 		Recoil = 
 		{
