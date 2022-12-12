@@ -13,6 +13,7 @@ public partial class Weapon : AnimatedEntity
 	{
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
+		EnableDrawing = false;
 	}
 
 	/// <summary>
