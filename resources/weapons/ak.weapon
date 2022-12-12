@@ -49,7 +49,7 @@
 			BulletCount = 1
 			BulletForce = 100
 			BulletSize = 2
-			BulletSpread = 0.1
+			BulletSpread = 0.03
 			FireDelay = 0.1
 			FireSound = resource:"sounds/guns/akm/akm.shoot.sound"
 			DryFireSound = resource:"sounds/guns/gun_dryfire.sound"
