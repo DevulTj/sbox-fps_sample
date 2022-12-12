@@ -1,6 +1,5 @@
 using Sandbox;
 using System.ComponentModel;
-using System.Numerics;
 
 namespace Facepunch.Gunfight;
 
@@ -15,6 +14,11 @@ public partial class Player
 	/// Normalized accumulation of Input.AnalogLook
 	/// </summary>
 	[ClientInput] public Angles LookInput { get; protected set; }
+
+	/// <summary>
+	/// ?
+	/// </summary>
+	[ClientInput] public Entity ActiveWeaponInput { get; set; }
 
 	/// <summary>
 	/// Position a player should be looking from in world space.
@@ -63,5 +67,6 @@ public partial class Player
 		LookInput = lookInput.WithPitch( lookInput.pitch.Clamp( -90f, 90f ) );
 
 		PlayerCamera?.BuildInput( this );
+		Inventory?.BuildInput();
 	}
 }

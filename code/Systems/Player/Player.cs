@@ -91,6 +91,7 @@ public partial class Player : AnimatedEntity
 
 		Inventory = new Inventory( this );
 		Inventory.AddWeapon( WeaponData.CreateInstance( "AKM" ) );
+		Inventory.AddWeapon( WeaponData.CreateInstance( "M1911" ), false );
 
 		GameManager.Current?.MoveToSpawnpoint( this );
 		ResetInterpolation();
@@ -121,7 +122,7 @@ public partial class Player : AnimatedEntity
 		Animator?.Simulate( this, cl );
 
 		// Simulate our active weapon if we can.
-		Inventory?.ActiveWeapon?.Simulate( cl );
+		Inventory?.Simulate( cl );
 	}
 
 	/// <summary>
@@ -148,7 +149,7 @@ public partial class Player : AnimatedEntity
 		Animator?.FrameSimulate( this, cl );
 
 		// Simulate our active weapon if we can.
-		Inventory?.ActiveWeapon?.FrameSimulate( cl );
+		Inventory?.FrameSimulate( cl );
 	}
 
 	[ClientRpc]

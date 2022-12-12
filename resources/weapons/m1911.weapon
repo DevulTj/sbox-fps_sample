@@ -1,0 +1,78 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	data = 
+	{
+		Name = "M1911"
+		Model = resource:"models/m1911/w_m1911.vmdl"
+		ViewModel = resource:"models/m1911/fp_m1911.vmdl"
+		Icon = resource:"models/m1911/w_m1911.vmdl.png"
+		HoldType = "Pistol"
+		Handedness = "Right"
+		Components = 
+		[
+			"PrimaryFire",
+			"Aim",
+			"Reload",
+			"Ammo",
+			"Recoil",
+		]
+		ViewModelData = 
+		{
+			OverallWeight = 0.1
+			WeightReturnForce = 100
+			WeightDamping = 18
+			AccelerationDamping = 15
+			VelocityScale = 10
+			RotationalPivotForce = 10
+			RotationalScale = 5
+			WalkCycleOffset = "-2,25,0"
+			BobAmount = "25,50"
+			GlobalLerpPower = 1
+			GlobalPositionOffset = "-4,-0.5,0.8"
+			GlobalAngleOffset = "0,0,-10"
+			CrouchPositionOffset = "-3,1,0"
+			CrouchAngleOffset = "2,0,-15"
+			SlideAngleOffset = "2,0,-15"
+			AvoidancePositionOffset = "-5,0,0"
+			AvoidanceAngleOffset = "2,0,-25"
+			AimPositionOffset = "1.396,3.037,1.63"
+			AimAngleOffset = "-0.995,-0.18,9.934"
+		}
+		PrimaryFire = 
+		{
+			BaseDamage = 15
+			BulletRange = 5000
+			BulletCount = 1
+			BulletForce = 100
+			BulletSize = 2
+			FireDelay = 0.3
+			FireSound = resource:"sounds/guns/m1911/pistol_shoot.sound"
+			DryFireSound = resource:"sounds/guns/gun_dryfire.sound"
+		}
+		Aim = 
+		{
+		}
+		Reload = 
+		{
+			ReloadTime = 1.8
+		}
+		Ammo = 
+		{
+			DefaultAmmo = 7
+			MaximumAmmo = 7
+			AllowChamber = true
+		}
+		Recoil = 
+		{
+			Presets = 
+			[
+				"-15,40",
+				"15,40",
+				"5,36",
+			]
+			RecoveryTime = 0.2
+			MaxRecoil = 100
+			DecayFactor = 50
+		}
+	}
+}

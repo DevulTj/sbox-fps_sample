@@ -81,4 +81,62 @@ public partial class Inventory : BaseNetworkable
 	{
 		Weapons.ToList().ForEach( x => x.Delete() );
 	}
+
+	public Weapon GetSlot( int slot )
+	{
+		return Weapons.ElementAtOrDefault( slot ) ?? null;
+	}
+
+	protected int GetSlotIndexFromInput( InputButton slot )
+	{
+		return slot switch
+		{
+			InputButton.Slot1 => 0,
+			InputButton.Slot2 => 1,
+			InputButton.Slot3 => 2,
+			InputButton.Slot4 => 3,
+			InputButton.Slot5 => 4,
+			_ => -1
+		};
+	}
+
+	protected void TrySlotFromInput( InputButton slot )
+	{
+		if ( Input.Pressed( slot ) )
+		{
+			Input.SuppressButton( slot );
+
+			if ( GetSlot( GetSlotIndexFromInput( slot ) ) is Weapon weapon )
+			{
+				Owner.ActiveWeaponInput = weapon;
+			}
+		}
+	}
+
+	public void BuildInput()
+	{
+		TrySlotFromInput( InputButton.Slot1 );
+		TrySlotFromInput( InputButton.Slot2 );
+		TrySlotFromInput( InputButton.Slot3 );
+		TrySlotFromInput( InputButton.Slot4 );
+		TrySlotFromInput( InputButton.Slot5 );
+	}
+
+	public void Simulate( IClient cl )
+	{
+		if ( Game.IsServer )
+		{
+			if ( Owner.ActiveWeaponInput != null && ActiveWeapon != Owner.ActiveWeaponInput )
+			{
+				SetActiveWeapon( Owner.ActiveWeaponInput as Weapon );
+			}
+		}
+
+		ActiveWeapon?.Simulate( cl );
+	}
+
+	public void FrameSimulate( IClient cl )
+	{
+		ActiveWeapon?.FrameSimulate( cl );
+	}
 }
