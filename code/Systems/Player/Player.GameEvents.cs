@@ -1,4 +1,5 @@
 using Facepunch.Gunfight.WeaponSystem;
+using Sandbox;
 using Sandbox.Diagnostics;
 using System.Linq;
 
@@ -6,7 +7,8 @@ namespace Facepunch.Gunfight;
 
 public partial class Player
 {
-	private Logger eventLogger = new Logger( "player/GameEvent" );
+	static string realm = Game.IsServer ? "server" : "client";
+	static Logger eventLogger = new Logger( $"player/GameEvent/{realm}" );
 
 	public void RunGameEvent( string eventName )
 	{

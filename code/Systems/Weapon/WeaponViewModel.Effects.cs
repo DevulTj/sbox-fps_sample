@@ -14,7 +14,6 @@ public partial class WeaponViewModel
 	Vector3 SmoothedVelocity;
 	Vector3 velocity;
 	Vector3 acceleration;
-	Vector2 LerpRecoil;
 	float VelocityClamp => 20f;
 	float walkBob = 0;
 	float upDownOffset = 0;
