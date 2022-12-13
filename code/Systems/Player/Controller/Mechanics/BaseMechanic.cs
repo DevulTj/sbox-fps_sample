@@ -113,8 +113,7 @@ public partial class BaseMechanic : BaseNetworkable
 		{
 			if ( before != IsActive )
 			{
-				TimeSinceActivated = 0;
-				OnActivate();
+				Activate();
 			}
 
 			Simulate();
@@ -122,11 +121,24 @@ public partial class BaseMechanic : BaseNetworkable
 		// Deactivate
 		if ( before && !IsActive )
 		{
-			TimeSinceDeactivated = 0;
-			OnDeactivate();
+			Deactivate();
 		}
 
 		return IsActive;
+	}
+
+	protected void Activate()
+	{
+		TimeSinceActivated = 0;
+		RunGameEvent( $"{Name}.activate" );
+		OnActivate();
+	}
+
+	protected void Deactivate()
+	{
+		TimeSinceDeactivated = 0;
+		RunGameEvent( $"{Name}.deactivate" );
+		OnDeactivate();
 	}
 
 	/// <summary>
@@ -134,7 +146,7 @@ public partial class BaseMechanic : BaseNetworkable
 	/// </summary>
 	protected virtual void OnDeactivate()
 	{
-		RunGameEvent( $"{Name}.deactivate" );
+		//
 	}
 
 	/// <summary>
@@ -142,7 +154,7 @@ public partial class BaseMechanic : BaseNetworkable
 	/// </summary>
 	protected virtual void OnActivate()
 	{
-		RunGameEvent( $"{Name}.activate" );
+		//
 	}
 
 	/// <summary>
