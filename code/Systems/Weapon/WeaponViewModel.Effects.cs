@@ -135,6 +135,8 @@ public partial class WeaponViewModel
 		bobSpeed *= 1 - sprintLerp * 0.25f;
 		bobSpeed *= 1 - burstSprintLerp * 2f;
 
+		bobSpeed *= 1 - slideLerp;
+
 		if ( isGrounded )
 		{
 			walkBob += Time.Delta * 30.0f * bobSpeed;
