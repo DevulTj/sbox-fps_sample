@@ -1,10 +1,13 @@
 using Facepunch.Gunfight.WeaponSystem;
+using Sandbox.Diagnostics;
 using System.Linq;
 
 namespace Facepunch.Gunfight;
 
 public partial class Player
 {
+	private Logger eventLogger = new Logger( "player/GameEvent" );
+
 	public void RunGameEvent( string eventName )
 	{
 		eventName = eventName.ToLowerInvariant();
@@ -19,6 +22,6 @@ public partial class Player
 
 	public void OnGameEvent( string eventName )
 	{
-		Log.Info( $"OnGameEvent ({eventName})" );
+		eventLogger.Trace( $"OnGameEvent ({eventName})" );
 	}
 }
