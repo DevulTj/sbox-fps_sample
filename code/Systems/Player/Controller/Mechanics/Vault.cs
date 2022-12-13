@@ -54,6 +54,8 @@ public partial class Vault : BaseMechanic
 
 	protected override void OnActivate()
 	{
+		base.OnActivate();
+
 		Lock = true;
 		Controller.Player.PlaySound( "sounds/footsteps/footstep-concrete-jump.sound" );
 	}
