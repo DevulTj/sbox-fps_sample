@@ -9,7 +9,6 @@ namespace Facepunch.Gunfight.Mechanics;
 public partial class HeavyLand : BaseMechanic
 {
 	public override int SortOrder => 30;
-	public override string Name => "Heavy Land";
 	public override float? FrictionOverride => 2.5f;
 	public override float? WishSpeed => 150f;
 

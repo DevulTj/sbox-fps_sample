@@ -11,11 +11,6 @@ public partial class Aim : WeaponComponent, ISingletonComponent
 		return true;
 	}
 
-	protected override void OnActivated( Player player )
-	{
-		base.OnActivated( player );
-	}
-
 	/// <summary>
 	/// Data asset information.
 	/// </summary>

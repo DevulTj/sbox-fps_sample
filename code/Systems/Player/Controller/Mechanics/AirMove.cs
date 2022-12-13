@@ -7,7 +7,6 @@ namespace Facepunch.Gunfight.Mechanics;
 /// </summary>
 public partial class AirMove : BaseMechanic
 {
-	public override string Name => "Air Move";
 	public float Gravity => 800.0f;
 	public float AirControl => 30.0f;
 	public float AirAcceleration => 35.0f;

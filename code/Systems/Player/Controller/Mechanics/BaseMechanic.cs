@@ -1,3 +1,4 @@
+using Facepunch.Gunfight.WeaponSystem;
 using Sandbox;
 using System;
 using System.Dynamic;
@@ -10,11 +11,6 @@ public partial class BaseMechanic : BaseNetworkable
 	/// Is this mechanic active?
 	/// </summary>
 	public bool IsActive { get; protected set; }
-
-	/// <summary>
-	/// An identifier for the mechanic
-	/// </summary>
-	public virtual string Name => "Mechanic";
 
 	/// <summary>
 	/// How long has it been since we activated this mechanic?
@@ -53,6 +49,11 @@ public partial class BaseMechanic : BaseNetworkable
 	/// </summary>
 	public virtual float? WishSpeed { get; set; } = null;
 
+	/// <summary>
+	/// Identifier for the Mechanic
+	/// </summary>
+	public virtual string Name => info.Name.Replace( " ", "" );
+
 	public Vector3 Position
 	{
 		get => Controller.Position;
@@ -89,6 +90,12 @@ public partial class BaseMechanic : BaseNetworkable
 	public virtual float? FrictionOverride { get; set; } = null;
 
 	public virtual Vector3? MoveInputScale { get; set; } = null;
+
+	DisplayInfo info;
+	public BaseMechanic()
+	{
+		info = DisplayInfo.For( this );
+	}
 
 	/// <summary>
 	/// Called every time the controller simulates, for each mechanic.
@@ -127,7 +134,7 @@ public partial class BaseMechanic : BaseNetworkable
 	/// </summary>
 	protected virtual void OnDeactivate()
 	{
-		//
+		RunGameEvent( $"{Name}.deactivate" );
 	}
 
 	/// <summary>
@@ -135,7 +142,7 @@ public partial class BaseMechanic : BaseNetworkable
 	/// </summary>
 	protected virtual void OnActivate()
 	{
-		//
+		RunGameEvent( $"{Name}.activate" );
 	}
 
 	/// <summary>
@@ -158,7 +165,7 @@ public partial class BaseMechanic : BaseNetworkable
 
 	public override string ToString()
 	{
-		return $"{Name}: IsActive({IsActive})";
+		return $"{info.Name}: IsActive({IsActive})";
 	}
 
 	protected WallInfo GetWallInfo( Vector3 direction )
@@ -215,6 +222,16 @@ public partial class BaseMechanic : BaseNetworkable
 			return currentHeight;
 		}
 		return 0f;
+	}
+
+	public virtual void OnGameEvent( string eventName )
+	{
+		//
+	}
+
+	public void RunGameEvent( string eventName )
+	{
+		Player?.RunGameEvent( eventName );
 	}
 
 	public struct WallInfo

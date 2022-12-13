@@ -4,7 +4,6 @@ namespace Facepunch.Gunfight.Mechanics;
 
 public partial class Slide : BaseMechanic
 {
-	public override string Name => "Slide";
 	public override float? EyeHeight => 40f;
 	public override int SortOrder => 20;
 	public override float? FrictionOverride => 0.5f;
@@ -50,6 +49,8 @@ public partial class Slide : BaseMechanic
 
 	protected override void OnActivate()
 	{
+		base.OnActivate();
+
 		// Give a speed boost
 		var forward = new Vector3( Controller.Velocity.x, Controller.Velocity.y, 0 ).Normal;
 		if ( Controller.IsMechanicActive<Sprint>() || Controller.Velocity.Length < 300.0f )
@@ -61,6 +62,8 @@ public partial class Slide : BaseMechanic
 
 	protected override void OnDeactivate()
 	{
+		base.OnDeactivate();
+
 		Controller.Player.PlaySound( "sounds/player/foley/slide/ski.stop.sound" );
 		SlideSound.Stop();
 	}

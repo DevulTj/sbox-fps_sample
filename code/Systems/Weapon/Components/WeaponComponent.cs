@@ -14,7 +14,34 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 	[Net, Predicted] public bool IsActive { get; protected set; }
 	[Net, Predicted] public TimeSince TimeSinceActivated { get; protected set; }
 
+	public virtual string Name => info.Name.Replace( " ", "" );
 	protected virtual bool UseLagCompensation => false;
+	protected virtual bool EnableActivateEvents => true;
+
+	DisplayInfo info;
+	public WeaponComponent()
+	{
+		info = DisplayInfo.For( this );
+	}
+
+	/// <summary>
+	/// Accessor to grab components from the weapon
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <returns></returns>
+	public T GetComponent<T>() where T : WeaponComponent
+	{
+		return Weapon.GetComponent<T>();
+	}
+
+	/// <summary>
+	/// Run a weapon event
+	/// </summary>
+	/// <param name="eventName"></param>
+	public void RunGameEvent( string eventName )
+	{
+		Player?.RunGameEvent( eventName );
+	}
 
 	/// <summary>
 	/// Called when the owning player has used this weapon.
@@ -23,6 +50,9 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 	protected virtual void OnActivated( Player player )
 	{
 		TimeSinceActivated = 0;
+
+		if ( EnableActivateEvents )
+			RunGameEvent( $"{Name}.activate" );
 	}
 
 	/// <summary>
@@ -44,7 +74,7 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 	{
 		var before = IsActive;
 
-		if ( CanActivate( player ) )
+		if ( !IsActive && CanActivate( player ) )
 		{
 			if ( UseLagCompensation )
 			{
@@ -60,7 +90,7 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 				IsActive = true;
 			}
 		}
-		else if ( before )
+		else if ( before && !CanActivate( player ) )
 		{
 			IsActive = false;
 			OnDeactivated( player );
@@ -69,10 +99,16 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 
 	protected virtual void OnDeactivated( Player player )
 	{
-		//
+		if ( EnableActivateEvents )
+			RunGameEvent( $"{Name}.deactivate" );
 	}
 
 	public virtual void Initialize( Weapon weapon )
+	{
+		//
+	}
+
+	public virtual void OnGameEvent( string eventName )
 	{
 		//
 	}

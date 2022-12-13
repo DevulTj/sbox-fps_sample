@@ -25,7 +25,6 @@ public partial class Walk : BaseMechanic
 	}
 
 	public override float? WishSpeed => 200f;
-	public override string Name => "Walk";
 
 	protected override void Simulate()
 	{

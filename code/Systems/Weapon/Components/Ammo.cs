@@ -55,11 +55,15 @@ public partial class Ammo : WeaponComponent, ISingletonComponent
 	/////
 	protected override bool CanActivate( Player player )
 	{
+		if ( ReloadLock ) return false;
+
 		return Input.Pressed( InputButton.Reload );
 	}
 
 	protected override void OnActivated( Player player )
 	{
+		base.OnActivated( player );
+
 		if ( Weapon.GetComponent<Ammo>()?.IsFull ?? false )
 		{
 			return;

@@ -4,7 +4,6 @@ namespace Facepunch.Gunfight.Mechanics;
 
 public partial class Vault : BaseMechanic
 {
-	public override string Name => "Vault";
 	public override int SortOrder => 99;
 
 	public float MinVaultHeight => 30f;

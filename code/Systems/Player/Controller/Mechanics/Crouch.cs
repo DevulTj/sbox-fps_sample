@@ -9,7 +9,6 @@ namespace Facepunch.Gunfight.Mechanics;
 public partial class Crouch : BaseMechanic
 {
 	public override int SortOrder => 9;
-	public override string Name => "Crouch";
 	public override float? WishSpeed => 120f;
 	public override float? EyeHeight => 40f;
 

@@ -10,6 +10,7 @@ public partial class Recoil : WeaponComponent, ISingletonComponent
 	[Net, Predicted] public TimeUntil TimeUntilRemove { get; set; }
 
 	public ComponentData Data => Weapon.WeaponData.Recoil;
+	protected override bool EnableActivateEvents => false;
 
 	public void AddRecoil()
 	{

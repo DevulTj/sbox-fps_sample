@@ -15,7 +15,6 @@ public partial class Sprint : BaseMechanic
 	/// </summary>
 	public override int SortOrder => 10;
 	public override float? WishSpeed => 320f;
-	public override string Name => "Sprint";
 
 	protected override bool ShouldActivate()
 	{

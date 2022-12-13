@@ -7,20 +7,32 @@ namespace Facepunch.Gunfight.WeaponSystem;
 public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 {
 	public ComponentData Data => Weapon.WeaponData.PrimaryFire;
+	public TimeUntil TimeUntilCanFire { get; set; }
 
 	protected override bool UseLagCompensation => true;
 
-	private Ammo AmmoComponent => Weapon.GetComponent<Ammo>();
-
 	protected override bool CanActivate( Player player )
 	{
+		if ( TimeUntilCanFire > 0 ) return false;
 		if ( !Input.Down( InputButton.PrimaryAttack ) ) return false;
 		if ( player.Controller.IsMechanicActive<Sprint>() ) return false;
 		if ( Weapon.Tags.Has( "reloading" ) ) return false;
 		// Optional
-		if ( AmmoComponent != null && !AmmoComponent.HasEnoughAmmo() ) return false;
+		if ( GetComponent<Ammo>() is Ammo ammo && !ammo.HasEnoughAmmo() ) return false; 
 
 		return TimeSinceActivated > Data.FireDelay;
+	}
+
+	public override void OnGameEvent( string eventName )
+	{
+		if ( eventName == "sprint.deactivate" )
+		{
+			TimeUntilCanFire = 0.2f;
+		}
+		if ( eventName == "aim.activate" )
+		{
+			TimeUntilCanFire = 0.15f;
+		}
 	}
 
 	protected override void OnActivated( Player player )
@@ -38,9 +50,8 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 
 		ShootBullet( Data.BulletSpread, Data.BulletForce, Data.BulletSize, Data.BulletCount, Data.BulletRange );
 
-		AmmoComponent?.TakeAmmo();
-
-		Weapon.GetComponent<Recoil>()?.AddRecoil();
+		GetComponent<Ammo>()?.TakeAmmo();
+		GetComponent<Recoil>()?.AddRecoil();
 	}
 
 	[ClientRpc]

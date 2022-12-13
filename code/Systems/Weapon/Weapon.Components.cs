@@ -1,4 +1,5 @@
 using Sandbox;
+using System.Linq;
 
 namespace Facepunch.Gunfight.WeaponSystem;
 
@@ -30,5 +31,10 @@ public partial class Weapon
 			Components.Add( component );
 			Log.Info( $"Adding component {component} to {this}" );
 		}
+	}
+
+	public void RunGameEvent( string eventName )
+	{
+		Player?.RunGameEvent( eventName );
 	}
 }

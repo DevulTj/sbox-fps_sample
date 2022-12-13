@@ -8,7 +8,6 @@ namespace Facepunch.Gunfight.Mechanics;
 public partial class Jump : BaseMechanic
 {
 	public override int SortOrder => 25;
-	public override string Name => "Jump";
 
 	private float Cooldown => 0.5f;
 	private float Gravity => 700f;
