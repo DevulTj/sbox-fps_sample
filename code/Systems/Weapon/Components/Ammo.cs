@@ -23,6 +23,14 @@ public partial class Ammo : WeaponComponent, ISingletonComponent
 			AmmoCount = weapon.WeaponData.Ammo.DefaultAmmo;
 	}
 
+	public override void OnGameEvent( string eventName )
+	{
+		if ( eventName == "primaryfire.activate" )
+		{
+			TakeAmmo();
+		}
+	}
+
 	public void Fill()
 	{
 		if ( AmmoCount == Data.MaximumAmmo && Data.AllowChamber )

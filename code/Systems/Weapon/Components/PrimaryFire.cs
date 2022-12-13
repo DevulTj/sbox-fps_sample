@@ -49,9 +49,6 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 		}
 
 		ShootBullet( Data.BulletSpread, Data.BulletForce, Data.BulletSize, Data.BulletCount, Data.BulletRange );
-
-		GetComponent<Ammo>()?.TakeAmmo();
-		GetComponent<Recoil>()?.AddRecoil();
 	}
 
 	[ClientRpc]

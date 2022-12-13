@@ -12,6 +12,14 @@ public partial class Recoil : WeaponComponent, ISingletonComponent
 	public ComponentData Data => Weapon.WeaponData.Recoil;
 	protected override bool EnableActivateEvents => false;
 
+	public override void OnGameEvent( string eventName )
+	{
+		if ( eventName == "primaryfire.activate" )
+		{
+			AddRecoil();
+		}
+	}
+
 	public void AddRecoil()
 	{
 		var entry = Game.Random.FromList( Data.Presets );
