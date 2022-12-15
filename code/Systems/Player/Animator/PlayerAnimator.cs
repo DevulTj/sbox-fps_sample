@@ -3,7 +3,7 @@ using System;
 
 namespace Facepunch.Gunfight;
 
-public partial class PlayerAnimator : BaseNetworkable
+public partial class PlayerAnimator : EntityComponent<Player>, ISingletonComponent
 {
 	public virtual void Simulate( Player player, IClient cl )
 	{

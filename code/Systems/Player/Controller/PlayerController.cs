@@ -7,7 +7,7 @@ using System.Reflection.Metadata;
 
 namespace Facepunch.Gunfight;
 
-public partial class PlayerController : BaseNetworkable
+public partial class PlayerController : EntityComponent<Player>, ISingletonComponent
 {
 	public Vector3 LastVelocity { get; set; }
 	public Vector3 Velocity { get; set; }
@@ -37,7 +37,7 @@ public partial class PlayerController : BaseNetworkable
 		return GetMechanic<T>()?.IsActive ?? false;
 	}
 
-	public PlayerController()
+	protected override void OnActivate()
 	{
 		Mechanics.Add( new Walk() );
 		Mechanics.Add( new Jump() );
@@ -47,6 +47,12 @@ public partial class PlayerController : BaseNetworkable
 		Mechanics.Add( new Slide() );
 		Mechanics.Add( new HeavyLand() );
 		Mechanics.Add( new Vault() );
+	}
+
+	protected override void OnDeactivate()
+	{
+		// Kill mechanics list
+		Mechanics = new();
 	}
 
 	/// <summary>

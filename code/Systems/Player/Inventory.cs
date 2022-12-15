@@ -9,14 +9,10 @@ namespace Facepunch.Gunfight;
 /// The player's inventory holds a player's weapons, and holds the player's current weapon.
 /// It also drives functionality such as weapon switching.
 /// </summary>
-public partial class Inventory : BaseNetworkable
+public partial class Inventory : EntityComponent<Player>, ISingletonComponent
 {
-	[Net] public Player Owner { get; set; }
 	[Net] protected IList<Weapon> Weapons { get; set; }
 	[Net, Predicted] public Weapon ActiveWeapon { get; set; }
-
-	public Inventory() { }
-	public Inventory( Player player ) => Owner = player;
 
 	public bool AddWeapon( Weapon weapon, bool makeActive = true )
 	{
@@ -50,28 +46,32 @@ public partial class Inventory : BaseNetworkable
 		if ( currentWeapon.IsValid() )
 		{
 			// Can reject holster if we're doing an action already
-			if ( !currentWeapon.CanHolster( Owner ) )
+			if ( !currentWeapon.CanHolster( Entity ) )
 			{
 				return;
 			}
 
-			currentWeapon.OnHolster( Owner );
+			currentWeapon.OnHolster( Entity );
 			ActiveWeapon = null;
 		}
 
 		// Can reject deploy if we're doing an action already
-		if ( !weapon.CanDeploy( Owner ) )
+		if ( !weapon.CanDeploy( Entity ) )
 		{
 			return;
 		}
 
 		ActiveWeapon = weapon;
-		weapon?.OnDeploy( Owner );
+		weapon?.OnDeploy( Entity );
 	}
 
-	public void Delete()
+	protected override void OnDeactivate()
 	{
-		Weapons.ToList().ForEach( x => x.Delete() );
+		if ( Game.IsServer )
+		{
+			Weapons.ToList()
+				.ForEach( x => x.Delete() );
+		}
 	}
 
 	public Weapon GetSlot( int slot )
@@ -100,7 +100,7 @@ public partial class Inventory : BaseNetworkable
 
 			if ( GetSlot( GetSlotIndexFromInput( slot ) ) is Weapon weapon )
 			{
-				Owner.ActiveWeaponInput = weapon;
+				Entity.ActiveWeaponInput = weapon;
 			}
 		}
 	}
@@ -118,9 +118,9 @@ public partial class Inventory : BaseNetworkable
 	{
 		if ( Game.IsServer )
 		{
-			if ( Owner.ActiveWeaponInput != null && ActiveWeapon != Owner.ActiveWeaponInput )
+			if ( Entity.ActiveWeaponInput != null && ActiveWeapon != Entity.ActiveWeaponInput )
 			{
-				SetActiveWeapon( Owner.ActiveWeaponInput as Weapon );
+				SetActiveWeapon( Entity.ActiveWeaponInput as Weapon );
 			}
 		}
 

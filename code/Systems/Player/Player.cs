@@ -9,17 +9,17 @@ public partial class Player : AnimatedEntity
 	/// <summary>
 	/// The controller is responsible for player movement and setting up EyePosition / EyeRotation.
 	/// </summary>
-	[Net, Predicted] public PlayerController Controller { get; set; }
+	[BindComponent] public PlayerController Controller { get; }
 
 	/// <summary>
 	/// The animator is responsible for animating the player's current model.
 	/// </summary>
-	[Net, Predicted] public PlayerAnimator Animator { get; set; }
+	[BindComponent] public PlayerAnimator Animator { get; }
 
 	/// <summary>
 	/// The inventory is responsible for storing weapons for a player to use.
 	/// </summary>
-	[Net, Predicted] public Inventory Inventory { get; set; }
+	[BindComponent] public Inventory Inventory { get; }
 
 	/// <summary>
 	/// Time since the player last took damage.
@@ -86,12 +86,11 @@ public partial class Player : AnimatedEntity
 			.ToList()
 			.ForEach( x => x.EnableDrawing = true );
 
-		Controller = new PlayerController();
-		Animator = new CitizenAnimator();
-
-		Inventory = new Inventory( this );
-		Inventory.AddWeapon( WeaponData.CreateInstance( "AKM" ) );
-		Inventory.AddWeapon( WeaponData.CreateInstance( "M1911" ), false );
+		Components.Create<PlayerController>();
+		Components.Create<CitizenAnimator>();
+		var inventory = Components.Create<Inventory>();
+		inventory.AddWeapon( WeaponData.CreateInstance( "AKM" ) );
+		inventory.AddWeapon( WeaponData.CreateInstance( "M1911" ), false );
 
 		GameManager.Current?.MoveToSpawnpoint( this );
 		ResetInterpolation();
@@ -214,11 +213,9 @@ public partial class Player : AnimatedEntity
 			EnableAllCollisions = false;
 			EnableDrawing = false;
 
-			Controller = null;
-			Animator = null;
-
-			Inventory.Delete();
-			Inventory = null;
+			Controller.Remove();
+			Animator.Remove();
+			Inventory.Remove();
 
 			// Disable all children as well.
 			Children.OfType<ModelEntity>()
