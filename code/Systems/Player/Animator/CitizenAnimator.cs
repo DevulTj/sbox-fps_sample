@@ -19,7 +19,7 @@ public partial class CitizenAnimator : PlayerAnimator
 		animHelper.WithLookAt( player.EyePosition + player.EyeRotation.Forward * 100.0f, 1.0f, 1.0f, 0.5f );
 		animHelper.AimAngle = player.EyeRotation;
 		animHelper.FootShuffle = 0f;
-		animHelper.DuckLevel = MathX.Lerp( animHelper.DuckLevel, controller.GetMechanic<CrouchMechanic>().IsActive ? 1 : 0, Time.Delta * 10.0f );
+		animHelper.DuckLevel = MathX.Lerp( animHelper.DuckLevel, 1 - controller.CurrentEyeHeight.Remap( 30, 72, 0, 1 ).Clamp( 0, 1 ), Time.Delta * 10.0f );
 		animHelper.VoiceLevel = (Game.IsClient && cl.IsValid()) ? cl.Voice.LastHeard < 0.5f ? cl.Voice.CurrentLevel: 0.0f : 0.0f;
 		animHelper.IsGrounded = controller.GroundEntity != null;
 		//animHelper.IsSitting = controller.HasTag( "sitting" );
