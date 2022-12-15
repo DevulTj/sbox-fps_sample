@@ -39,9 +39,6 @@ public partial class Inventory : EntityComponent<Player>, ISingletonComponent
 
 	public void SetActiveWeapon( Weapon weapon )
 	{
-		// SetActiveWeapon can only be called on the server realm.
-		Game.AssertServer();
-
 		var currentWeapon = ActiveWeapon;
 		if ( currentWeapon.IsValid() )
 		{
@@ -62,6 +59,7 @@ public partial class Inventory : EntityComponent<Player>, ISingletonComponent
 		}
 
 		ActiveWeapon = weapon;
+
 		weapon?.OnDeploy( Entity );
 	}
 
@@ -118,12 +116,10 @@ public partial class Inventory : EntityComponent<Player>, ISingletonComponent
 
 	public void Simulate( IClient cl )
 	{
-		if ( Game.IsServer )
+		if ( Entity.ActiveWeaponInput != null && ActiveWeapon != Entity.ActiveWeaponInput )
 		{
-			if ( Entity.ActiveWeaponInput != null && ActiveWeapon != Entity.ActiveWeaponInput )
-			{
-				SetActiveWeapon( Entity.ActiveWeaponInput as Weapon );
-			}
+			SetActiveWeapon( Entity.ActiveWeaponInput as Weapon );
+			Entity.ActiveWeaponInput = null;
 		}
 
 		ActiveWeapon?.Simulate( cl );

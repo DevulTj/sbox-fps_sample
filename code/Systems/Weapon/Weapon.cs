@@ -52,7 +52,8 @@ public partial class Weapon : AnimatedEntity
 
 		EnableDrawing = true;
 
-		CreateViewModel( To.Single( player ) );
+		if ( Game.IsServer )
+			CreateViewModel( To.Single( player ) );
 	}
 
 	[ClientRpc]
@@ -71,5 +72,10 @@ public partial class Weapon : AnimatedEntity
 	protected override void OnDestroy()
 	{
 		ViewModelEntity?.Delete();
+	}
+
+	public override string ToString()
+	{
+		return $"Weapon ({WeaponData?.Name})";
 	}
 }
