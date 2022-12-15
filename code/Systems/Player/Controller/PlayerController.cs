@@ -102,7 +102,7 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 
 		var target = EyeHeight;
 		// Magic number :sad:
-		var trace = TraceBBox( Position, Position, 0, 4f );
+		var trace = TraceBBox( Position, Position, 0, 10f );
 		if ( trace.Hit && target > CurrentEyeHeight )
 		{
 			// We hit something, that means we can't increase our eye height because something's in the way.
