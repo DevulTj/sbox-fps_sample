@@ -6,7 +6,7 @@ namespace Facepunch.Gunfight.Mechanics;
 /// <summary>
 /// The heavy landing mechanic for players.
 /// </summary>
-public partial class HeavyLand : PlayerControllerMechanic
+public partial class HeavyLandMechanic : PlayerControllerMechanic
 {
 	public override int SortOrder => 30;
 	public override float? FrictionOverride => 2.5f;

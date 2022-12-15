@@ -6,7 +6,7 @@ namespace Facepunch.Gunfight.Mechanics;
 /// <summary>
 /// The basic walking mechanic for the player.
 /// </summary>
-public partial class Walk : PlayerControllerMechanic
+public partial class WalkMechanic : PlayerControllerMechanic
 {
 	public float StopSpeed => 150f;
 	public float StepSize => 18.0f;

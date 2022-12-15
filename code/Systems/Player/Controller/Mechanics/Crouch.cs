@@ -6,7 +6,7 @@ namespace Facepunch.Gunfight.Mechanics;
 /// <summary>
 /// The basic crouch mechanic for players.
 /// </summary>
-public partial class Crouch : PlayerControllerMechanic
+public partial class CrouchMechanic : PlayerControllerMechanic
 {
 	public override int SortOrder => 9;
 	public override float? WishSpeed => 120f;
@@ -16,7 +16,7 @@ public partial class Crouch : PlayerControllerMechanic
 	{
 		if ( !Input.Down( InputButton.Duck ) ) return false;
 		if ( !Controller.GroundEntity.IsValid() ) return false;
-		if ( Controller.IsMechanicActive<Sprint>() ) return false;
+		if ( Controller.IsMechanicActive<SprintMechanic>() ) return false;
 
 		return true;
 	}

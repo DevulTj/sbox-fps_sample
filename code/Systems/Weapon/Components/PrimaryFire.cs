@@ -15,7 +15,7 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 	{
 		if ( TimeUntilCanFire > 0 ) return false;
 		if ( !Input.Down( InputButton.PrimaryAttack ) ) return false;
-		if ( player.Controller.IsMechanicActive<Sprint>() ) return false;
+		if ( player.Controller.IsMechanicActive<SprintMechanic>() ) return false;
 		if ( Weapon.Tags.Has( "reloading" ) ) return false;
 		// Optional
 		if ( GetComponent<Ammo>() is Ammo ammo && !ammo.HasEnoughAmmo() ) return false; 

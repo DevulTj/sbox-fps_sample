@@ -8,7 +8,7 @@ namespace Facepunch.Gunfight.Mechanics;
 /// The basic sprinting mechanic for players.
 /// It shouldn't, though.
 /// </summary>
-public partial class Sprint : PlayerControllerMechanic
+public partial class SprintMechanic : PlayerControllerMechanic
 {
 	/// <summary>
 	/// Sprint has a higher priority than other mechanics.

@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace Facepunch.Gunfight.Mechanics;
 
-public partial class Vault : PlayerControllerMechanic
+public partial class VaultMechanic : PlayerControllerMechanic
 {
 	public override int SortOrder => 99;
 

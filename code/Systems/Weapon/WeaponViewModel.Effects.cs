@@ -109,13 +109,13 @@ public partial class WeaponViewModel
 		var speed = controller.Velocity.Length.LerpInverse( 0, 750 );
 		var sideSpeed = controller.Velocity.Length.LerpInverse( 0, 350 );
 		var bobSpeed = SmoothedVelocity.Length.LerpInverse( -250, 700 );
-		var isSprinting = controller.IsMechanicActive<Sprint>();
+		var isSprinting = controller.IsMechanicActive<SprintMechanic>();
 		var left = Camera.Rotation.Left;
 		var up = Camera.Rotation.Up;
 		var forward = Camera.Rotation.Forward;
-		var isCrouching = controller.IsMechanicActive<Crouch>();
+		var isCrouching = controller.IsMechanicActive<CrouchMechanic>();
 		var isAiming = Weapon.GetComponent<Aim>()?.IsActive ?? false;
-		var isSliding = controller.IsMechanicActive<Slide>();
+		var isSliding = controller.IsMechanicActive<SlideMechanic>();
 		var timeSinceFired = Weapon.GetComponent<PrimaryFire>().TimeSinceActivated;
 
 		LerpTowards( ref aimLerp, isAiming ? 1 : 0, isAiming ? 30f : 10f );

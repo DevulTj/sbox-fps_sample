@@ -1,3 +1,4 @@
+using Facepunch.Gunfight.Mechanics;
 using Facepunch.Gunfight.WeaponSystem;
 using Sandbox;
 using System.Linq;
@@ -87,6 +88,17 @@ public partial class Player : AnimatedEntity
 			.ForEach( x => x.EnableDrawing = true );
 
 		Components.Create<PlayerController>();
+
+		// Add mechanics.
+		Components.Create<WalkMechanic>();
+		Components.Create<JumpMechanic>();
+		Components.Create<AirMoveMechanic>();
+		Components.Create<SprintMechanic>();
+		Components.Create<CrouchMechanic>();
+		Components.Create<SlideMechanic>();
+		Components.Create<HeavyLandMechanic>();
+		Components.Create<VaultMechanic>();
+
 		Components.Create<CitizenAnimator>();
 		var inventory = Components.Create<Inventory>();
 		inventory.AddWeapon( WeaponData.CreateInstance( "AKM" ) );

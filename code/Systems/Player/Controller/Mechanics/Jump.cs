@@ -5,7 +5,7 @@ namespace Facepunch.Gunfight.Mechanics;
 /// <summary>
 /// The jump mechanic for players.
 /// </summary>
-public partial class Jump : PlayerControllerMechanic
+public partial class JumpMechanic : PlayerControllerMechanic
 {
 	public override int SortOrder => 25;
 
@@ -55,7 +55,7 @@ public partial class Jump : PlayerControllerMechanic
 			Velocity = Velocity.WithZ( startz + flMul * flGroundFactor );
 			Velocity -= new Vector3( 0, 0, Gravity * 0.5f ) * Time.Delta;
 
-			Controller.GetMechanic<Walk>()
+			Controller.GetMechanic<WalkMechanic>()
 				.ClearGroundEntity();
 
 			Controller.Player.PlaySound( "sounds/player/foley/gear/player.jump.gear.sound" );

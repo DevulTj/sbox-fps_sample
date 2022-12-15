@@ -1,11 +1,12 @@
 using Facepunch.Gunfight.WeaponSystem;
 using Sandbox;
 using System;
+using System.ComponentModel;
 using System.Dynamic;
 
 namespace Facepunch.Gunfight.Mechanics;
 
-public partial class PlayerControllerMechanic : BaseNetworkable
+public partial class PlayerControllerMechanic : EntityComponent<Player>
 {
 	/// <summary>
 	/// Is this mechanic active?
@@ -27,7 +28,7 @@ public partial class PlayerControllerMechanic : BaseNetworkable
 	/// </summary>
 	public TimeUntil TimeUntilCanStart { get; protected set; }
 
-	protected PlayerController Controller { get; set; }
+	protected PlayerController Controller => Entity.Controller;
 
 	/// <summary>
 	/// Accessor for the player.
@@ -104,8 +105,6 @@ public partial class PlayerControllerMechanic : BaseNetworkable
 	/// <returns></returns>
 	public bool TrySimulate( PlayerController controller )
 	{
-		Controller = controller;
-
 		var before = IsActive;
 		IsActive = ShouldStart();
 

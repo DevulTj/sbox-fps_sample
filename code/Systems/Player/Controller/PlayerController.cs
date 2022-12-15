@@ -20,11 +20,11 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 	/// <summary>
 	/// A list of mechanics used by the player controller.
 	/// </summary>
-	public List<PlayerControllerMechanic> Mechanics { get; set; } = new();
+	public IEnumerable<PlayerControllerMechanic> Mechanics => Entity.Components.GetAll<PlayerControllerMechanic>();
 
 	public T GetMechanic<T>() where T : PlayerControllerMechanic
 	{
-		foreach( var mechanic in Mechanics )
+		foreach ( var mechanic in Mechanics )
 		{
 			if ( mechanic is T val ) return val;
 		}
@@ -39,20 +39,10 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 
 	protected override void OnActivate()
 	{
-		Mechanics.Add( new Walk() );
-		Mechanics.Add( new Jump() );
-		Mechanics.Add( new AirMove() );
-		Mechanics.Add( new Sprint() );
-		Mechanics.Add( new Crouch() );
-		Mechanics.Add( new Slide() );
-		Mechanics.Add( new HeavyLand() );
-		Mechanics.Add( new Vault() );
 	}
 
 	protected override void OnDeactivate()
 	{
-		// Kill mechanics list
-		Mechanics = new();
 	}
 
 	/// <summary>

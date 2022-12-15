@@ -15,9 +15,11 @@ public partial class Player
 		eventName = eventName.ToLowerInvariant();
 
 		Inventory.ActiveWeapon?.Components.GetAll<WeaponComponent>()
-			.ToList().ForEach( x => x.OnGameEvent( eventName ) );
+			.ToList()
+			.ForEach( x => x.OnGameEvent( eventName ) );
 
-		Controller.Mechanics.ForEach( x => x.OnGameEvent( eventName ) );
+		Controller.Mechanics.ToList()
+			.ForEach( x => x.OnGameEvent( eventName ) );
 
 		OnGameEvent( eventName );
 	}
