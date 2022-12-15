@@ -25,7 +25,7 @@ public partial class Ammo : WeaponComponent, ISingletonComponent
 
 	public override void OnGameEvent( string eventName )
 	{
-		if ( eventName == "primaryfire.activate" )
+		if ( eventName == "primaryfire.start" )
 		{
 			TakeAmmo();
 		}
@@ -61,16 +61,16 @@ public partial class Ammo : WeaponComponent, ISingletonComponent
 	/////
 	/// Reloading
 	/////
-	protected override bool CanActivate( Player player )
+	protected override bool CanStart( Player player )
 	{
 		if ( ReloadLock ) return false;
 
 		return Input.Pressed( InputButton.Reload );
 	}
 
-	protected override void OnActivated( Player player )
+	protected override void OnStart( Player player )
 	{
-		base.OnActivated( player );
+		base.OnStart( player );
 
 		if ( Weapon.GetComponent<Ammo>()?.IsFull ?? false )
 		{

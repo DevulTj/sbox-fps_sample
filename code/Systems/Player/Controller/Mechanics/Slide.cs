@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace Facepunch.Gunfight.Mechanics;
 
-public partial class Slide : BaseMechanic
+public partial class Slide : PlayerControllerMechanic
 {
 	public override float? EyeHeight => 40f;
 	public override int SortOrder => 20;
@@ -32,12 +32,12 @@ public partial class Slide : BaseMechanic
 	{
 		if ( !Controller.GroundEntity.IsValid() ) return false;
 		if ( Controller.Velocity.Length < MinimumSpeed ) return false;
-		if ( TimeSinceActivated < 1 ) return true;
+		if ( TimeSinceStart < 1 ) return true;
 
 		return true;
 	}
 
-	protected override bool ShouldActivate()
+	protected override bool ShouldStart()
 	{
 		if ( Lock ) return true;
 		if ( !Input.Pressed( InputButton.View ) ) return false;
@@ -47,9 +47,9 @@ public partial class Slide : BaseMechanic
 		return true;
 	}
 
-	protected override void OnActivate()
+	protected override void OnStart()
 	{
-		base.OnActivate();
+		base.OnStart();
 
 		// Give a speed boost
 		var forward = new Vector3( Controller.Velocity.x, Controller.Velocity.y, 0 ).Normal;
@@ -60,9 +60,9 @@ public partial class Slide : BaseMechanic
 		Lock = true;
 	}
 
-	protected override void OnDeactivate()
+	protected override void OnStop()
 	{
-		base.OnDeactivate();
+		base.OnStop();
 
 		Controller.Player.PlaySound( "sounds/player/foley/slide/ski.stop.sound" );
 		SlideSound.Stop();

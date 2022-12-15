@@ -6,7 +6,7 @@ namespace Facepunch.Gunfight.Mechanics;
 /// <summary>
 /// The heavy landing mechanic for players.
 /// </summary>
-public partial class HeavyLand : BaseMechanic
+public partial class HeavyLand : PlayerControllerMechanic
 {
 	public override int SortOrder => 30;
 	public override float? FrictionOverride => 2.5f;
@@ -15,7 +15,7 @@ public partial class HeavyLand : BaseMechanic
 	private bool Lock = false;
 	private TimeUntil TimeUntilFinished = 0f;
 
-	protected override bool ShouldActivate()
+	protected override bool ShouldStart()
 	{
 		if ( Lock ) return true;
 		if ( MathF.Abs( LastVelocity.z ) < 200f ) return false;		
@@ -24,7 +24,7 @@ public partial class HeavyLand : BaseMechanic
 		return !LastGroundEntity.IsValid() && GroundEntity.IsValid(); 
 	}
 
-	protected override void OnActivate()
+	protected override void OnStart()
 	{
 		TimeUntilFinished = 0.7f;
 		Lock = true;

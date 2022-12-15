@@ -20,9 +20,9 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 	/// <summary>
 	/// A list of mechanics used by the player controller.
 	/// </summary>
-	public List<BaseMechanic> Mechanics { get; set; } = new();
+	public List<PlayerControllerMechanic> Mechanics { get; set; } = new();
 
-	public T GetMechanic<T>() where T : BaseMechanic
+	public T GetMechanic<T>() where T : PlayerControllerMechanic
 	{
 		foreach( var mechanic in Mechanics )
 		{
@@ -32,7 +32,7 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 		return null;
 	}
 
-	public bool IsMechanicActive<T>() where T : BaseMechanic
+	public bool IsMechanicActive<T>() where T : PlayerControllerMechanic
 	{
 		return GetMechanic<T>()?.IsActive ?? false;
 	}
@@ -79,7 +79,7 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 	/// <summary>
 	/// The "best" mechanic is the mechanic with the highest priority, defined by SortOrder.
 	/// </summary>
-	public BaseMechanic BestMechanic => Mechanics.OrderByDescending( x => x.SortOrder ).FirstOrDefault( x => x.IsActive );
+	public PlayerControllerMechanic BestMechanic => Mechanics.OrderByDescending( x => x.SortOrder ).FirstOrDefault( x => x.IsActive );
 
 	[ConVar.Replicated( "playercontroller_debug" )]
 	public static bool Debug { get; set; } = false;

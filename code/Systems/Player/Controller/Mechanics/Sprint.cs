@@ -8,7 +8,7 @@ namespace Facepunch.Gunfight.Mechanics;
 /// The basic sprinting mechanic for players.
 /// It shouldn't, though.
 /// </summary>
-public partial class Sprint : BaseMechanic
+public partial class Sprint : PlayerControllerMechanic
 {
 	/// <summary>
 	/// Sprint has a higher priority than other mechanics.
@@ -16,7 +16,7 @@ public partial class Sprint : BaseMechanic
 	public override int SortOrder => 10;
 	public override float? WishSpeed => 320f;
 
-	protected override bool ShouldActivate()
+	protected override bool ShouldStart()
 	{
 		if ( !Input.Down( InputButton.Run ) ) return false;
 		if ( Player.MoveInput.x <= 0f ) return false;

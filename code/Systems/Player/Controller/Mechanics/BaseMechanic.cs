@@ -5,7 +5,7 @@ using System.Dynamic;
 
 namespace Facepunch.Gunfight.Mechanics;
 
-public partial class BaseMechanic : BaseNetworkable
+public partial class PlayerControllerMechanic : BaseNetworkable
 {
 	/// <summary>
 	/// Is this mechanic active?
@@ -15,17 +15,17 @@ public partial class BaseMechanic : BaseNetworkable
 	/// <summary>
 	/// How long has it been since we activated this mechanic?
 	/// </summary>
-	public TimeSince TimeSinceActivated { get; protected set; }
+	public TimeSince TimeSinceStart { get; protected set; }
 
 	/// <summary>
 	/// How long has it been since we deactivated this mechanic?
 	/// </summary>
-	public TimeSince TimeSinceDeactivated { get; protected set; }
+	public TimeSince TimeSinceStop { get; protected set; }
 
 	/// <summary>
 	/// Standard cooldown for mechanics.
 	/// </summary>
-	public TimeUntil TimeUntilCanNextActivate { get; protected set; }
+	public TimeUntil TimeUntilCanStart { get; protected set; }
 
 	protected PlayerController Controller { get; set; }
 
@@ -92,7 +92,7 @@ public partial class BaseMechanic : BaseNetworkable
 	public virtual Vector3? MoveInputScale { get; set; } = null;
 
 	DisplayInfo info;
-	public BaseMechanic()
+	public PlayerControllerMechanic()
 	{
 		info = DisplayInfo.For( this );
 	}
@@ -107,13 +107,13 @@ public partial class BaseMechanic : BaseNetworkable
 		Controller = controller;
 
 		var before = IsActive;
-		IsActive = ShouldActivate();
+		IsActive = ShouldStart();
 
 		if ( IsActive )
 		{
 			if ( before != IsActive )
 			{
-				Activate();
+				Start();
 			}
 
 			Simulate();
@@ -121,30 +121,30 @@ public partial class BaseMechanic : BaseNetworkable
 		// Deactivate
 		if ( before && !IsActive )
 		{
-			Deactivate();
+			Stop();
 		}
 
 		return IsActive;
 	}
 
-	protected void Activate()
+	protected void Start()
 	{
-		TimeSinceActivated = 0;
-		RunGameEvent( $"{Name}.activate" );
-		OnActivate();
+		TimeSinceStart = 0;
+		RunGameEvent( $"{Name}.start" );
+		OnStart();
 	}
 
-	protected void Deactivate()
+	protected void Stop()
 	{
-		TimeSinceDeactivated = 0;
-		RunGameEvent( $"{Name}.deactivate" );
-		OnDeactivate();
+		TimeSinceStop = 0;
+		RunGameEvent( $"{Name}.stop" );
+		OnStop();
 	}
 
 	/// <summary>
 	/// Called when the mechanic deactivates. For example, when you stop crouching.
 	/// </summary>
-	protected virtual void OnDeactivate()
+	protected virtual void OnStop()
 	{
 		//
 	}
@@ -152,7 +152,7 @@ public partial class BaseMechanic : BaseNetworkable
 	/// <summary>
 	/// Called when the mechanic activates. For example, when you start sliding.
 	/// </summary>
-	protected virtual void OnActivate()
+	protected virtual void OnStart()
 	{
 		//
 	}
@@ -162,9 +162,9 @@ public partial class BaseMechanic : BaseNetworkable
 	/// By default, it's set to TimeUntilCanNextActivate, which you can set in your own mechanics.
 	/// </summary>
 	/// <returns></returns>
-	protected virtual bool ShouldActivate()
+	protected virtual bool ShouldStart()
 	{
-		return TimeUntilCanNextActivate;
+		return TimeUntilCanStart;
 	}
 
 	/// <summary>

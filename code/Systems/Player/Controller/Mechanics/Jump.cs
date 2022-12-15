@@ -5,7 +5,7 @@ namespace Facepunch.Gunfight.Mechanics;
 /// <summary>
 /// The jump mechanic for players.
 /// </summary>
-public partial class Jump : BaseMechanic
+public partial class Jump : PlayerControllerMechanic
 {
 	public override int SortOrder => 25;
 
@@ -16,7 +16,7 @@ public partial class Jump : BaseMechanic
 	
 	public TimeUntil WindupComplete { get; protected set; }
 
-	protected override bool ShouldActivate()
+	protected override bool ShouldStart()
 	{
 		if ( Lock ) return true;
 
@@ -26,16 +26,16 @@ public partial class Jump : BaseMechanic
 		return true;
 	}
 
-	protected override void OnActivate()
+	protected override void OnStart()
 	{
 		WindupComplete = 0.1f;
 		Lock = true;
 		Simulate();
 	}
 
-	protected override void OnDeactivate()
+	protected override void OnStop()
 	{
-		TimeUntilCanNextActivate = Cooldown;
+		TimeUntilCanStart = Cooldown;
 	}
 
 	protected override void Simulate()

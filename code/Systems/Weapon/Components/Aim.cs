@@ -4,7 +4,7 @@ namespace Facepunch.Gunfight.WeaponSystem;
 
 public partial class Aim : WeaponComponent, ISingletonComponent
 {
-	protected override bool CanActivate( Player player )
+	protected override bool CanStart( Player player )
 	{
 		if ( !Input.Down( InputButton.SecondaryAttack ) ) return false;
 

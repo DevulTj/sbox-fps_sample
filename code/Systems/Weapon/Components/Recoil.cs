@@ -14,7 +14,7 @@ public partial class Recoil : WeaponComponent, ISingletonComponent
 
 	public override void OnGameEvent( string eventName )
 	{
-		if ( eventName == "primaryfire.activate" )
+		if ( eventName == "primaryfire.start" )
 		{
 			AddRecoil();
 		}

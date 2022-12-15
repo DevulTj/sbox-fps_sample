@@ -11,7 +11,7 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 
 	protected override bool UseLagCompensation => true;
 
-	protected override bool CanActivate( Player player )
+	protected override bool CanStart( Player player )
 	{
 		if ( TimeUntilCanFire > 0 ) return false;
 		if ( !Input.Down( InputButton.PrimaryAttack ) ) return false;
@@ -25,19 +25,19 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 
 	public override void OnGameEvent( string eventName )
 	{
-		if ( eventName == "sprint.deactivate" )
+		if ( eventName == "sprint.stop" )
 		{
 			TimeUntilCanFire = 0.2f;
 		}
-		if ( eventName == "aim.activate" )
+		if ( eventName == "aim.start" )
 		{
 			TimeUntilCanFire = 0.15f;
 		}
 	}
 
-	protected override void OnActivated( Player player )
+	protected override void OnStart( Player player )
 	{
-		base.OnActivated( player );
+		base.OnStart( player );
 
 		player?.SetAnimParameter( "b_attack", true );
 

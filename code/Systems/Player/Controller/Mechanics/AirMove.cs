@@ -5,7 +5,7 @@ namespace Facepunch.Gunfight.Mechanics;
 /// <summary>
 /// AirMove decides how the player moves while in the air. Drives effects such as gravity, wind, etc.
 /// </summary>
-public partial class AirMove : BaseMechanic
+public partial class AirMove : PlayerControllerMechanic
 {
 	public float Gravity => 800.0f;
 	public float AirControl => 30.0f;
@@ -41,7 +41,7 @@ public partial class AirMove : BaseMechanic
 		//	new FallCameraModifier( -150, 1.5f );
 	}
 
-	protected override bool ShouldActivate()
+	protected override bool ShouldStart()
 	{
 		return true;
 	}

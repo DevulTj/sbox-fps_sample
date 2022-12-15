@@ -47,12 +47,12 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 	/// Called when the owning player has used this weapon.
 	/// </summary>
 	/// <param name="player"></param>
-	protected virtual void OnActivated( Player player )
+	protected virtual void OnStart( Player player )
 	{
 		TimeSinceActivated = 0;
 
 		if ( EnableActivateEvents )
-			RunGameEvent( $"{Name}.activate" );
+			RunGameEvent( $"{Name}.start" );
 	}
 
 	/// <summary>
@@ -60,7 +60,7 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 	/// </summary>
 	/// <param name="player"></param>
 	/// <returns>Return true if the given entity can use/interact with this entity.</returns>
-	protected virtual bool CanActivate( Player player )
+	protected virtual bool CanStart( Player player )
 	{
 		return true;
 	}
@@ -74,33 +74,33 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 	{
 		var before = IsActive;
 
-		if ( !IsActive && CanActivate( player ) )
+		if ( !IsActive && CanStart( player ) )
 		{
 			if ( UseLagCompensation )
 			{
 				using ( Sandbox.Entity.LagCompensation() )
 				{
-					OnActivated( player );
+					OnStart( player );
 					IsActive = true;
 				}
 			}
 			else
 			{
-				OnActivated( player );
+				OnStart( player );
 				IsActive = true;
 			}
 		}
-		else if ( before && !CanActivate( player ) )
+		else if ( before && !CanStart( player ) )
 		{
 			IsActive = false;
-			OnDeactivated( player );
+			OnStop( player );
 		}
 	}
 
-	protected virtual void OnDeactivated( Player player )
+	protected virtual void OnStop( Player player )
 	{
 		if ( EnableActivateEvents )
-			RunGameEvent( $"{Name}.deactivate" );
+			RunGameEvent( $"{Name}.stop" );
 	}
 
 	public virtual void Initialize( Weapon weapon )

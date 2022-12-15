@@ -6,7 +6,7 @@ namespace Facepunch.Gunfight.Mechanics;
 /// <summary>
 /// The basic walking mechanic for the player.
 /// </summary>
-public partial class Walk : BaseMechanic
+public partial class Walk : PlayerControllerMechanic
 {
 	public float StopSpeed => 150f;
 	public float StepSize => 18.0f;
@@ -19,7 +19,7 @@ public partial class Walk : BaseMechanic
 	public float Acceleration => 6f;
 	public float DuckAcceleration => 5f;
 
-	protected override bool ShouldActivate()
+	protected override bool ShouldStart()
 	{
 		return true;
 	}

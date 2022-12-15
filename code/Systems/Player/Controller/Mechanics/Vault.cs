@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace Facepunch.Gunfight.Mechanics;
 
-public partial class Vault : BaseMechanic
+public partial class Vault : PlayerControllerMechanic
 {
 	public override int SortOrder => 99;
 
@@ -44,7 +44,7 @@ public partial class Vault : BaseMechanic
 		return true;
 	}
 
-	protected override bool ShouldActivate()
+	protected override bool ShouldStart()
 	{
 		if ( Lock ) return true;
 		if ( !Input.Pressed( InputButton.Jump ) && Controller.GroundEntity.IsValid() ) return false;
@@ -52,9 +52,9 @@ public partial class Vault : BaseMechanic
 		return CanActivate( true );
 	}
 
-	protected override void OnActivate()
+	protected override void OnStart()
 	{
-		base.OnActivate();
+		base.OnStart();
 
 		Lock = true;
 		Controller.Player.PlaySound( "sounds/footsteps/footstep-concrete-jump.sound" );
