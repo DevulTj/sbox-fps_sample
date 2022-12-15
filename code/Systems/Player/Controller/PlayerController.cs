@@ -43,6 +43,8 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 
 	protected override void OnDeactivate()
 	{
+		// Remove all mechanics.
+		Entity.Components.RemoveAny<PlayerControllerMechanic>();
 	}
 
 	/// <summary>
