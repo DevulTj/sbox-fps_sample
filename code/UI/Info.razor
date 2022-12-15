@@ -60,7 +60,7 @@
     }
 
     <div class="row">
-        <label class="text @HealthClasses()">@Player.Health</label>
+        <label class="text @HealthClasses()">@Health</label>
         <label class="text reserve">100</label>
         <label class="icon">monitor_heart</label>
     </div>
@@ -68,6 +68,7 @@
 
 @code 
 {
+    public string Health => $"{Player.Health:F0}";
     public Player Player => Game.LocalPawn as Player;
     public Weapon Weapon => Player?.ActiveWeapon;
     public Ammo AmmoComponent => Weapon?.GetComponent<Ammo>();

@@ -2,50 +2,24 @@ using Facepunch.Gunfight.Mechanics;
 using Sandbox;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using System.Reflection.Metadata;
 
 namespace Facepunch.Gunfight;
 
 public partial class PlayerController : EntityComponent<Player>, ISingletonComponent
 {
 	public Vector3 LastVelocity { get; set; }
-	public Vector3 Velocity { get; set; }
 	public Entity LastGroundEntity { get; set; }
 	public Entity GroundEntity { get; set; }
 	public Vector3 BaseVelocity { get; set; }
 	public Vector3 GroundNormal { get; set; }
 	public float CurrentGroundAngle { get; set; }
 
+	public Player Player => Entity;
+
 	/// <summary>
 	/// A list of mechanics used by the player controller.
 	/// </summary>
 	public IEnumerable<PlayerControllerMechanic> Mechanics => Entity.Components.GetAll<PlayerControllerMechanic>();
-
-	public T GetMechanic<T>() where T : PlayerControllerMechanic
-	{
-		foreach ( var mechanic in Mechanics )
-		{
-			if ( mechanic is T val ) return val;
-		}
-
-		return null;
-	}
-
-	public bool IsMechanicActive<T>() where T : PlayerControllerMechanic
-	{
-		return GetMechanic<T>()?.IsActive ?? false;
-	}
-
-	protected override void OnActivate()
-	{
-	}
-
-	protected override void OnDeactivate()
-	{
-		// Remove all mechanics.
-		Entity.Components.RemoveAny<PlayerControllerMechanic>();
-	}
 
 	/// <summary>
 	/// Position accessor for the Player.
@@ -56,10 +30,11 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 		set => Player.Position = value;
 	}
 
-	/// <summary>
-	/// Accessor for the player, it's set every time the controller Simulates
-	/// </summary>
-	public Player Player { get; set; }
+	public Vector3 Velocity
+	{
+		get => Player.Velocity;
+		set => Player.Velocity = value;
+	}
 
 	/// <summary>
 	/// This'll set LocalEyePosition when we Simulate.
@@ -94,6 +69,21 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 		}
 	}
 
+	public T GetMechanic<T>() where T : PlayerControllerMechanic
+	{
+		foreach ( var mechanic in Mechanics )
+		{
+			if ( mechanic is T val ) return val;
+		}
+
+		return null;
+	}
+
+	public bool IsMechanicActive<T>() where T : PlayerControllerMechanic
+	{
+		return GetMechanic<T>()?.IsActive ?? false;
+	}
+
 	protected void SimulateEyes()
 	{
 		Player.EyeRotation = Player.LookInput.ToRotation();
@@ -108,10 +98,8 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 		}
 	}
 
-	public virtual void Simulate( Player player, IClient cl )
+	public virtual void Simulate( IClient cl )
 	{
-		Player = player;
-
 		SimulateEyes();
 		SimulateMechanics();
 
@@ -139,10 +127,8 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 		}
 	}
 
-	public virtual void FrameSimulate( Player player, IClient cl )
+	public virtual void FrameSimulate( IClient cl )
 	{
-		Player = player;
-
 		SimulateEyes();
 	}
 
@@ -271,5 +257,11 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 
 		Position = mover.Position;
 		Velocity = mover.Velocity;
+	}
+
+	protected override void OnDeactivate()
+	{
+		// Remove all mechanics.
+		Entity.Components.RemoveAny<PlayerControllerMechanic>();
 	}
 }

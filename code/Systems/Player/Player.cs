@@ -129,8 +129,8 @@ public partial class Player : AnimatedEntity
 	{
 		Rotation = LookInput.WithPitch( 0f ).ToRotation();
 
-		Controller?.Simulate( this, cl );
-		Animator?.Simulate( this, cl );
+		Controller?.Simulate( cl );
+		Animator?.Simulate( cl );
 
 		// Simulate our active weapon if we can.
 		Inventory?.Simulate( cl );
@@ -156,8 +156,8 @@ public partial class Player : AnimatedEntity
 	{
 		Rotation = LookInput.WithPitch( 0f ).ToRotation();
 
-		Controller?.FrameSimulate( this, cl );
-		Animator?.FrameSimulate( this, cl );
+		Controller?.FrameSimulate( cl );
+		Animator?.FrameSimulate( cl );
 
 		// Simulate our active weapon if we can.
 		Inventory?.FrameSimulate( cl );

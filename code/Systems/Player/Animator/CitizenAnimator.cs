@@ -8,8 +8,9 @@ namespace Facepunch.Gunfight;
 /// </summary>
 public partial class CitizenAnimator : PlayerAnimator
 {
-	public override void Simulate( Player player, IClient cl )
+	public override void Simulate( IClient cl )
 	{
+		var player = Entity as Player;
 		var controller = player.Controller;
 		CitizenAnimationHelper animHelper = new CitizenAnimationHelper( player );
 
