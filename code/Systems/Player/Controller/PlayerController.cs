@@ -41,6 +41,8 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 	/// </summary>
 	public float EyeHeight => BestMechanic?.EyeHeight ?? 64f;
 
+	[Net, Predicted] public float CurrentEyeHeight { get; set; } = 64f;
+
 	public Vector3 MoveInputScale => BestMechanic?.MoveInputScale ?? Vector3.One;
 
 	/// <summary>
@@ -61,7 +63,8 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 		get
 		{
 			var girth = BodyGirth * 0.5f;
-			var baseHeight = EyeHeight;
+			var baseHeight = CurrentEyeHeight;
+
 			var mins = new Vector3( -girth, -girth, 0 );
 			var maxs = new Vector3( +girth, +girth, baseHeight * 1.1f );
 
@@ -87,7 +90,7 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 	protected void SimulateEyes()
 	{
 		Player.EyeRotation = Player.LookInput.ToRotation();
-		Player.EyeLocalPosition = Vector3.Up * EyeHeight;
+		Player.EyeLocalPosition = Vector3.Up * CurrentEyeHeight;
 	}
 
 	protected void SimulateMechanics()
@@ -95,6 +98,18 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 		foreach ( var mechanic in Mechanics )
 		{
 			mechanic.TrySimulate( this );
+		}
+
+		var target = EyeHeight;
+		// Magic number :sad:
+		var trace = TraceBBox( Position, Position, 0, 4f );
+		if ( trace.Hit && target > CurrentEyeHeight )
+		{
+			// We hit something, that means we can't increase our eye height because something's in the way.
+		}
+		else
+		{
+			CurrentEyeHeight = CurrentEyeHeight.LerpTo( target, Time.Delta * 10f );
 		}
 	}
 
@@ -137,12 +152,17 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 	/// LiftFeet will move the start position up by this amount, while keeping the top of the bbox at the same 
 	/// position. This is good when tracing down because you won't be tracing through the ceiling above.
 	/// </summary>
-	public virtual TraceResult TraceBBox( Vector3 start, Vector3 end, Vector3 mins, Vector3 maxs, float liftFeet = 0.0f )
+	public virtual TraceResult TraceBBox( Vector3 start, Vector3 end, Vector3 mins, Vector3 maxs, float liftFeet = 0.0f, float liftHead = 0.0f )
 	{
 		if ( liftFeet > 0 )
 		{
 			start += Vector3.Up * liftFeet;
 			maxs = maxs.WithZ( maxs.z - liftFeet );
+		}
+
+		if ( liftHead > 0 )
+		{
+			end += Vector3.Up * liftHead;
 		}
 
 		var tr = Trace.Ray( start, end )
@@ -159,10 +179,10 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 	/// This calls TraceBBox with the right sized bbox. You should derive this in your controller if you 
 	/// want to use the built in functions
 	/// </summary>
-	public virtual TraceResult TraceBBox( Vector3 start, Vector3 end, float liftFeet = 0.0f )
+	public virtual TraceResult TraceBBox( Vector3 start, Vector3 end, float liftFeet = 0.0f, float liftHead = 0.0f )
 	{
 		var hull = Hull;
-		return TraceBBox( start, end, hull.Mins, hull.Maxs, liftFeet );
+		return TraceBBox( start, end, hull.Mins, hull.Maxs, liftFeet, liftHead );
 	}
 
 	public Vector3 GetWishVelocity( bool zeroPitch = false )
