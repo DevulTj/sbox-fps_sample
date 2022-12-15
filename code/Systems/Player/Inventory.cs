@@ -112,6 +112,8 @@ public partial class Inventory : EntityComponent<Player>, ISingletonComponent
 		TrySlotFromInput( InputButton.Slot3 );
 		TrySlotFromInput( InputButton.Slot4 );
 		TrySlotFromInput( InputButton.Slot5 );
+
+		ActiveWeapon?.BuildInput();
 	}
 
 	public void Simulate( IClient cl )

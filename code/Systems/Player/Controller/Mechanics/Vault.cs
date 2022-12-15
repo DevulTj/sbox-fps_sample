@@ -78,11 +78,6 @@ public partial class VaultMechanic : PlayerControllerMechanic
 		return result.StartedSolid;
 	}
 
-	protected void Stop()
-	{
-		Lock = false;
-	}
-
 	public Vector3 GetNextStepPos()
 	{
 		Controller.Velocity = Controller.Velocity.WithZ( 0 ); // Remove gravity.
@@ -96,7 +91,7 @@ public partial class VaultMechanic : PlayerControllerMechanic
 	protected override void Simulate()
 	{
 		if ( timeSinceVault > 1f )
-			Stop();
+			Lock = false;
 
 		if ( !CloseEnough() )
 		{
@@ -107,6 +102,6 @@ public partial class VaultMechanic : PlayerControllerMechanic
 			return;
 		}
 
-		Stop();
+		Lock = false;
 	}
 }

@@ -42,7 +42,7 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 		player?.SetAnimParameter( "b_attack", true );
 
 		// Send clientside effects to the player.
-		using ( Prediction.Off() )
+		if ( Game.IsServer )
 		{
 			player.PlaySound( Data.FireSound );
 			DoShootEffects( To.Single( player ) );

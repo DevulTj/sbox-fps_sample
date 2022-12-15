@@ -37,4 +37,12 @@ public partial class Weapon
 	{
 		Player?.RunGameEvent( eventName );
 	}
+
+	public override void BuildInput()
+	{
+		foreach( var component in Components.GetAll<WeaponComponent>() )
+		{
+			component.BuildInput();
+		}
+	}
 }

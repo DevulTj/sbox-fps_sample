@@ -112,4 +112,9 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 	{
 		//
 	}
+
+	public virtual void BuildInput()
+	{
+		//
+	}
 }

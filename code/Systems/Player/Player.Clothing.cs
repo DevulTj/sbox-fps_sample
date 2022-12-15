@@ -17,6 +17,7 @@ public partial class Player
 		Clothing = new();
 
 		var outfit = Game.Clients.Count % 2 == 0 ? armyOutfitJson : terrorOutfitJson;
+		Clothing.ClearEntities();
 		Clothing.Deserialize( outfit );
 		Clothing.DressEntity( this );
 	}

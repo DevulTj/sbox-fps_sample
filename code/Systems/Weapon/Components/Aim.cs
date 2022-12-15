@@ -11,6 +11,14 @@ public partial class Aim : WeaponComponent, ISingletonComponent
 		return true;
 	}
 
+	public override void BuildInput()
+	{
+		if ( IsActive )
+		{
+			Input.AnalogLook *= 0.5f;
+		}
+	}
+
 	/// <summary>
 	/// Data asset information.
 	/// </summary>
