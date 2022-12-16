@@ -13,5 +13,6 @@ public partial class Hud : HudEntity<RootPanel>
 		RootPanel.AddChild<Chat>();
 		RootPanel.AddChild<Info>();
 		RootPanel.AddChild<Players>();
+		RootPanel.AddChild<Crosshair>();
 	}
 }
