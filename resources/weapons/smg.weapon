@@ -33,7 +33,7 @@
 			SlideAngleOffset = "2,0,-15"
 			AvoidancePositionOffset = "-5,0,0"
 			AvoidanceAngleOffset = "2,0,-25"
-			SprintPositionOffset = "0,-2,-1"
+			SprintPositionOffset = "0,-10,-1"
 			SprintAngleOffset = "10.3,41.72,-7.53"
 			BurstSprintPositionOffset = "-2,-2,-1"
 			BurstSprintAngleOffset = "10.3,41.72,-7.53"
