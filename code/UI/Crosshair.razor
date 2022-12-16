@@ -1,3 +1,4 @@
+@using Facepunch.Gunfight.WeaponSystem;
 @using Sandbox;
 @using System;
 @using Sandbox.UI;
@@ -36,19 +37,19 @@
         }
 
         .left {
-            left: -20px;
+            left: -@Distance;
         }
 
         .right {
-            left: 20px;
+            left: @Distance;
         }
 
         .top {
-            top: -20px;
+            top: -@Distance;
         }
 
         .bottom {
-            top: 20px;
+            top: @Distance;
         }
 
         transition: opacity 0.1s ease;
@@ -68,6 +69,9 @@
 </root>
 
 @code {
+    public float PixelDistance { get; set; } = 20f;
+    public string Distance => $"{PixelDistance}px";
+
     protected override void OnAfterTreeRender(bool firstTime)
     {
         base.OnAfterTreeRender( firstTime );
@@ -83,7 +87,16 @@
     public override void Tick()
     {
         var player = Game.LocalPawn as Player;
-        var isAiming = player?.Inventory?.ActiveWeapon?.Tags.Has( "aiming" ) ?? false;
+        var weapon = player?.Inventory?.ActiveWeapon;
+        var isAiming = weapon?.Tags.Has( "aiming" ) ?? false;
+
+        var distance = player?.Velocity.Length.LerpInverse( 0, 750, true ).Remap( 0, 1, 20, 60 ) ?? 20f;
+        float timeSinceActivated = weapon?.GetComponent<PrimaryFire>()?.TimeSinceActivated ?? 1;
+        var fireAmt = 1 - timeSinceActivated.LerpInverse( 0, 0.25f, true );
+
+        distance += fireAmt * 50;
+
+        PixelDistance = distance;
 
         SetClass( "visible", !isAiming );
     }
