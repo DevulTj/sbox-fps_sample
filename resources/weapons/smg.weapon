@@ -2,12 +2,12 @@
 {
 	data = 
 	{
-		Name = "M1911"
-		Model = resource:"models/m1911/w_m1911.vmdl"
-		ViewModel = resource:"models/m1911/fp_m1911.vmdl"
-		Icon = resource:"models/m1911/w_m1911.vmdl.png"
-		HoldType = "Pistol"
-		Handedness = "Right"
+		Name = "SMG"
+		Model = resource:"weapons/rust_smg/rust_smg.vmdl"
+		ViewModel = resource:"weapons/rust_smg/v_rust_smg.vmdl"
+		Icon = resource:"models/akm/w_akm.vmdl.png"
+		HoldType = "Rifle"
+		Handedness = "Both"
 		Components = 
 		[
 			"PrimaryFire",
@@ -27,17 +27,15 @@
 			WalkCycleOffset = "-2,25,0"
 			BobAmount = "25,50"
 			GlobalLerpPower = 1
-			GlobalPositionOffset = "-4,-0.5,0.8"
-			GlobalAngleOffset = "0,0,-10"
 			CrouchPositionOffset = "-3,1,0"
 			CrouchAngleOffset = "2,0,-15"
 			SlideAngleOffset = "2,0,-15"
 			AvoidancePositionOffset = "-5,0,0"
 			AvoidanceAngleOffset = "2,0,-25"
-			SprintPositionOffset = "0,2,3"
-			SprintAngleOffset = "15,0,0"
-			AimPositionOffset = "1.396,3.037,1.63"
-			AimAngleOffset = "-0.995,-0.18,9.934"
+			SprintPositionOffset = "0,-2,-1"
+			SprintAngleOffset = "10.3,41.72,-7.53"
+			BurstSprintPositionOffset = "-2,-2,-1"
+			BurstSprintAngleOffset = "10.3,41.72,-7.53"
 		}
 		PrimaryFire = 
 		{
@@ -46,8 +44,9 @@
 			BulletCount = 1
 			BulletForce = 100
 			BulletSize = 2
-			FireDelay = 0.2
-			FireSound = resource:"sounds/guns/m1911/pistol_shoot.sound"
+			BulletSpread = 0.03
+			FireDelay = 0.08
+			FireSound = resource:"weapons/rust_smg/sounds/rust_smg.shoot.sound"
 			DryFireSound = resource:"sounds/guns/gun_dryfire.sound"
 		}
 		Aim = 
@@ -55,22 +54,22 @@
 		}
 		Ammo = 
 		{
-			DefaultAmmo = 7
-			MaximumAmmo = 7
+			DefaultAmmo = 30
+			MaximumAmmo = 30
 			AllowChamber = true
-			ReloadTime = 1.75
+			ReloadTime = 2.25
 		}
 		Recoil = 
 		{
 			Presets = 
 			[
-				"-30,60",
-				"30,60",
-				"15,55",
+				"-15,40",
+				"15,40",
+				"5,36",
 			]
-			RecoveryTime = 0.3
+			RecoveryTime = 0.2
 			MaxRecoil = 100
-			DecayFactor = 80
+			DecayFactor = 50
 		}
 	}
 }

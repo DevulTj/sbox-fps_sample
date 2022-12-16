@@ -2,12 +2,12 @@
 {
 	data = 
 	{
-		Name = "AKM"
-		Model = resource:"models/akm/w_akm.vmdl"
-		ViewModel = resource:"models/akm/fp_akm.vmdl"
-		Icon = resource:"models/akm/w_akm.vmdl.png"
-		HoldType = "Rifle"
-		Handedness = "Both"
+		Name = "Semi-Auto Pistol"
+		Model = resource:"weapons/rust_pistol/rust_pistol.vmdl"
+		ViewModel = resource:"weapons/rust_pistol/v_rust_pistol.vmdl"
+		Icon = resource:"models/m1911/w_m1911.vmdl.png"
+		HoldType = "Pistol"
+		Handedness = "Right"
 		Components = 
 		[
 			"PrimaryFire",
@@ -27,19 +27,15 @@
 			WalkCycleOffset = "-2,25,0"
 			BobAmount = "25,50"
 			GlobalLerpPower = 1
-			GlobalPositionOffset = "1,-0.5,0.8"
-			GlobalAngleOffset = "0,0,2"
+			GlobalPositionOffset = "-13.755,8.665003,-0.6950001"
 			CrouchPositionOffset = "-3,1,0"
 			CrouchAngleOffset = "2,0,-15"
 			SlideAngleOffset = "2,0,-15"
 			AvoidancePositionOffset = "-5,0,0"
 			AvoidanceAngleOffset = "2,0,-25"
-			SprintPositionOffset = "0,-2,-1"
-			SprintAngleOffset = "10.3,41.72,-7.53"
-			BurstSprintPositionOffset = "-2,-2,-1"
-			BurstSprintAngleOffset = "10.3,41.72,-7.53"
-			AimPositionOffset = "-0.79,2.7,0.68"
-			AimAngleOffset = "0.59,-1.62,0.5"
+			SprintPositionOffset = "0,3.226,8.914998"
+			SprintAngleOffset = "20,6.529,-12.2"
+			AimPositionOffset = "1.396,8.261003,3.366"
 		}
 		PrimaryFire = 
 		{
@@ -48,32 +44,31 @@
 			BulletCount = 1
 			BulletForce = 100
 			BulletSize = 2
-			BulletSpread = 0.03
-			FireDelay = 0.1
-			FireSound = resource:"sounds/guns/akm/akm.shoot.sound"
-			DryFireSound = resource:"sounds/guns/gun_dryfire.sound"
+			FireDelay = 0.2
+			FireSound = resource:"weapons/rust_pistol/sound/rust_pistol.shoot.sound"
+			DryFireSound = resource:"sounds/weapons/dryfire_rifle-1.sound"
 		}
 		Aim = 
 		{
 		}
 		Ammo = 
 		{
-			DefaultAmmo = 30
-			MaximumAmmo = 30
+			DefaultAmmo = 7
+			MaximumAmmo = 7
 			AllowChamber = true
-			ReloadTime = 2.25
+			ReloadTime = 1.75
 		}
 		Recoil = 
 		{
 			Presets = 
 			[
-				"-15,40",
-				"15,40",
-				"5,36",
+				"-30,60",
+				"30,60",
+				"15,55",
 			]
-			RecoveryTime = 0.2
+			RecoveryTime = 0.3
 			MaxRecoil = 100
-			DecayFactor = 50
+			DecayFactor = 80
 		}
 	}
 }
