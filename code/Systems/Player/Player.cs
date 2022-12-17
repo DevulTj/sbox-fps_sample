@@ -102,6 +102,7 @@ public partial class Player : AnimatedEntity
 		Components.Create<HeavyLandMechanic>();
 		Components.Create<VaultMechanic>();
 		Components.Create<InteractionMechanic>();
+		Components.Create<UnstuckMechanic>();
 
 		Components.Create<CitizenAnimator>();
 		var inventory = Components.Create<Inventory>();
