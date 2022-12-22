@@ -26,6 +26,14 @@ public partial class Player : AnimatedEntity
 	/// Time since the player last took damage.
 	/// </summary>
 	[Net, Predicted] public TimeSince TimeSinceDamage { get; set; }
+	/// <summary>
+	/// Active gravitational force
+	/// </summary>
+	[Net, Predicted] public Vector3 Gravity { get; set; } = Game.PhysicsWorld.Gravity;
+	/// <summary>
+	/// Active gravitational force direction
+	/// </summary>
+	[Net, Predicted] public Vector3 GravityDirection { get; set; } = Game.PhysicsWorld.Gravity.Normal;
 
 	/// <summary>
 	/// Accessor for getting a player's active weapon.
@@ -73,7 +81,7 @@ public partial class Player : AnimatedEntity
 	/// <summary>
 	/// Called when a player respawns, think of this as a soft spawn - we're only reinitializing transient data here.
 	/// </summary>
-	public void Respawn()
+	public virtual void Respawn()
 	{
 		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, new Vector3( -16, -16, 0 ), new Vector3( 16, 16, 72 ) );
 
@@ -120,7 +128,7 @@ public partial class Player : AnimatedEntity
 	/// Called clientside when the player respawns. Useful for adding components like the camera.
 	/// </summary>
 	[ClientRpc]
-	public void ClientRespawn()
+	public virtual void ClientRespawn()
 	{
 		PlayerCamera = new PlayerCamera();
 	}
