@@ -89,7 +89,7 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 
 	protected void SimulateEyes()
 	{
-		Player.EyeRotation = Player.LookInput.ToRotation();
+		Player.EyeRotation = Rotation * Rotation.FromPitch( Player.LookInput.ToRotation().Pitch() );
 		Player.EyeLocalPosition = Vector3.Up * CurrentEyeHeight;
 	}
 
@@ -115,7 +115,9 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 
 	public virtual void Simulate( IClient cl )
 	{
+		SimulateRotation();
 		SimulateEyes();
+		ProcessVelocity();
 		SimulateMechanics();
 
 		if ( Debug )
@@ -128,6 +130,7 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 
 			DebugOverlay.ScreenText( $"Player Controller", ++lineOffset );
 			DebugOverlay.ScreenText( $"       Position: {Position}", ++lineOffset );
+			DebugOverlay.ScreenText( $"       Rotation: {Rotation}", ++lineOffset );
 			DebugOverlay.ScreenText( $"        Velocity: {Velocity}", ++lineOffset );
 			DebugOverlay.ScreenText( $"    BaseVelocity: {BaseVelocity}", ++lineOffset );
 			DebugOverlay.ScreenText( $"    GroundEntity: {GroundEntity} [{GroundEntity?.Velocity}]", ++lineOffset );
@@ -144,6 +147,7 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 
 	public virtual void FrameSimulate( IClient cl )
 	{
+		SimulateRotation();
 		SimulateEyes();
 	}
 
