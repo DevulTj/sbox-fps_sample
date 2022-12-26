@@ -39,8 +39,11 @@ public partial class WalkMechanic : PlayerControllerMechanic
 	/// </summary>
 	private void StayOnGround()
 	{
-		var start = Controller.Position + Vector3.Up * 2;
-		var end = Controller.Position + Vector3.Down * StepSize;
+		var down = Player.GravityDirection;
+		var up = -down;
+		
+		var start = Controller.Position + up * 2;
+		var end = Controller.Position + down * StepSize;
 
 		// See how far up we can go without getting stuck
 		var trace = Controller.TraceBBox( Controller.Position, start );
@@ -52,7 +55,7 @@ public partial class WalkMechanic : PlayerControllerMechanic
 		if ( trace.Fraction <= 0 ) return;
 		if ( trace.Fraction >= 1 ) return;
 		if ( trace.StartedSolid ) return;
-		if ( Vector3.GetAngle( Vector3.Up, trace.Normal ) > GroundAngle ) return;
+		if ( Vector3.GetAngle( up, trace.Normal ) > GroundAngle ) return;
 
 		Controller.Position = trace.EndPosition;
 	}
@@ -62,18 +65,15 @@ public partial class WalkMechanic : PlayerControllerMechanic
 		var ctrl = Controller;
 
 		var wishVel = ctrl.GetWishVelocity( true );
-		var wishdir = wishVel.Normal;
 		var wishspeed = wishVel.Length;
 		var friction = GroundFriction * SurfaceFriction;
-
-		ctrl.Velocity = ctrl.Velocity.WithZ( 0 );
+		
 		ctrl.ApplyFriction( StopSpeed, friction );
-
-		var accel = Acceleration;
-
-		ctrl.Velocity = ctrl.Velocity.WithZ( 0 );
-		ctrl.Accelerate( wishdir, wishspeed, 0, accel );
-		ctrl.Velocity = ctrl.Velocity.WithZ( 0 );
+		var localVelocity = DoGravitationalWalk(Player.MoveInput, wishspeed);
+		Velocity += ctrl.LocalToWorldVelocity( localVelocity );
+		ctrl.MoveDir = localVelocity.Normal;
+		localVelocity = ctrl.Accelerate( ctrl.MoveDir, wishspeed, 0, Acceleration );
+		Velocity += ctrl.LocalToWorldVelocity( localVelocity );
 
 		// Add in any base velocity to the current velocity.
 		ctrl.Velocity += ctrl.BaseVelocity;
@@ -86,7 +86,7 @@ public partial class WalkMechanic : PlayerControllerMechanic
 				return;
 			}
 
-			var dest = (ctrl.Position + ctrl.Velocity * Time.Delta).WithZ( ctrl.Position.z );
+			var dest = (ctrl.Position + ctrl.Velocity * Time.Delta);
 			var pm = ctrl.TraceBBox( ctrl.Position, dest );
 
 			if ( pm.Fraction == 1 )
@@ -127,29 +127,33 @@ public partial class WalkMechanic : PlayerControllerMechanic
 
 		if ( GroundEntity != null )
 		{
-			Velocity = Velocity.WithZ( 0 );
+			var localVelocity = Controller.WorldToLocalVelocity(Velocity).WithZ( 0 );
+			Velocity = Controller.LocalToWorldVelocity( localVelocity );
 			Controller.BaseVelocity = GroundEntity.Velocity;
 		}
 	}
 
 	public void CategorizePosition( bool bStayOnGround )
 	{
+		var down = Player.GravityDirection;
+		var up = -down;
+		
 		SurfaceFriction = 1.0f;
 
-		var point = Position - Vector3.Up * 2;
+		var point = Position + down * 2;
 		var vBumpOrigin = Position;
-		bool bMovingUpRapidly = Velocity.z > MaxNonJumpVelocity;
+		bool bMovingUpRapidly =  (Velocity * Player.GravityDirection).Length > MaxNonJumpVelocity;
 		bool bMoveToEndPos = false;
 
 		if ( GroundEntity != null )
 		{
 			bMoveToEndPos = true;
-			point.z -= StepSize;
+			point += down;
 		}
 		else if ( bStayOnGround )
 		{
 			bMoveToEndPos = true;
-			point.z -= StepSize;
+			point += down;
 		}
 
 		if ( bMovingUpRapidly )
@@ -160,15 +164,15 @@ public partial class WalkMechanic : PlayerControllerMechanic
 		
 		var pm = Controller.TraceBBox( vBumpOrigin, point, 4.0f );
 
-		var angle = Vector3.GetAngle( Vector3.Up, pm.Normal );
+		var angle = Vector3.GetAngle( up, pm.Normal );
 		Controller.CurrentGroundAngle = angle;
 
-		if ( pm.Entity == null || Vector3.GetAngle( Vector3.Up, pm.Normal ) > GroundAngle )
+		if ( pm.Entity == null || angle > GroundAngle )
 		{
 			ClearGroundEntity();
 			bMoveToEndPos = false;
 
-			if ( Velocity.z > 0 )
+			if ( (Velocity * Player.GravityDirection).Length > 0 )
 				SurfaceFriction = 0.25f;
 		}
 		else
@@ -191,4 +195,28 @@ public partial class WalkMechanic : PlayerControllerMechanic
 
 		SetGroundEntity( tr.Entity );
 	}
+	
+	private Vector3 DoGravitationalWalk( Vector2 moveInput, float acceleration )
+	{
+		var localVelocity = Vector3.Zero;
+		var accelerationDir = (Vector3.Forward * moveInput.x) + (Vector3.Left * moveInput.y);
+		if (!accelerationDir.IsNearZeroLength)
+		{
+			var WantedSpeed = Controller.GetWishSpeed();
+			localVelocity += (accelerationDir * acceleration * Time.Delta).Clamp( -WantedSpeed,
+				WantedSpeed );
+		}
+
+		if (accelerationDir.x.AlmostEqual(0))
+		{
+			localVelocity.x = localVelocity.x.Approach(0, acceleration * Time.Delta);
+		}
+
+		if (accelerationDir.y.AlmostEqual(0))
+		{
+			localVelocity.y = localVelocity.y.Approach(0, acceleration * Time.Delta);
+		}
+		return localVelocity;
+	}
+	
 }
