@@ -59,7 +59,7 @@ public partial class Player
 		{
 			if ( ent.PhysicsGroup != null )
 			{
-				ent.PhysicsGroup.AddVelocity( (Position - (forcePos + Vector3.Down * 100.0f)).Normal * (force.Length * 0.2f) );
+				ent.PhysicsGroup.AddVelocity( (Position - (forcePos + GravityDirection * 100.0f)).Normal * (force.Length * 0.2f) );
 				var angularDir = (Rotation.FromYaw( 90 ) * force.WithZ( 0 ).Normal).Normal;
 				ent.PhysicsGroup.AddAngularVelocity( angularDir * (force.Length * 0.02f) );
 			}

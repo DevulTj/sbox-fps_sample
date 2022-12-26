@@ -16,7 +16,7 @@ public class Pitch : CameraModifier
 		Size = size;
 	}
 
-	public override bool Update()
+	public override bool Update( Player player )
 	{
 		var delta = ((float)lifeTime).LerpInverse( 0, Length, true );
 		delta = Easing.EaseOut( delta );

@@ -9,21 +9,16 @@ public partial class PlayerController
 	
 	private Transform Transform { get; set; }
 	
-	public Vector3 LocalVelocity { get; set; }
-	
-	public void FromLocalVelocity()
+	public Vector3 MoveDir { get; set; } = Vector3.Zero;
+
+	public Vector3 WorldToLocalVelocity( Vector3 worldVelocity )
 	{
-		Velocity = FromLocalVelocity(LocalVelocity);
-	}
-	
-	public Vector3 FromLocalVelocity(Vector3 localVelocity)
-	{
-		return Transform.NormalToWorld(localVelocity);
+		return Transform.NormalToLocal( worldVelocity );
 	}
 
-	public void ToLocalVelocity()
+	public Vector3 LocalToWorldVelocity(Vector3 localVelocity)
 	{
-		LocalVelocity = Transform.NormalToLocal(Velocity);
+		return Transform.NormalToWorld(localVelocity);
 	}
 
 	private void ProcessVelocity()

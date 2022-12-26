@@ -158,15 +158,17 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 	/// </summary>
 	public virtual TraceResult TraceBBox( Vector3 start, Vector3 end, Vector3 mins, Vector3 maxs, float liftFeet = 0.0f, float liftHead = 0.0f )
 	{
+		var up = -Player.GravityDirection;
 		if ( liftFeet > 0 )
 		{
-			start += Vector3.Up * liftFeet;
+			start += up * liftFeet;
+			// TODO take into account other directions?
 			maxs = maxs.WithZ( maxs.z - liftFeet );
 		}
 
 		if ( liftHead > 0 )
 		{
-			end += Vector3.Up * liftHead;
+			end += up * liftHead;
 		}
 
 		var tr = Trace.Ray( start, end )
@@ -214,7 +216,7 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 		return BestMechanic?.WishSpeed ?? 180f;
 	}
 
-	public void Accelerate( Vector3 wishdir, float wishspeed, float speedLimit, float acceleration )
+	public Vector3 Accelerate( Vector3 wishdir, float wishspeed, float speedLimit, float acceleration )
 	{
 		if ( speedLimit > 0 && wishspeed > speedLimit )
 			wishspeed = speedLimit;
@@ -223,14 +225,14 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 		var addspeed = wishspeed - currentspeed;
 
 		if ( addspeed <= 0 )
-			return;
+			return Vector3.Zero;
 
 		var accelspeed = acceleration * Time.Delta * wishspeed;
 
 		if ( accelspeed > addspeed )
 			accelspeed = addspeed;
 
-		Velocity += wishdir * accelspeed;
+		return wishdir * accelspeed;
 	}
 
 	public void ApplyFriction( float stopSpeed, float frictionAmount = 1.0f )

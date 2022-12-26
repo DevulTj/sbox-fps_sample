@@ -20,7 +20,7 @@ public partial class VaultMechanic : PlayerControllerMechanic
 		if ( !wall.Hit ) return false;
 		if ( wall.Height == 0 ) return false;
 		if ( wall.Distance > Controller.BodyGirth * 1 ) return false;
-		if ( Vector3.Dot( Controller.GetWishVelocity().Normal, wall.Normal ) > 0.0f ) return false;
+		if ( Vector3.Dot( Controller.MoveDir, wall.Normal ) > 0.0f ) return false;
 
 		var posFwd = Controller.Position - wall.Normal * (Controller.BodyGirth + wall.Distance);
 		var floorTraceStart = posFwd.WithZ( wall.AbsoluteHeight );

@@ -7,12 +7,12 @@ public abstract class CameraModifier
 {
 	internal static List<CameraModifier> List = new();
 
-	internal static void Apply()
+	internal static void Apply(Player player)
 	{
 		for ( int i = List.Count; i > 0; i-- )
 		{
 			var entry = List[i - 1];
-			var keep = entry.Update();
+			var keep = entry.Update(player);
 
 			if ( !keep )
 			{
@@ -40,5 +40,5 @@ public abstract class CameraModifier
 		}
 	}
 
-	public abstract bool Update();
+	public abstract bool Update( Player player );
 }

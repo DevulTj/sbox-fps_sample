@@ -25,7 +25,7 @@ public class Perlin : CameraModifier
 		pos = Game.Random.Float( 0, 100000 );
 	}
 
-	public override bool Update()
+	public override bool Update( Player player )
 	{
 		var delta = ((float)lifeTime).LerpInverse( 0, Length, true );
 		delta = Easing.EaseOut( delta );
@@ -37,8 +37,8 @@ public class Perlin : CameraModifier
 		float y = Noise.Perlin( pos, 3.0f, NoiseZ );
 
 		Camera.Position += (Camera.Rotation.Right * x + Camera.Rotation.Up * y) * invdelta * Size;
-		Camera.Rotation *= Rotation.FromAxis( Vector3.Up, x * Size * invdelta * RotationAmount );
-		Camera.Rotation *= Rotation.FromAxis( Vector3.Right, y * Size * invdelta * RotationAmount );
+		Camera.Rotation *= Rotation.FromAxis( Sandbox.Camera.Rotation.Up, x * Size * invdelta * RotationAmount );
+		Camera.Rotation *= Rotation.FromAxis( Sandbox.Camera.Rotation.Right, y * Size * invdelta * RotationAmount );
 
 		return lifeTime < Length;
 	}

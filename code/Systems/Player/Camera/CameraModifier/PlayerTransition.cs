@@ -25,11 +25,11 @@ public class PlayerTransition : CameraModifier
 			0.0f ) );
 	}
 
-	public override bool Update()
+	public override bool Update( Player player )
 	{
 		var delta = Easing.EaseIn( Completed.Fraction );
 		var pawn = Game.LocalPawn as Player;
-		var targetPos = pawn.AimRay.Position;
+		var targetPos = player.AimRay.Position;
 
 		Camera.Position = StartPos.LerpTo( targetPos, delta );
 		Camera.FirstPersonViewer = null;

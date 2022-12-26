@@ -24,10 +24,10 @@ public partial class AirMoveMechanic : PlayerControllerMechanic
 			return;
 
 		var wishVel = ctrl.GetWishVelocity( true );
-		var wishdir = wishVel.Normal;
+		var wishdir = ctrl.MoveDir;
 		var wishspeed = wishVel.Length;
 
-		ctrl.Accelerate( wishdir, wishspeed, AirControl, AirAcceleration );
+		ctrl.Velocity += ctrl.Accelerate( wishdir, wishspeed, AirControl, AirAcceleration );
 		ctrl.Velocity += ctrl.BaseVelocity;
 		ctrl.Move();
 		ctrl.Velocity -= ctrl.BaseVelocity;

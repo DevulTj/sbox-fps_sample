@@ -95,7 +95,10 @@ public partial class Player : AnimatedEntity
 			.ToList()
 			.ForEach( x => x.EnableDrawing = true );
 
-		Components.Create<PlayerController>();
+		var ctrl = Components.Create<PlayerController>();
+		// Reset some helper data
+		ctrl.LastInputRotation = Rotation.Identity;
+		Velocity = Vector3.Zero;
 
 		// Remove old mechanics.
 		Components.RemoveAny<PlayerControllerMechanic>();
@@ -155,7 +158,7 @@ public partial class Player : AnimatedEntity
 		PlayerCamera?.Update( this );
 
 		// Apply camera modifiers after a camera update.
-		CameraModifier.Apply();
+		CameraModifier.Apply( this );
 	}
 
 	/// <summary>
@@ -264,7 +267,7 @@ public partial class Player : AnimatedEntity
 
 		TimeSinceFootstep = 0;
 
-		var tr = Trace.Ray( pos, pos + Vector3.Down * 20 )
+		var tr = Trace.Ray( pos, pos + GravityDirection * 20 )
 			.Radius( 1 )
 			.Ignore( this )
 			.Run();
