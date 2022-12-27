@@ -104,7 +104,7 @@ public partial class Player : AnimatedEntity
 		Components.Create<InteractionMechanic>();
 		Components.Create<UnstuckMechanic>();
 
-		Components.Create<CitizenAnimator>();
+		Components.Create<PlayerAnimator>();
 		var inventory = Components.Create<Inventory>();
 		inventory.AddWeapon( WeaponData.CreateInstance( "SMG" ) );
 		inventory.AddWeapon( WeaponData.CreateInstance( "Semi-Auto Pistol" ), false );
