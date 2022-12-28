@@ -98,6 +98,11 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 		foreach ( var mechanic in Mechanics )
 		{
 			mechanic.TrySimulate( this );
+
+			if ( Player == null )
+			{
+				return;
+			}
 		}
 
 		var target = EyeHeight;
