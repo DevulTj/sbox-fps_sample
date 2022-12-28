@@ -2,6 +2,7 @@ using Facepunch.Gunfight.Mechanics;
 using Sandbox;
 using System.Collections.Generic;
 using System.Linq;
+using Sandbox.Systems.Util;
 
 namespace Facepunch.Gunfight;
 
@@ -60,6 +61,7 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 	/// </summary>
 	public BBox Hull
 	{
+		// FIXME how to calculate the hull to work with different angles?
 		get
 		{
 			var girth = BodyGirth * 0.5f;
@@ -162,8 +164,8 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 		if ( liftFeet > 0 )
 		{
 			start += up * liftFeet;
-			// TODO take into account other directions?
-			maxs = maxs.WithZ( maxs.z - liftFeet );
+			// FIXME this breaks gravity checks at certain angles, how to fix?
+			// maxs = maxs.WithZ( maxs.z - liftFeet );
 		}
 
 		if ( liftHead > 0 )
@@ -259,13 +261,15 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 
 	public void StepMove( float groundAngle = 46f, float stepSize = 18f )
 	{
-		MoveHelper mover = new MoveHelper( Position, Velocity );
+		var mover = new GravitationalMoveHelper( Position, Velocity, Player.GravityDirection );
 		mover.Trace = mover.Trace.Size( Hull )
 			.Ignore( Player )
 			.WithoutTags( "player" );
 		mover.MaxStandableAngle = groundAngle;
 
 		mover.TryMoveWithStep( Time.Delta, stepSize );
+		// FIXME this shouldn't be needed, player gets stuck if the gravity changes a lot (spherical world)
+		mover.TryUnstuck();
 
 		Position = mover.Position;
 		Velocity = mover.Velocity;
@@ -273,13 +277,15 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 
 	public void Move( float groundAngle = 46f )
 	{
-		MoveHelper mover = new MoveHelper( Position, Velocity );
+		var mover = new GravitationalMoveHelper( Position, Velocity, Player.GravityDirection );
 		mover.Trace = mover.Trace.Size( Hull )
 			.Ignore( Player )
 			.WithoutTags( "player" );
 		mover.MaxStandableAngle = groundAngle;
 
 		mover.TryMove( Time.Delta );
+		// FIXME this shouldn't be needed, player gets stuck if the gravity changes a lot (spherical world)
+		mover.TryUnstuck();
 
 		Position = mover.Position;
 		Velocity = mover.Velocity;
