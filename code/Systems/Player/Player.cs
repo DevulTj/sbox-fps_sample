@@ -29,11 +29,11 @@ public partial class Player : AnimatedEntity
 	/// <summary>
 	/// Active gravitational force
 	/// </summary>
-	[Net, Predicted] public Vector3 Gravity { get; set; } = Game.PhysicsWorld.Gravity;
+	[Net] public Vector3 Gravity { get; set; } = Game.PhysicsWorld.Gravity;
 	/// <summary>
 	/// Active gravitational force direction
 	/// </summary>
-	[Net, Predicted] public Vector3 GravityDirection { get; set; } = Game.PhysicsWorld.Gravity.Normal;
+	[Net] public Vector3 GravityDirection { get; set; } = Game.PhysicsWorld.Gravity.Normal;
 
 	/// <summary>
 	/// Accessor for getting a player's active weapon.
