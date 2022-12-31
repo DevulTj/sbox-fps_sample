@@ -109,15 +109,13 @@ public partial class Player : AnimatedEntity
 		Components.Create<AirMoveMechanic>();
 		Components.Create<SprintMechanic>();
 		Components.Create<CrouchMechanic>();
-		Components.Create<SlideMechanic>();
-		Components.Create<HeavyLandMechanic>();
-		Components.Create<VaultMechanic>();
 		Components.Create<InteractionMechanic>();
+		Components.Create<UnstuckMechanic>();
 
-		Components.Create<CitizenAnimator>();
+		Components.Create<PlayerAnimator>();
 		var inventory = Components.Create<Inventory>();
-		inventory.AddWeapon( WeaponData.CreateInstance( "AKM" ) );
-		inventory.AddWeapon( WeaponData.CreateInstance( "M1911" ), false );
+		inventory.AddWeapon( WeaponData.CreateInstance( "SMG" ) );
+		inventory.AddWeapon( WeaponData.CreateInstance( "Semi-Auto Pistol" ), false );
 
 		GameManager.Current?.MoveToSpawnpoint( this );
 		ResetInterpolation();

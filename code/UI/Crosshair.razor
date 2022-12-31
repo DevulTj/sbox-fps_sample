@@ -1,0 +1,103 @@
+@using Facepunch.Gunfight.WeaponSystem;
+@using Sandbox;
+@using System;
+@using Sandbox.UI;
+@using System.Linq;
+
+@namespace Facepunch.Gunfight
+@inherits Panel;
+
+<style>
+    Crosshair {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+
+        .element {
+            transform: translateX(-50%) translateY(-50%);
+            position: absolute;
+            background-color: rgba( white, 0.75 );
+            box-shadow: 1px 1px 1px rgba( black, 0.75 );
+        }
+
+        .dot {
+            width: 3px;
+            height: 3px;
+        }
+
+        .left, .right {
+            width: 10px;
+            height: 2px;
+        }
+
+        .top, .bottom {
+            width: 2px;
+            height: 10px;
+        }
+
+        .left {
+            left: -@Distance;
+        }
+
+        .right {
+            left: @Distance;
+        }
+
+        .top {
+            top: -@Distance;
+        }
+
+        .bottom {
+            top: @Distance;
+        }
+
+        transition: opacity 0.1s ease;
+        opacity: 0;
+        &.visible {
+            opacity: 1;
+        }
+    }
+</style>
+
+<root>
+    <div class="left element"></div>
+    <div class="right element"></div>
+    <div class="top element"></div>
+    <div class="bottom element"></div>
+    <div class="dot element"></div>
+</root>
+
+@code {
+    public float PixelDistance { get; set; } = 20f;
+    public string Distance => $"{PixelDistance}px";
+
+    protected override void OnAfterTreeRender(bool firstTime)
+    {
+        base.OnAfterTreeRender( firstTime );
+
+        Style.PixelSnap = 0;
+    }
+
+    protected override int BuildHash()
+    {
+        return HashCode.Combine( Time.Now );
+    }
+
+    public override void Tick()
+    {
+        var player = Game.LocalPawn as Player;
+        var weapon = player?.Inventory?.ActiveWeapon;
+        var isAiming = weapon?.Tags.Has( "aiming" ) ?? false;
+
+        var distance = player?.Velocity.Length.LerpInverse( 0, 750, true ).Remap( 0, 1, 20, 60 ) ?? 20f;
+        float timeSinceActivated = weapon?.GetComponent<PrimaryFire>()?.TimeSinceActivated ?? 1;
+        var fireAmt = 1 - timeSinceActivated.LerpInverse( 0, 0.25f, true );
+
+        distance += fireAmt * 50;
+
+        PixelDistance = distance;
+
+        SetClass( "visible", !isAiming );
+    }
+}

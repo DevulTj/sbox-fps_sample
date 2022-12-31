@@ -24,10 +24,6 @@ public struct ViewModelData
 	public Vector3 CrouchPositionOffset { get; set; }
 	public Angles CrouchAngleOffset { get; set; }
 
-	//// Sliding
-	public Vector3 SlidePositionOffset { get; set; }
-	public Angles SlideAngleOffset { get; set; }
-
 	//// Avoidance
 	/// <summary>
 	/// The max position offset when avoidance comes into play.
@@ -44,22 +40,6 @@ public struct ViewModelData
 	//// Sprinting
 	public Vector3 SprintPositionOffset { get; set; }
 	public Angles SprintAngleOffset { get; set; }
-
-	//// Sprinting
-	public Vector3 BurstSprintPositionOffset { get; set; }
-	public Angles BurstSprintAngleOffset { get; set; }
-
-	public Vector3 GetSprintPosOffset( bool burst = false )
-	{
-		if ( burst && BurstSprintPositionOffset != Vector3.Zero ) return BurstSprintPositionOffset;
-		return SprintPositionOffset;
-	}
-
-	public Angles GetSprintAngleOffset( bool burst = false )
-	{
-		if ( burst && BurstSprintAngleOffset != Angles.Zero ) return BurstSprintAngleOffset;
-		return SprintAngleOffset;
-	}
 
 	/// Aim Down Sight
 	public Vector3 AimPositionOffset { get; set; }
