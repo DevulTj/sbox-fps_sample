@@ -268,8 +268,6 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 		mover.MaxStandableAngle = groundAngle;
 
 		mover.TryMoveWithStep( Time.Delta, stepSize );
-		// FIXME this shouldn't be needed, player gets stuck if the gravity changes a lot (spherical world)
-		mover.TryUnstuck();
 
 		Position = mover.Position;
 		Velocity = mover.Velocity;
@@ -284,8 +282,6 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 		mover.MaxStandableAngle = groundAngle;
 
 		mover.TryMove( Time.Delta );
-		// FIXME this shouldn't be needed, player gets stuck if the gravity changes a lot (spherical world)
-		mover.TryUnstuck();
 
 		Position = mover.Position;
 		Velocity = mover.Velocity;
