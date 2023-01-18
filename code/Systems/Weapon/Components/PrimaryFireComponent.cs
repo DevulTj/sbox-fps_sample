@@ -9,8 +9,6 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 	public ComponentData Data => Weapon.WeaponData.PrimaryFire;
 	public TimeUntil TimeUntilCanFire { get; set; }
 
-	protected override bool UseLagCompensation => true;
-
 	protected override bool CanStart( Player player )
 	{
 		if ( TimeUntilCanFire > 0 ) return false;

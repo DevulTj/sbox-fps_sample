@@ -15,7 +15,6 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 	[Net, Predicted] public TimeSince TimeSinceActivated { get; protected set; }
 
 	public virtual string Name => info.Name.Replace( " ", "" );
-	protected virtual bool UseLagCompensation => false;
 	protected virtual bool EnableActivateEvents => true;
 
 	DisplayInfo info;
@@ -76,15 +75,7 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 
 		if ( !IsActive && CanStart( player ) )
 		{
-			if ( UseLagCompensation )
-			{
-				using ( Sandbox.Entity.LagCompensation() )
-				{
-					OnStart( player );
-					IsActive = true;
-				}
-			}
-			else
+			using ( Sandbox.Entity.LagCompensation() )
 			{
 				OnStart( player );
 				IsActive = true;
