@@ -14,7 +14,7 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 	[Net, Predicted] public bool IsActive { get; protected set; }
 	[Net, Predicted] public TimeSince TimeSinceActivated { get; protected set; }
 
-	public virtual string Name => info.Name.Replace( " ", "" );
+	public virtual string Name => info.Name.Trim();
 	protected virtual bool EnableActivateEvents => true;
 
 	DisplayInfo info;

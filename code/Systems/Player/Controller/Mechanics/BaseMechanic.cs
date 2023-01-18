@@ -53,7 +53,7 @@ public partial class PlayerControllerMechanic : EntityComponent<Player>
 	/// <summary>
 	/// Identifier for the Mechanic
 	/// </summary>
-	public virtual string Name => info.Name.Replace( " ", "" );
+	public virtual string Name => info.Name.Trim();
 
 	public Vector3 Position
 	{
