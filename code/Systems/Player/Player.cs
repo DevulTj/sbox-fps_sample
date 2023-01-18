@@ -152,9 +152,6 @@ public partial class Player : AnimatedEntity
 		Inventory?.FrameSimulate( cl );
 
 		PlayerCamera?.Update( this );
-
-		// Apply camera modifiers after a camera update.
-		CameraModifier.Apply();
 	}
 
 	[ClientRpc]

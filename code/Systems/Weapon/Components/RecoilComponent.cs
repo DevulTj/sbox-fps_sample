@@ -1,4 +1,3 @@
-using Facepunch.Gunfight.CameraModifiers;
 using Sandbox;
 using System.Collections.Generic;
 
