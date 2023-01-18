@@ -90,6 +90,10 @@ public partial class PlayerControllerMechanic : EntityComponent<Player>
 	/// </summary>
 	public virtual float? FrictionOverride { get; set; } = null;
 
+	/// <summary>
+	/// Lets you override the movement input scale. 
+	/// Dividing this by 2 would make the player move twice as slow.
+	/// </summary>
 	public virtual Vector3? MoveInputScale { get; set; } = null;
 
 	DisplayInfo info;
@@ -235,11 +239,19 @@ public partial class PlayerControllerMechanic : EntityComponent<Player>
 		return 0f;
 	}
 
+	/// <summary>
+	/// Called when a game event is sent to the player.
+	/// </summary>
+	/// <param name="eventName"></param>
 	public virtual void OnGameEvent( string eventName )
 	{
 		//
 	}
 
+	/// <summary>
+	/// Accessor to quickly run a player game event.
+	/// </summary>
+	/// <param name="eventName"></param>
 	public void RunGameEvent( string eventName )
 	{
 		Player?.RunGameEvent( eventName );
