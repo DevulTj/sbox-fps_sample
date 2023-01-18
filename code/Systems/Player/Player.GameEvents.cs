@@ -21,11 +21,6 @@ public partial class Player
 		Controller.Mechanics.ToList()
 			.ForEach( x => x.OnGameEvent( eventName ) );
 
-		OnGameEvent( eventName );
-	}
-
-	public void OnGameEvent( string eventName )
-	{
 		eventLogger.Trace( $"OnGameEvent ({eventName})" );
 	}
 }
