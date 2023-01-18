@@ -278,8 +278,4 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 		Position = mover.Position;
 		Velocity = mover.Velocity;
 	}
-
-	protected override void OnDeactivate()
-	{
-	}
 }

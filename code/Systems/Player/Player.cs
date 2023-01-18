@@ -23,11 +23,6 @@ public partial class Player : AnimatedEntity
 	[BindComponent] public Inventory Inventory { get; }
 
 	/// <summary>
-	/// Time since the player last took damage.
-	/// </summary>
-	[Net, Predicted] public TimeSince TimeSinceDamage { get; set; }
-
-	/// <summary>
 	/// Accessor for getting a player's active weapon.
 	/// </summary>
 	public Weapon ActiveWeapon => Inventory?.ActiveWeapon;
@@ -186,7 +181,6 @@ public partial class Player : AnimatedEntity
 
 		if ( Health > 0 && info.Damage > 0 )
 		{
-			TimeSinceDamage = 0;
 			Health -= info.Damage;
 
 			if ( Health <= 0 )

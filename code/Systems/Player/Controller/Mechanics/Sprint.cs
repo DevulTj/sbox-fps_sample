@@ -26,6 +26,4 @@ public partial class SprintMechanic : PlayerControllerMechanic
 
 		return true;
 	}
-
-	public override Vector3? MoveInputScale => new( 1, 0.5f, 0 );
 }

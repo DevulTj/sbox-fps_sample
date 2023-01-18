@@ -171,7 +171,7 @@ public partial class PlayerControllerMechanic : EntityComponent<Player>
 	}
 
 	/// <summary>
-	/// A regular old simulation tick.
+	/// Runs every Simulate even if the mechanic isn't active.
 	/// </summary>
 	protected virtual void Simulate()
 	{
