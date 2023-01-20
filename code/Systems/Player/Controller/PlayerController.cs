@@ -168,7 +168,6 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 		var tr = Trace.Ray( start, end )
 					.Size( mins, maxs )
 					.WithAnyTags( "solid", "playerclip", "passbullets", "player" )
-					.WithoutTags( "prop" )
 					.Ignore( Player )
 					.Run();
 
