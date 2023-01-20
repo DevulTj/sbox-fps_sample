@@ -206,8 +206,6 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 
 				tr.Entity.TakeDamage( damageInfo );
 
-				DoTracer( To.Everyone, Weapon, tr.StartPosition, tr.EndPosition, tr.Distance, count );
-
 				if ( count == 1 )
 				{
 					Particles.Create( "particles/gameplay/guns/trail/rico_trail_impact_spark.vpcf", LastImpact );
@@ -217,32 +215,6 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 				count++;
 			}
 		}
-	}
-
-	[ClientRpc]
-	public static void DoTracer( Weapon weapon, Vector3 from, Vector3 to, float dist, int bullet )
-	{
-		var path = "particles/gameplay/guns/trail/trail_smoke.vpcf";
-
-		if ( bullet > 0 )
-		{
-			path = "particles/gameplay/guns/trail/rico_trail_smoke.vpcf";
-
-			// Project backward
-			Vector3 dir = (from - to).Normal;
-			var tr = Trace.Ray( to, from + (dir * 50f) )
-				.Radius( 1f )
-				.Ignore( weapon )
-				.Run();
-
-			tr.Surface.DoBulletImpact( tr );
-		}
-
-		var system = Particles.Create( path );
-
-		system?.SetPosition( 0, bullet == 0 ? weapon.EffectEntity.GetAttachment( "muzzle" )?.Position ?? from : from );
-		system?.SetPosition( 1, to );
-		system?.SetPosition( 2, dist );
 	}
 
 	/// <summary>
