@@ -195,10 +195,6 @@ public partial class WeaponViewModel
 			rotationOffsetTarget *= Rotation.From( Data.AimAngleOffset * aimLerp );
 			ApplyPositionOffset( Data.AimPositionOffset, aimLerp );
 
-			// Sprinting
-			rotationOffsetTarget *= Rotation.From( Data.SprintAngleOffset * sprintLerp );
-			ApplyPositionOffset( Data.SprintPositionOffset, sprintLerp );
-
 			// Sprinting Camera Rotation
 			Camera.Rotation *= Rotation.From(
 				new Angles(

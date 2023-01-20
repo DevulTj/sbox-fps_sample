@@ -13,7 +13,6 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 	{
 		if ( TimeUntilCanFire > 0 ) return false;
 		if ( !Input.Down( InputButton.PrimaryAttack ) ) return false;
-		if ( player.Controller.IsMechanicActive<SprintMechanic>() ) return false;
 		if ( Weapon.Tags.Has( "reloading" ) ) return false;
 		// Optional
 		if ( GetComponent<Ammo>() is Ammo ammo && !ammo.HasEnoughAmmo() ) return false; 
@@ -86,11 +85,6 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 	/// </summary>
 	protected float MaxRicochetAngle => 45f;
 
-	protected bool ShouldPenetrate()
-	{
-		return true;
-	}
-
 	protected bool ShouldBulletContinue( TraceResult tr, float angle, ref float damage )
 	{
 		float maxAngle = MaxRicochetAngle;
@@ -139,27 +133,23 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 			end = tr.EndPosition + (reflectDir * Data.BulletRange);
 
 			var didPenetrate = false;
-			if ( ShouldPenetrate() )
+			var forwardStep = 0f;
+
+			while ( forwardStep < PenetrationMaxSteps )
 			{
-				// Look for penetration
-				var forwardStep = 0f;
+				forwardStep++;
 
-				while ( forwardStep < PenetrationMaxSteps )
+				var penStart = tr.EndPosition + tr.Direction * (forwardStep * PenetrationIncrementAmount);
+				var penEnd = tr.EndPosition + tr.Direction * (forwardStep + 1 * PenetrationIncrementAmount);
+
+				var penTrace = DoTraceBullet( penStart, penEnd, radius );
+				if ( !penTrace.StartedSolid )
 				{
-					forwardStep++;
-
-					var penStart = tr.EndPosition + tr.Direction * (forwardStep * PenetrationIncrementAmount);
-					var penEnd = tr.EndPosition + tr.Direction * (forwardStep + 1 * PenetrationIncrementAmount);
-
-					var penTrace = DoTraceBullet( penStart, penEnd, radius );
-					if ( !penTrace.StartedSolid )
-					{
-						var newStart = penTrace.EndPosition;
-						var newTrace = DoTraceBullet( newStart, newStart + tr.Direction * Data.BulletRange, radius );
-						hits.Add( newTrace );
-						didPenetrate = true;
-						break;
-					}
+					var newStart = penTrace.EndPosition;
+					var newTrace = DoTraceBullet( newStart, newStart + tr.Direction * Data.BulletRange, radius );
+					hits.Add( newTrace );
+					didPenetrate = true;
+					break;
 				}
 			}
 
