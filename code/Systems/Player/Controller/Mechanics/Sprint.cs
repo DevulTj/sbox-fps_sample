@@ -19,13 +19,9 @@ public partial class SprintMechanic : PlayerControllerMechanic
 	protected override bool ShouldStart()
 	{
 		if ( !Input.Down( InputButton.Run ) ) return false;
-		if ( Player.MoveInput.x <= 0f ) return false;
-		if ( Controller.Velocity.Length < 180f ) return false;
 		if ( Player.MoveInput.Length == 0 ) return false;
 		if ( Player.ActiveWeapon?.GetComponent<Aim>()?.IsActive ?? false ) return false;
 
 		return true;
 	}
-
-	public override Vector3? MoveInputScale => new( 1, 0.5f, 0 );
 }

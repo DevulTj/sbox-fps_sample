@@ -9,13 +9,10 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 	public ComponentData Data => Weapon.WeaponData.PrimaryFire;
 	public TimeUntil TimeUntilCanFire { get; set; }
 
-	protected override bool UseLagCompensation => true;
-
 	protected override bool CanStart( Player player )
 	{
 		if ( TimeUntilCanFire > 0 ) return false;
 		if ( !Input.Down( InputButton.PrimaryAttack ) ) return false;
-		if ( player.Controller.IsMechanicActive<SprintMechanic>() ) return false;
 		if ( Weapon.Tags.Has( "reloading" ) ) return false;
 		// Optional
 		if ( GetComponent<Ammo>() is Ammo ammo && !ammo.HasEnoughAmmo() ) return false; 
@@ -88,11 +85,6 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 	/// </summary>
 	protected float MaxRicochetAngle => 45f;
 
-	protected bool ShouldPenetrate()
-	{
-		return true;
-	}
-
 	protected bool ShouldBulletContinue( TraceResult tr, float angle, ref float damage )
 	{
 		float maxAngle = MaxRicochetAngle;
@@ -141,27 +133,23 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 			end = tr.EndPosition + (reflectDir * Data.BulletRange);
 
 			var didPenetrate = false;
-			if ( ShouldPenetrate() )
+			var forwardStep = 0f;
+
+			while ( forwardStep < PenetrationMaxSteps )
 			{
-				// Look for penetration
-				var forwardStep = 0f;
+				forwardStep++;
 
-				while ( forwardStep < PenetrationMaxSteps )
+				var penStart = tr.EndPosition + tr.Direction * (forwardStep * PenetrationIncrementAmount);
+				var penEnd = tr.EndPosition + tr.Direction * (forwardStep + 1 * PenetrationIncrementAmount);
+
+				var penTrace = DoTraceBullet( penStart, penEnd, radius );
+				if ( !penTrace.StartedSolid )
 				{
-					forwardStep++;
-
-					var penStart = tr.EndPosition + tr.Direction * (forwardStep * PenetrationIncrementAmount);
-					var penEnd = tr.EndPosition + tr.Direction * (forwardStep + 1 * PenetrationIncrementAmount);
-
-					var penTrace = DoTraceBullet( penStart, penEnd, radius );
-					if ( !penTrace.StartedSolid )
-					{
-						var newStart = penTrace.EndPosition;
-						var newTrace = DoTraceBullet( newStart, newStart + tr.Direction * Data.BulletRange, radius );
-						hits.Add( newTrace );
-						didPenetrate = true;
-						break;
-					}
+					var newStart = penTrace.EndPosition;
+					var newTrace = DoTraceBullet( newStart, newStart + tr.Direction * Data.BulletRange, radius );
+					hits.Add( newTrace );
+					didPenetrate = true;
+					break;
 				}
 			}
 
@@ -208,8 +196,6 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 
 				tr.Entity.TakeDamage( damageInfo );
 
-				DoTracer( To.Everyone, Weapon, tr.StartPosition, tr.EndPosition, tr.Distance, count );
-
 				if ( count == 1 )
 				{
 					Particles.Create( "particles/gameplay/guns/trail/rico_trail_impact_spark.vpcf", LastImpact );
@@ -219,32 +205,6 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 				count++;
 			}
 		}
-	}
-
-	[ClientRpc]
-	public static void DoTracer( Weapon weapon, Vector3 from, Vector3 to, float dist, int bullet )
-	{
-		var path = "particles/gameplay/guns/trail/trail_smoke.vpcf";
-
-		if ( bullet > 0 )
-		{
-			path = "particles/gameplay/guns/trail/rico_trail_smoke.vpcf";
-
-			// Project backward
-			Vector3 dir = (from - to).Normal;
-			var tr = Trace.Ray( to, from + (dir * 50f) )
-				.Radius( 1f )
-				.Ignore( weapon )
-				.Run();
-
-			tr.Surface.DoBulletImpact( tr );
-		}
-
-		var system = Particles.Create( path );
-
-		system?.SetPosition( 0, bullet == 0 ? weapon.EffectEntity.GetAttachment( "muzzle" )?.Position ?? from : from );
-		system?.SetPosition( 1, to );
-		system?.SetPosition( 2, dist );
 	}
 
 	/// <summary>

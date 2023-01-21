@@ -37,10 +37,6 @@ public struct ViewModelData
 	/// </summary>
 	public Angles AvoidanceAngleOffset { get; set; }
 
-	//// Sprinting
-	public Vector3 SprintPositionOffset { get; set; }
-	public Angles SprintAngleOffset { get; set; }
-
 	/// Aim Down Sight
 	public Vector3 AimPositionOffset { get; set; }
 	public Angles AimAngleOffset { get; set; }

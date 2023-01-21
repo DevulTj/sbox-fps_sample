@@ -14,8 +14,7 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 	[Net, Predicted] public bool IsActive { get; protected set; }
 	[Net, Predicted] public TimeSince TimeSinceActivated { get; protected set; }
 
-	public virtual string Name => info.Name.Replace( " ", "" );
-	protected virtual bool UseLagCompensation => false;
+	public virtual string Name => info.Name.Trim();
 	protected virtual bool EnableActivateEvents => true;
 
 	DisplayInfo info;
@@ -76,15 +75,7 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 
 		if ( !IsActive && CanStart( player ) )
 		{
-			if ( UseLagCompensation )
-			{
-				using ( Sandbox.Entity.LagCompensation() )
-				{
-					OnStart( player );
-					IsActive = true;
-				}
-			}
-			else
+			using ( Sandbox.Entity.LagCompensation() )
 			{
 				OnStart( player );
 				IsActive = true;
@@ -97,22 +88,38 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 		}
 	}
 
+	/// <summary>
+	/// Called when the component action stops. See <see cref="Simulate(IClient, Player)"/>
+	/// </summary>
+	/// <param name="player"></param>
 	protected virtual void OnStop( Player player )
 	{
 		if ( EnableActivateEvents )
 			RunGameEvent( $"{Name}.stop" );
 	}
 
+	/// <summary>
+	/// Called when the weapon gets made on the server.
+	/// NOTE: Need to remove this as we should just be able to use OnActivated
+	/// </summary>
+	/// <param name="weapon"></param>
 	public virtual void Initialize( Weapon weapon )
 	{
 		//
 	}
 
+	/// <summary>
+	/// Called when a game event is sent to the player.
+	/// </summary>
+	/// <param name="eventName"></param>
 	public virtual void OnGameEvent( string eventName )
 	{
 		//
 	}
 
+	/// <summary>
+	/// Called every Weapon.BuildInput
+	/// </summary>
 	public virtual void BuildInput()
 	{
 		//

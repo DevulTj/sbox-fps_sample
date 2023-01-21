@@ -21,11 +21,7 @@ public partial class Player : AnimatedEntity
 	/// The inventory is responsible for storing weapons for a player to use.
 	/// </summary>
 	[BindComponent] public Inventory Inventory { get; }
-
-	/// <summary>
-	/// Time since the player last took damage.
-	/// </summary>
-	[Net, Predicted] public TimeSince TimeSinceDamage { get; set; }
+	
 	/// <summary>
 	/// Active gravitational force
 	/// </summary>
@@ -148,18 +144,6 @@ public partial class Player : AnimatedEntity
 	}
 
 	/// <summary>
-	/// Entrypoint to update the player's camera.
-	/// </summary>
-	[Event.Client.PostCamera]
-	protected void PostCameraUpdate()
-	{
-		PlayerCamera?.Update( this );
-
-		// Apply camera modifiers after a camera update.
-		CameraModifier.Apply( this );
-	}
-
-	/// <summary>
 	/// Called every frame clientside.
 	/// </summary>
 	/// <param name="cl"></param>
@@ -170,6 +154,8 @@ public partial class Player : AnimatedEntity
 
 		// Simulate our active weapon if we can.
 		Inventory?.FrameSimulate( cl );
+
+		PlayerCamera?.Update( this );
 	}
 
 	[ClientRpc]
@@ -204,7 +190,6 @@ public partial class Player : AnimatedEntity
 
 		if ( Health > 0 && info.Damage > 0 )
 		{
-			TimeSinceDamage = 0;
 			Health -= info.Damage;
 
 			if ( Health <= 0 )

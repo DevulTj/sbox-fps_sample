@@ -27,7 +27,7 @@ public partial class JumpMechanic : PlayerControllerMechanic
 		Controller.GetMechanic<WalkMechanic>()
 			.ClearGroundEntity();
 	}
-
+	
 	/// <summary>
 	/// The lower the gravity, the higher the player can jump.
 	/// Unless in zero-gravity.

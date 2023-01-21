@@ -105,7 +105,6 @@ public partial class WeaponViewModel
 
 		var isGrounded = controller.GroundEntity != null;
 		var speed = controller.Velocity.Length.LerpInverse( 0, 750 );
-		var sideSpeed = controller.Velocity.Length.LerpInverse( 0, 350 );
 		var bobSpeed = SmoothedVelocity.Length.LerpInverse( -250, 700 );
 		var isSprinting = controller.IsMechanicActive<SprintMechanic>();
 		var left = Camera.Rotation.Left;
@@ -113,7 +112,6 @@ public partial class WeaponViewModel
 		var forward = Camera.Rotation.Forward;
 		var isCrouching = controller.IsMechanicActive<CrouchMechanic>();
 		var isAiming = Weapon.GetComponent<Aim>()?.IsActive ?? false;
-		var timeSinceFired = Weapon.GetComponent<PrimaryFire>().TimeSinceActivated;
 
 		LerpTowards( ref aimLerp, isAiming ? 1 : 0, isAiming ? 30f : 10f );
 		LerpTowards( ref sprintLerp, isSprinting ? 1 : 0, 10f );
@@ -196,10 +194,6 @@ public partial class WeaponViewModel
 			// Aim Down Sights
 			rotationOffsetTarget *= Rotation.From( Data.AimAngleOffset * aimLerp );
 			ApplyPositionOffset( Data.AimPositionOffset, aimLerp );
-
-			// Sprinting
-			rotationOffsetTarget *= Rotation.From( Data.SprintAngleOffset * sprintLerp );
-			ApplyPositionOffset( Data.SprintPositionOffset, sprintLerp );
 
 			// Sprinting Camera Rotation
 			Camera.Rotation *= Rotation.From(

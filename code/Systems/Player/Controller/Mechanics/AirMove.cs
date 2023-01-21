@@ -17,9 +17,7 @@ public partial class AirMoveMechanic : PlayerControllerMechanic
 		ctrl.Velocity += new Vector3( 0, 0, ctrl.BaseVelocity.z ) * Time.Delta;
 		ctrl.BaseVelocity = ctrl.BaseVelocity.WithZ( 0 );
 
-		var velocityAtStart = ctrl.Velocity;
 		var groundedAtStart = GroundEntity.IsValid();
-
 		if ( groundedAtStart ) 
 			return;
 
@@ -32,12 +30,6 @@ public partial class AirMoveMechanic : PlayerControllerMechanic
 		ctrl.Move();
 		ctrl.Velocity -= ctrl.BaseVelocity;
 		ctrl.Velocity += Player.Gravity * 0.5f * Time.Delta;
-
-		// if ( ctrl.GroundEntity != null && !groundedAtStart )
-		//	DoFallDamage();
-
-		// if ( ctrl.GroundEntity == null && groundedAtStart )
-		//	new FallCameraModifier( -150, 1.5f );
 	}
 
 	protected override bool ShouldStart()
