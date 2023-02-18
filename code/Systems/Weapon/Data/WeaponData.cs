@@ -1,10 +1,6 @@
-using Sandbox;
-using System.Collections.Generic;
+namespace GameTemplate.Weapons;
 
-namespace Facepunch.Gunfight.WeaponSystem;
-
-[GameResource( "Weapon", "weapon", "A data asset for a weapon.",
-	Icon = "track_changes", IconBgColor = "#4953a7", IconFgColor = "#2a3060" )]
+[GameResource( "Weapon", "weapon", "A data asset for a weapon.", Icon = "track_changes", IconBgColor = "#4953a7", IconFgColor = "#2a3060" )]
 public partial class WeaponData : GameResource
 {
 	[Category( "Basic Information" )]
@@ -16,17 +12,14 @@ public partial class WeaponData : GameResource
 	[Category( "Basic Information" ), ResourceType( "vmdl" )]
 	public string ViewModel { get; set; }
 
-	internal Model CachedModel;
-	internal Model CachedViewModel;
-
 	[Category( "Basic Information" ), ResourceType( "jpg" )]
 	public string Icon { get; set; }
 
 	[Category( "Animation" )]
-	public HoldType HoldType { get; set; } = HoldType.Pistol;
+	public WeaponHoldType HoldType { get; set; } = WeaponHoldType.Pistol;
 
 	[Category( "Animation" )]
-	public Handedness Handedness { get; set; } = Handedness.Both;
+	public WeaponHandedness Handedness { get; set; } = WeaponHandedness.Both;
 
 	[Category( "Basic Information" )]
 	public List<string> Components { get; set; }
@@ -35,9 +28,11 @@ public partial class WeaponData : GameResource
 
 	// Component Information
 	public PrimaryFire.ComponentData PrimaryFire { get; set; }
-	public Aim.ComponentData Aim { get; set; }
 	public Ammo.ComponentData Ammo { get; set; }
 	public Recoil.ComponentData Recoil { get; set; }
+	
+	internal Model CachedModel;
+	internal Model CachedViewModel;
 
 	protected override void PostLoad()
 	{

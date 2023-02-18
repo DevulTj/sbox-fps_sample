@@ -1,6 +1,4 @@
-using Sandbox;
-
-namespace Facepunch.Gunfight.WeaponSystem;
+namespace GameTemplate.Weapons;
 
 public partial class Ammo : WeaponComponent, ISingletonComponent
 {
@@ -18,7 +16,6 @@ public partial class Ammo : WeaponComponent, ISingletonComponent
 
 	public override void Initialize( Weapon weapon )
 	{
-		// TODO - this is shit
 		if ( Game.IsServer )
 			AmmoCount = weapon.WeaponData.Ammo.DefaultAmmo;
 	}
@@ -26,9 +23,7 @@ public partial class Ammo : WeaponComponent, ISingletonComponent
 	public override void OnGameEvent( string eventName )
 	{
 		if ( eventName == "primaryfire.start" )
-		{
 			TakeAmmo();
-		}
 	}
 
 	public void Fill()
@@ -58,9 +53,6 @@ public partial class Ammo : WeaponComponent, ISingletonComponent
 		return false;
 	}
 
-	/////
-	/// Reloading
-	/////
 	protected override bool CanStart( Player player )
 	{
 		if ( ReloadLock ) return false;

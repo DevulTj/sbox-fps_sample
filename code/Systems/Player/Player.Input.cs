@@ -1,7 +1,4 @@
-using Sandbox;
-using System.ComponentModel;
-
-namespace Facepunch.Gunfight;
+namespace GameTemplate;
 
 public partial class Player
 {
@@ -66,7 +63,5 @@ public partial class Player
 
 		// Since we're a FPS game, let's clamp the player's pitch between -90, and 90.
 		LookInput = lookInput.WithPitch( lookInput.pitch.Clamp( -90f, 90f ) );
-
-		PlayerCamera?.BuildInput( this );
 	}
 }

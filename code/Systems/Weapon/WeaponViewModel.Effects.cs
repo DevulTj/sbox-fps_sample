@@ -1,9 +1,6 @@
-using Facepunch.Gunfight.Mechanics;
-using Sandbox;
-using System;
-using static Sandbox.Package;
+using GameTemplate.Mechanics;
 
-namespace Facepunch.Gunfight.WeaponSystem;
+namespace GameTemplate.Weapons;
 
 public partial class WeaponViewModel
 {
@@ -19,7 +16,6 @@ public partial class WeaponViewModel
 	float upDownOffset = 0;
 	float avoidance = 0;
 	float sprintLerp = 0;
-	float aimLerp = 0;
 	float crouchLerp = 0;
 	float airLerp = 0;
 	float sideLerp = 0;
@@ -111,15 +107,13 @@ public partial class WeaponViewModel
 		var up = Camera.Rotation.Up;
 		var forward = Camera.Rotation.Forward;
 		var isCrouching = controller.IsMechanicActive<CrouchMechanic>();
-		var isAiming = Weapon.GetComponent<Aim>()?.IsActive ?? false;
 
-		LerpTowards( ref aimLerp, isAiming ? 1 : 0, isAiming ? 30f : 10f );
 		LerpTowards( ref sprintLerp, isSprinting ? 1 : 0, 10f );
-		LerpTowards( ref crouchLerp, isCrouching && !isAiming ? 1 : 0, 7f );
-		LerpTowards( ref airLerp, (isGrounded ? 0 : 1) * (1 - aimLerp), 10f );
+		LerpTowards( ref crouchLerp, isCrouching ? 1 : 0, 7f );
+		LerpTowards( ref airLerp, isGrounded ? 0 : 1, 10f );
 
 		var leftAmt = left.WithZ( 0 ).Normal.Dot( controller.Velocity.Normal );
-		LerpTowards( ref sideLerp, leftAmt * (1 - aimLerp), 5f );
+		LerpTowards( ref sideLerp, leftAmt, 5f );
 
 		bobSpeed += sprintLerp * 0.1f;
 
@@ -143,27 +137,15 @@ public partial class WeaponViewModel
 		acceleration += forward.WithZ( 0 ).Normal.Dot( controller.Velocity.Normal ) * Vector3.Forward * Data.BobAmount.x * horizontalForwardBob;
 
 		// Apply left bobbing and up/down bobbing
-		acceleration += Vector3.Left * WalkCycle( 0.5f, 2f ) * speed * Data.WalkCycleOffset.y * (1 + sprintLerp) * (1 - aimLerp) * Time.Delta;
-		acceleration += Vector3.Up * WalkCycle( 0.5f, 2f, true ) * speed * Data.WalkCycleOffset.z * (1 - aimLerp) * Time.Delta;
-		acceleration += left.WithZ( 0 ).Normal.Dot( controller.Velocity.Normal ) * Vector3.Left * speed * Data.BobAmount.y * Time.Delta * (1 - aimLerp);
+		acceleration += Vector3.Left * WalkCycle( 0.5f, 2f ) * speed * Data.WalkCycleOffset.y * (1 + sprintLerp) * Time.Delta;
+		acceleration += Vector3.Up * WalkCycle( 0.5f, 2f, true ) * speed * Data.WalkCycleOffset.z * Time.Delta;
+		acceleration += left.WithZ( 0 ).Normal.Dot( controller.Velocity.Normal ) * Vector3.Left * speed * Data.BobAmount.y * Time.Delta;
 
 		velocity += acceleration * Time.Delta;
 
 		ApplyDamping( ref acceleration, Data.AccelerationDamping );
-		ApplyDamping( ref velocity, Data.WeightDamping * (1 + aimLerp) );
+		ApplyDamping( ref velocity, Data.WeightDamping );
 		velocity = velocity.Normal * Math.Clamp( velocity.Length, 0, VelocityClamp );
-
-		var avoidanceTrace = Trace.Ray( Camera.Position, Camera.Position + forward * 50f )
-			.WorldAndEntities()
-			.WithoutTags( "trigger" )
-			.Ignore( Weapon )
-			.Ignore( this )
-			.Run();
-
-		var avoidanceVal = avoidanceTrace.Hit ? (1f - avoidanceTrace.Fraction) : 0;
-		avoidanceVal *= 1 - (aimLerp * 0.8f);
-
-		LerpTowards( ref avoidance, avoidanceVal, 10f );
 
 		Position = Camera.Position;
 		Rotation = Camera.Rotation;
@@ -187,14 +169,6 @@ public partial class WeaponViewModel
 			// Air
 			ApplyPositionOffset( new( 0, 0, 1 ), airLerp );
 
-			// Avoidance
-			rotationOffsetTarget *= Rotation.From( Data.AvoidanceAngleOffset * avoidance );
-			ApplyPositionOffset( Data.AvoidancePositionOffset, avoidance );
-
-			// Aim Down Sights
-			rotationOffsetTarget *= Rotation.From( Data.AimAngleOffset * aimLerp );
-			ApplyPositionOffset( Data.AimPositionOffset, aimLerp );
-
 			// Sprinting Camera Rotation
 			Camera.Rotation *= Rotation.From(
 				new Angles(
@@ -210,7 +184,6 @@ public partial class WeaponViewModel
 		Rotation *= realRotationOffset;
 		Position += realPositionOffset;
 
-		Camera.FieldOfView -= 10f * aimLerp;
 		Camera.Main.SetViewModelCamera( 85f, 1, 2048 );
 	}
 }

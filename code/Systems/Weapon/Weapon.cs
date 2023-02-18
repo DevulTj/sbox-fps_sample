@@ -1,6 +1,4 @@
-using Sandbox;
-
-namespace Facepunch.Gunfight.WeaponSystem;
+namespace GameTemplate.Weapons;
 
 [Title( "Weapon" ), Icon( "track_changes" )]
 public partial class Weapon : AnimatedEntity

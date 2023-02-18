@@ -1,6 +1,4 @@
-using Sandbox;
-
-namespace Facepunch.Gunfight;
+namespace GameTemplate;
 
 public partial class Player
 {

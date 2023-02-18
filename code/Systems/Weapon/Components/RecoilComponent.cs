@@ -1,7 +1,4 @@
-using Sandbox;
-using System.Collections.Generic;
-
-namespace Facepunch.Gunfight.WeaponSystem;
+namespace GameTemplate.Weapons;
 
 public partial class Recoil : WeaponComponent, ISingletonComponent
 {
@@ -9,7 +6,7 @@ public partial class Recoil : WeaponComponent, ISingletonComponent
 	[Net, Predicted] public TimeUntil TimeUntilRemove { get; set; }
 
 	public ComponentData Data => Weapon.WeaponData.Recoil;
-	protected override bool EnableActivateEvents => false;
+	protected override bool UseGameEvents => false;
 
 	public override void OnGameEvent( string eventName )
 	{

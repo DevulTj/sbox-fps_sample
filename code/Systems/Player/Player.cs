@@ -1,9 +1,7 @@
-using Facepunch.Gunfight.Mechanics;
-using Facepunch.Gunfight.WeaponSystem;
-using Sandbox;
-using System.Linq;
+using GameTemplate.Mechanics;
+using GameTemplate.Weapons;
 
-namespace Facepunch.Gunfight;
+namespace GameTemplate;
 
 public partial class Player : AnimatedEntity
 {
@@ -141,7 +139,6 @@ public partial class Player : AnimatedEntity
 		Rotation = LookInput.WithPitch( 0f ).ToRotation();
 
 		Controller?.FrameSimulate( cl );
-		Animator?.FrameSimulate( cl );
 
 		// Simulate our active weapon if we can.
 		Inventory?.FrameSimulate( cl );

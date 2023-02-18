@@ -1,69 +1,20 @@
-@using Sandbox;
-@using System;
-@using Facepunch.Gunfight.WeaponSystem;
+@using GameTemplate.Weapons;
 
-@namespace Facepunch.Gunfight
+@namespace GameTemplate
 
-<style>
-    Info {
-        position: absolute;
-        bottom: 64px;
-        right: 64px;
-        flex-direction: column-reverse;
-
-        .text {
-            color: white;
-            font-weight: 700;
-            font-size: 32px;
-            justify-content: center;
-            align-items: center;
-            align-content: stretch;
-
-            text-shadow: 2px 2px 5px rgba( black, 0.3 );
-        }
-
-        .icon {
-            color: white;
-            font-size: 20px;
-            font-family: Material Icons;
-            justify-content: center;
-            align-items: center;
-            align-content: center;
-        }
-
-        .reserve {
-            color: lightgrey;
-            font-size: 24px;
-        }
-
-        .row {
-            margin-top: 12px;
-            justify-content: flex-end;
-        }
-    }
-</style>
-
-<root>
+<root class="with-flex column-reverse with-gap with-shadow">
     @if ( AmmoComponent != null )
     {
-        <div class="row">
-            <label class="text @AmmoClasses()">@AmmoComponent.AmmoCount.Clamp( 0, AmmoComponent.Data.MaximumAmmo )</label>
-
-            @if ( AmmoComponent.AmmoCount > AmmoComponent.Data.MaximumAmmo )
-            {
-                <label class="text">+ @(AmmoComponent.AmmoCount - AmmoComponent.Data.MaximumAmmo)</label>
-            }
-
-            <label class="text reserve">@AmmoComponent.Data.MaximumAmmo</label>
-            <label class="icon">backpack</label>
-        </div>
+        <cell class="with-center with-padding-large with-gap">
+            <label class="with-header">@AmmoComponent.AmmoCount</label>
+            <i class="with-header with-icon">backpack</i>
+        </cell>
     }
 
-    <div class="row">
-        <label class="text @HealthClasses()">@Health</label>
-        <label class="text reserve">100</label>
-        <label class="icon">monitor_heart</label>
-    </div>
+    <cell class="with-center with-padding-large with-gap">
+        <label class="with-header">@Health</label>
+        <i class="with-header with-icon">monitor_heart</i>
+    </cell>
 </root>
 
 @code 
@@ -76,15 +27,5 @@
     protected override int BuildHash()
     {
         return HashCode.Combine( AmmoComponent?.AmmoCount, Player?.Health );
-    }
-
-    protected string HealthClasses()
-    {
-        return Player.Health < 25f ? "low" : "";
-    }
-
-    protected string AmmoClasses()
-    {
-        return ( (float)AmmoComponent.AmmoCount / (float)AmmoComponent.Data.MaximumAmmo ) < 0.25f ? "low" : "";
     }
 }

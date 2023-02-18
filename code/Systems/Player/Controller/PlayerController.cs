@@ -1,9 +1,6 @@
-using Facepunch.Gunfight.Mechanics;
-using Sandbox;
-using System.Collections.Generic;
-using System.Linq;
+using GameTemplate.Mechanics;
 
-namespace Facepunch.Gunfight;
+namespace GameTemplate;
 
 public partial class PlayerController : EntityComponent<Player>, ISingletonComponent
 {
@@ -167,7 +164,7 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 
 		var tr = Trace.Ray( start, end )
 					.Size( mins, maxs )
-					.WithAnyTags( "solid", "playerclip", "passbullets", "player" )
+					.WithAnyTags( "solid", "playerclip", "passbullets" )
 					.Ignore( Player )
 					.Run();
 

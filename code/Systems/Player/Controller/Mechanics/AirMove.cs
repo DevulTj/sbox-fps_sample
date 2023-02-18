@@ -1,6 +1,4 @@
-using Sandbox;
-
-namespace Facepunch.Gunfight.Mechanics;
+namespace GameTemplate.Mechanics;
 
 /// <summary>
 /// AirMove decides how the player moves while in the air. Drives effects such as gravity, wind, etc.
@@ -33,8 +31,6 @@ public partial class AirMoveMechanic : PlayerControllerMechanic
 		ctrl.Velocity -= new Vector3( 0, 0, Gravity * 0.5f ) * Time.Delta;
 	}
 
-	protected override bool ShouldStart()
-	{
-		return true;
-	}
+	// AirMove should always simulate
+	protected override bool ShouldStart() => true;
 }

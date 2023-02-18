@@ -1,4 +1,4 @@
-namespace Facepunch.Gunfight;
+namespace GameTemplate;
 
 public struct ViewModelData
 {
@@ -23,21 +23,4 @@ public struct ViewModelData
 	//// Crouching
 	public Vector3 CrouchPositionOffset { get; set; }
 	public Angles CrouchAngleOffset { get; set; }
-
-	//// Avoidance
-	/// <summary>
-	/// The max position offset when avoidance comes into play.
-	/// Avoidance is when something is in the way of the weapon.
-	/// </summary>
-	public Vector3 AvoidancePositionOffset { get; set; }
-
-	/// <summary>
-	/// The max angle offset when avoidance comes into play.
-	/// Avoidance is when something is in the way of the weapon.
-	/// </summary>
-	public Angles AvoidanceAngleOffset { get; set; }
-
-	/// Aim Down Sight
-	public Vector3 AimPositionOffset { get; set; }
-	public Angles AimAngleOffset { get; set; }
 }

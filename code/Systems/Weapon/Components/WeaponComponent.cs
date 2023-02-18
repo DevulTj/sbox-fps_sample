@@ -1,21 +1,15 @@
-using Sandbox;
-using System;
-
-namespace Facepunch.Gunfight.WeaponSystem;
+namespace GameTemplate.Weapons;
 
 public partial class WeaponComponent : EntityComponent<Weapon>
 {
-	/// <summary>
-	/// Accessor.
-	/// </summary>
 	protected Weapon Weapon => Entity;
 	protected Player Player => Weapon.Owner as Player;
 
+	protected string Identifier => info.ClassName.Trim();
+	protected virtual bool UseGameEvents => true;
+
 	[Net, Predicted] public bool IsActive { get; protected set; }
 	[Net, Predicted] public TimeSince TimeSinceActivated { get; protected set; }
-
-	public virtual string Name => info.Name.Trim();
-	protected virtual bool EnableActivateEvents => true;
 
 	DisplayInfo info;
 	public WeaponComponent()
@@ -50,8 +44,8 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 	{
 		TimeSinceActivated = 0;
 
-		if ( EnableActivateEvents )
-			RunGameEvent( $"{Name}.start" );
+		if ( UseGameEvents )
+			RunGameEvent( $"{Identifier}.start" );
 	}
 
 	/// <summary>
@@ -94,8 +88,8 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 	/// <param name="player"></param>
 	protected virtual void OnStop( Player player )
 	{
-		if ( EnableActivateEvents )
-			RunGameEvent( $"{Name}.stop" );
+		if ( UseGameEvents )
+			RunGameEvent( $"{Identifier}.stop" );
 	}
 
 	/// <summary>

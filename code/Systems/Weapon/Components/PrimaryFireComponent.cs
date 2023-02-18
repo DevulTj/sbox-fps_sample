@@ -1,8 +1,6 @@
-using Facepunch.Gunfight.Mechanics;
-using Sandbox;
-using System.Collections.Generic;
+using GameTemplate.Mechanics;
 
-namespace Facepunch.Gunfight.WeaponSystem;
+namespace GameTemplate.Weapons;
 
 public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 {
@@ -55,16 +53,6 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 		WeaponViewModel.Current?.SetAnimParameter( "fire", true );
 	}
 
-	protected TraceResult DoTraceBullet( Vector3 start, Vector3 end, float radius )
-	{
-		return Trace.Ray( start, end )
-			.UseHitboxes()
-			.WithAnyTags( "solid", "player", "glass" )
-			.Ignore( Entity )
-			.Size( radius )
-			.Run();
-	}
-
 	/// <summary>
 	/// When penetrating a surface, this is the trace increment amount.
 	/// </summary>
@@ -85,79 +73,19 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 	/// </summary>
 	protected float MaxRicochetAngle => 45f;
 
-	protected bool ShouldBulletContinue( TraceResult tr, float angle, ref float damage )
+	public IEnumerable<TraceResult> TraceBullet( Vector3 start, Vector3 end, float radius )
 	{
-		float maxAngle = MaxRicochetAngle;
+		var tr = Trace.Ray( start, end )
+			.UseHitboxes()
+			.WithAnyTags( "solid", "player", "glass" )
+			.Ignore( Entity )
+			.Size( radius )
+			.Run();
 
-		if ( angle > maxAngle )
-			return false;
-
-		return true;
-	}
-
-	protected Vector3 CalculateRicochetDirection( TraceResult tr, ref float hits )
-	{
-		if ( tr.Entity is GlassShard )
+		if ( tr.Hit )
 		{
-			// Allow us to do another hit
-			hits--;
-			return tr.Direction;
+			yield return tr;
 		}
-
-		return Vector3.Reflect( tr.Direction, tr.Normal ).Normal;
-	}
-
-	public IEnumerable<TraceResult> TraceBullet( Vector3 start, Vector3 end, float radius, ref float damage )
-	{
-		float curHits = 0;
-		var hits = new List<TraceResult>();
-
-		while ( curHits < MaxAmtOfHits )
-		{
-			curHits++;
-
-			var tr = DoTraceBullet( start, end, radius );
-			if ( tr.Hit )
-			{
-				if ( curHits > 1 )
-					damage *= 0.5f;
-				hits.Add( tr );
-			}
-
-			var reflectDir = CalculateRicochetDirection( tr, ref curHits );
-			var angle = reflectDir.Angle( tr.Direction );
-			var dist = tr.Distance.Remap( 0, Data.BulletRange, 1, 0.5f ).Clamp( 0.5f, 1f );
-			damage *= dist;
-
-			start = tr.EndPosition;
-			end = tr.EndPosition + (reflectDir * Data.BulletRange);
-
-			var didPenetrate = false;
-			var forwardStep = 0f;
-
-			while ( forwardStep < PenetrationMaxSteps )
-			{
-				forwardStep++;
-
-				var penStart = tr.EndPosition + tr.Direction * (forwardStep * PenetrationIncrementAmount);
-				var penEnd = tr.EndPosition + tr.Direction * (forwardStep + 1 * PenetrationIncrementAmount);
-
-				var penTrace = DoTraceBullet( penStart, penEnd, radius );
-				if ( !penTrace.StartedSolid )
-				{
-					var newStart = penTrace.EndPosition;
-					var newTrace = DoTraceBullet( newStart, newStart + tr.Direction * Data.BulletRange, radius );
-					hits.Add( newTrace );
-					didPenetrate = true;
-					break;
-				}
-			}
-
-			if ( didPenetrate || !ShouldBulletContinue( tr, angle, ref damage ) )
-				break;
-		}
-
-		return hits;
 	}
 
 	public void ShootBullet( float spread, float force, float bulletSize, int bulletCount = 1, float bulletRange = 5000f )
@@ -172,7 +100,12 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 		for ( int i = 0; i < bulletCount; i++ )
 		{
 			var rot = Rotation.LookAt( Player.AimRay.Forward );
-			rot *= Rotation.From( new Angles( -recoil.CurrentRecoil.y, recoil.CurrentRecoil.x, 0 ) );
+
+			// Do we have recoil on this weapon?
+			if ( recoil != null )
+			{
+				rot *= Rotation.From( new Angles( -recoil.CurrentRecoil.y, recoil.CurrentRecoil.x, 0 ) );
+			}
 
 			var forward = rot.Forward;
 			forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
@@ -182,7 +115,7 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 
 			Vector3 LastImpact = Vector3.Zero;
 			int count = 0;
-			foreach ( var tr in TraceBullet( Player.AimRay.Position, Player.AimRay.Position + forward * bulletRange, bulletSize, ref damage ) )
+			foreach ( var tr in TraceBullet( Player.AimRay.Position, Player.AimRay.Position + forward * bulletRange, bulletSize ) )
 			{
 				tr.Surface.DoBulletImpact( tr );
 

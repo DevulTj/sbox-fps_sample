@@ -1,9 +1,6 @@
-using Facepunch.Gunfight.WeaponSystem;
-using Sandbox;
-using System.Collections.Generic;
-using System.Linq;
+using GameTemplate.Weapons;
 
-namespace Facepunch.Gunfight;
+namespace GameTemplate;
 
 /// <summary>
 /// The player's inventory holds a player's weapons, and holds the player's current weapon.

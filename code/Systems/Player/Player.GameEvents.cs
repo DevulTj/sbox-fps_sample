@@ -1,9 +1,7 @@
-using Facepunch.Gunfight.WeaponSystem;
-using Sandbox;
+using GameTemplate.Weapons;
 using Sandbox.Diagnostics;
-using System.Linq;
 
-namespace Facepunch.Gunfight;
+namespace GameTemplate;
 
 public partial class Player
 {

@@ -1,7 +1,4 @@
-using Facepunch.Gunfight.WeaponSystem;
-using Sandbox;
-
-namespace Facepunch.Gunfight.Mechanics;
+namespace GameTemplate.Mechanics;
 
 /// <summary>
 /// The basic crouch mechanic for players.

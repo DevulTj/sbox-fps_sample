@@ -1,7 +1,4 @@
-using Sandbox;
-using System;
-
-namespace Facepunch.Gunfight;
+namespace GameTemplate;
 
 public partial class PlayerAnimator : EntityComponent<Player>, ISingletonComponent
 {
@@ -28,10 +25,5 @@ public partial class PlayerAnimator : EntityComponent<Player>, ISingletonCompone
 			player.SetAnimParameter( "holdtype", (int)weapon.WeaponData.HoldType );
 			player.SetAnimParameter( "holdtype_handedness", (int)weapon.WeaponData.Handedness );
 		}
-	}
-
-	public virtual void FrameSimulate( IClient cl )
-	{
-		//
 	}
 }

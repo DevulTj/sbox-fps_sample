@@ -1,12 +1,4 @@
-using Sandbox;
-
-namespace Facepunch.Gunfight.Mechanics;
-
-public interface IInteractable
-{
-	bool OnUse( Player player );
-	bool IsUsable( Player player );
-}
+namespace GameTemplate.Mechanics;
 
 public partial class InteractionMechanic : PlayerControllerMechanic, ISingletonComponent
 {
@@ -132,5 +124,14 @@ public partial class InteractionMechanic : PlayerControllerMechanic, ISingletonC
 	protected override void Simulate()
 	{
 		TickUse();
+	}
+
+	/// <summary>
+	/// Describes an interactable object.
+	/// </summary>
+	public interface IInteractable
+	{
+		bool OnUse( Player player );
+		bool IsUsable( Player player );
 	}
 }

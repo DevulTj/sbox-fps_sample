@@ -1,8 +1,4 @@
-using Facepunch.Gunfight.WeaponSystem;
-using Sandbox;
-using System;
-
-namespace Facepunch.Gunfight.Mechanics;
+namespace GameTemplate.Mechanics;
 
 /// <summary>
 /// The basic sprinting mechanic for players.
@@ -20,7 +16,6 @@ public partial class SprintMechanic : PlayerControllerMechanic
 	{
 		if ( !Input.Down( InputButton.Run ) ) return false;
 		if ( Player.MoveInput.Length == 0 ) return false;
-		if ( Player.ActiveWeapon?.GetComponent<Aim>()?.IsActive ?? false ) return false;
 
 		return true;
 	}

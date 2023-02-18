@@ -1,7 +1,4 @@
-using Sandbox;
-using System.Diagnostics;
-
-namespace Facepunch.Gunfight.Mechanics;
+namespace GameTemplate.Mechanics;
 
 /// <summary>
 /// The basic walking mechanic for the player.

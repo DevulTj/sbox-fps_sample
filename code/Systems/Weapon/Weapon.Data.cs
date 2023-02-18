@@ -1,6 +1,4 @@
-using Sandbox;
-
-namespace Facepunch.Gunfight.WeaponSystem;
+namespace GameTemplate.Weapons;
 
 public partial class Weapon
 {

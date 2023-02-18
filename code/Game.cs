@@ -1,11 +1,17 @@
-﻿using Sandbox;
-using System;
-using System.Linq;
+﻿global using Sandbox;
+global using Sandbox.UI;
+global using System;
+global using System.Linq;
+global using System.Collections.Generic;
+global using System.ComponentModel;
+
+//
+global using GameTemplate.UI;
 
 //
 // You don't need to put things in a namespace, but it doesn't hurt.
 //
-namespace Facepunch.Gunfight;
+namespace GameTemplate;
 
 /// <summary>
 /// This is your game class. This is an entity that is created serverside when
@@ -14,13 +20,13 @@ namespace Facepunch.Gunfight;
 /// You can use this to create things like HUDs and declare which player class
 /// to use for spawned players.
 /// </summary>
-public partial class GunfightGameManager : GameManager
+public partial class TemplateGameManager : GameManager
 {
-	public GunfightGameManager()
+	public TemplateGameManager()
 	{
-		if ( Game.IsServer )
+		if ( Game.IsClient )
 		{
-			_ = new Hud();
+			Game.RootPanel = new Hud();
 		}
 	}
 
@@ -57,10 +63,5 @@ public partial class GunfightGameManager : GameManager
 	{
 		base.ClientDisconnect( client, reason );
 		Chat.AddChatEntry( To.Everyone, client.Name, "left the game", client.SteamId, true );
-	}
-
-	public override void DoPlayerDevCam( IClient client )
-	{
-		// do nothing
 	}
 }

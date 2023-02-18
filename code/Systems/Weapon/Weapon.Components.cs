@@ -1,7 +1,4 @@
-using Sandbox;
-using System.Linq;
-
-namespace Facepunch.Gunfight.WeaponSystem;
+namespace GameTemplate.Weapons;
 
 public partial class Weapon
 {
@@ -29,7 +26,6 @@ public partial class Weapon
 
 			component.Initialize( this );
 			Components.Add( component );
-			Log.Info( $"Adding component {component} to {this}" );
 		}
 	}
 

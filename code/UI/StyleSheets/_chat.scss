@@ -1,10 +1,5 @@
-iconpanel {
-    font-family: "Material Icons";
-}
-
-$rounding: 4px;
-
-Chat {
+Chat
+{
     position: absolute;
     bottom: -16px;
     left: 32px;
@@ -12,13 +7,13 @@ Chat {
     flex-direction: column;
     width: 505px;
     max-height: 435px;
-    font-family: Poppins;
     font-size: 16px;
     pointer-events: none;
     transition: all 0.1s ease, border 0s ease;
     padding: 18px;
 
-    textentry {
+    textentry
+    {
         transition: opacity 0.1s ease;
         flex-shrink: 0;
         min-height: 44px;
@@ -28,29 +23,33 @@ Chat {
         margin-bottom: 28px;
     }
 
-    .placeholder {
+    .placeholder
+    {
         color: #c0cee7;
     }
 
-    .content-label {
+    .content-label
+    {
         margin-left: 16px;
     }
 
-    .placeholder, .content-label {
+    .placeholder, .content-label
+    {
         color: darken( #c0cee7, 20% );
         font-size: 14px;
-        font-family: Poppins;
         font-weight: 400;
         text-shadow: 2px 2px 1px rgba( black, 0.1 );
-        margin-top: 11px;
+        margin-top: 13px;
     }
 
-    .canvas {
+    .canvas
+    {
         flex-direction: column;
         align-items: flex-start;
         overflow: scroll;
 
-        ChatRow {
+        ChatRow
+        {
             max-width: 100%;
             color: white;
             opacity: 1;
@@ -61,11 +60,12 @@ Chat {
             transition: opacity 0.15s ease;
             margin-bottom: 6px;
 
-            .header {
+            .header
+            {
                 flex-shrink: 0;
                 flex-grow: 0;
                 padding-left: 4px;
-                margin-top: 3px;
+                margin-top: 5px;
                 font-weight: 700;
                 font-size: 16px;
                 color: $blue;
@@ -73,60 +73,73 @@ Chat {
                 text-shadow: 2px 2px 1px rgba( black, 0.3 );
             }
 
-            .msg {
-                margin-top: 3px;
+            .msg
+            {
+                margin-top: 6px;
                 color: #c0cee7;
                 font-size: 16px;
                 text-shadow: 2px 2px 1px rgba( black, 0.1 );
             }
 
-            &.info {
-                .header, .msg {
+            &.info
+            {
+                .header, .msg
+                {
                     color: darken( #c0cee7, 20% );
                 }
             }
 
-            img {
+            img
+            {
                 flex-shrink: 0;
                 height: 30px;
                 width: 30px;
                 border-radius: 100px;
             }
 
-            &.noname {
-                .name {
+            &.noname
+            {
+                .name
+                {
                     display: none;
                 }
             }
 
-            &.is-lobby, &.friend {
-                .name {
+            &.is-lobby, &.friend
+            {
+                .name
+                {
                     color: #849a74;
                 }
             }
 
-            &.stale {
+            &.stale
+            {
                 transition: opacity 1s ease;
                 opacity: 0;
             }
         }
     }
 
-    &.open {
+    &.open
+    {
         pointer-events: all;
         backdrop-filter-blur: 20px;
         background-image: linear-gradient( to top, rgba( #1b1b35, 0.9 ), rgba( #1c1c38, 0.85 ), rgba( #1c1c38, 0.8 ) 80%, rgba( #1c1c38, 0.5 ) );
         bottom: 0;
         border-radius: $rounding $rounding 0 0;
 
-        textentry {
+        textentry
+        {
             opacity: 1;
             width: 100%;
             cursor: text;
         }
 
-        .canvas {
-            ChatRow {
+        .canvas
+        {
+            ChatRow
+            {
                 transition: opacity 0.1s ease;
                 opacity: 1;
             }
