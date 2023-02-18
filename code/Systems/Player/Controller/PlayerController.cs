@@ -110,6 +110,11 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 		}
 	}
 
+	public virtual void FrameSimulate( IClient cl )
+	{
+		SimulateEyes();
+	}
+
 	public virtual void Simulate( IClient cl )
 	{
 		SimulateEyes();

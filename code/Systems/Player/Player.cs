@@ -128,6 +128,8 @@ public partial class Player : AnimatedEntity
 	public override void FrameSimulate( IClient cl )
 	{
 		Rotation = LookInput.WithPitch( 0f ).ToRotation();
+
+		Controller?.FrameSimulate( cl );
 		Camera?.Update( this );
 	}
 
