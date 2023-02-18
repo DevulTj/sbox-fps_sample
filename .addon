@@ -1,8 +1,8 @@
 {
   "Title": "FPS Sample",
   "Type": "game",
-  "Org": "devultj",
-  "Ident": "template_fps",
+  "Org": "local",
+  "Ident": "fps_sample",
   "Tags": "",
   "Schema": 1,
   "HasAssets": true,
