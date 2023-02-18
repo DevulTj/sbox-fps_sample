@@ -5,8 +5,6 @@ namespace GameTemplate.Weapons;
 [Prefab]
 public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 {
-	public TimeUntil TimeUntilCanFire { get; set; }
-
 	[Net, Prefab] public float BaseDamage { get; set; }
 	[Net, Prefab] public float BulletRange { get; set; }
 	[Net, Prefab] public int BulletCount { get; set; }
@@ -14,15 +12,14 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 	[Net, Prefab] public float BulletSize { get; set; }
 	[Net, Prefab] public float BulletSpread { get; set; }
 	[Net, Prefab] public float FireDelay { get; set; }
+	[Net, Prefab, ResourceType( "sound" )] public string FireSound { get; set; }
 
-	[Net, Prefab, ResourceType( "sound" )]
-	public string FireSound { get; set; }
+	TimeUntil TimeUntilCanFire { get; set; }
 
 	protected override bool CanStart( Player player )
 	{
-		if ( TimeUntilCanFire > 0 ) return false;
 		if ( !Input.Down( InputButton.PrimaryAttack ) ) return false;
-		if ( Weapon.Tags.Has( "reloading" ) ) return false;
+		if ( TimeUntilCanFire > 0 ) return false;
 
 		return TimeSinceActivated > FireDelay;
 	}
@@ -32,10 +29,6 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 		if ( eventName == "sprint.stop" )
 		{
 			TimeUntilCanFire = 0.2f;
-		}
-		if ( eventName == "aim.start" )
-		{
-			TimeUntilCanFire = 0.15f;
 		}
 	}
 
@@ -109,25 +102,5 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 				tr.Entity.TakeDamage( damageInfo );
 			}
 		}
-	}
-
-	/// <summary>
-	/// Data asset information.
-	/// </summary>
-	public struct ComponentData
-	{
-		public float BaseDamage { get; set; }
-		public float BulletRange { get; set; }
-		public int BulletCount { get; set; }
-		public float BulletForce { get; set; }
-		public float BulletSize { get; set; }
-		public float BulletSpread { get; set; }
-		public float FireDelay { get; set; }
-
-		[ResourceType( "sound" )]
-		public string FireSound { get; set; }
-
-		[ResourceType( "sound" )]
-		public string DryFireSound { get; set; }
 	}
 }

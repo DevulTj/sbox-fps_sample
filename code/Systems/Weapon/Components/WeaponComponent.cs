@@ -4,17 +4,31 @@ public partial class WeaponComponent : EntityComponent<Weapon>
 {
 	protected Weapon Weapon => Entity;
 	protected Player Player => Weapon.Owner as Player;
-
-	protected string Identifier => info.ClassName.Trim();
+	protected string Identifier => DisplayInfo.ClassName.Trim();
 	protected virtual bool UseGameEvents => true;
 
+	/// <summary>
+	/// Is the weapon component active? Could mean are we shooting, reloading, aiming..
+	/// </summary>
 	[Net, Predicted] public bool IsActive { get; protected set; }
+
+	/// <summary>
+	/// Time (in seconds) since IsActive = true
+	/// </summary>
 	[Net, Predicted] public TimeSince TimeSinceActivated { get; protected set; }
 
-	DisplayInfo info;
-	public WeaponComponent()
+	DisplayInfo? displayInfo;
+
+	/// <summary>
+	/// Cached DisplayInfo for this weapon, so we don't fetch it every single time we fire events.
+	/// </summary>
+	public DisplayInfo DisplayInfo
 	{
-		info = DisplayInfo.For( this );
+		get
+		{
+			displayInfo ??= DisplayInfo.For( this );
+			return displayInfo.Value;
+		}
 	}
 
 	/// <summary>
