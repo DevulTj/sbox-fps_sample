@@ -28,8 +28,6 @@ public partial class WeaponData : GameResource
 
 	// Component Information
 	public PrimaryFire.ComponentData PrimaryFire { get; set; }
-	public Ammo.ComponentData Ammo { get; set; }
-	public Recoil.ComponentData Recoil { get; set; }
 	
 	internal Model CachedModel;
 	internal Model CachedViewModel;

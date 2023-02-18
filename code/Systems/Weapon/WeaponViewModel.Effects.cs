@@ -79,17 +79,6 @@ public partial class WeaponViewModel
 		}
 	}
 
-	Angles RecoilAngleOffset;
-	public void AddRecoilEffects()
-	{
-		var recoil = Weapon.GetComponent<Recoil>();
-		if ( recoil == null ) return;
-
-		RecoilAngleOffset = RecoilAngleOffset.LerpTo( new( -recoil.CurrentRecoil.y, -recoil.CurrentRecoil.x, 0 ), Time.Delta * 10f );
-
-		Camera.Rotation *= Rotation.From( RecoilAngleOffset );
-	}
-
 	public void AddEffects()
 	{
 		var player = Weapon.Player;

@@ -3,14 +3,6 @@
 @namespace GameTemplate
 
 <root class="with-flex column-reverse with-gap with-shadow">
-    @if ( AmmoComponent != null )
-    {
-        <cell class="with-center with-padding-large with-gap">
-            <label class="with-header">@AmmoComponent.AmmoCount</label>
-            <i class="with-header with-icon">backpack</i>
-        </cell>
-    }
-
     <cell class="with-center with-padding-large with-gap">
         <label class="with-header">@Health</label>
         <i class="with-header with-icon">monitor_heart</i>
@@ -22,10 +14,9 @@
     public string Health => $"{Player.Health:F0}";
     public Player Player => Game.LocalPawn as Player;
     public Weapon Weapon => Player?.ActiveWeapon;
-    public Ammo AmmoComponent => Weapon?.GetComponent<Ammo>();
 
     protected override int BuildHash()
     {
-        return HashCode.Combine( AmmoComponent?.AmmoCount, Player?.Health );
+        return HashCode.Combine( Player?.Health );
     }
 }

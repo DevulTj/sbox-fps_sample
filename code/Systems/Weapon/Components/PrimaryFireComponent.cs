@@ -12,7 +12,6 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 		if ( TimeUntilCanFire > 0 ) return false;
 		if ( !Input.Down( InputButton.PrimaryAttack ) ) return false;
 		if ( Weapon.Tags.Has( "reloading" ) ) return false;
-		if ( GetComponent<Ammo>() is Ammo ammo && !ammo.HasEnoughAmmo() ) return false; 
 
 		return TimeSinceActivated > Data.FireDelay;
 	}
@@ -74,17 +73,9 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 		//
 		Game.SetRandomSeed( Time.Tick );
 
-		var recoil = Weapon.GetComponent<Recoil>();
-
 		for ( int i = 0; i < bulletCount; i++ )
 		{
 			var rot = Rotation.LookAt( Player.AimRay.Forward );
-
-			// Do we have recoil on this weapon?
-			if ( recoil != null )
-			{
-				rot *= Rotation.From( new Angles( -recoil.CurrentRecoil.y, recoil.CurrentRecoil.x, 0 ) );
-			}
 
 			var forward = rot.Forward;
 			forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
