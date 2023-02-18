@@ -86,17 +86,6 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 
 	protected void SimulateEyes()
 	{
-		Player.EyeRotation = Player.LookInput.ToRotation();
-		Player.EyeLocalPosition = Vector3.Up * CurrentEyeHeight;
-	}
-
-	protected void SimulateMechanics()
-	{
-		foreach ( var mechanic in Mechanics )
-		{
-			mechanic.TrySimulate( this );
-		}
-
 		var target = EyeHeight;
 		// Magic number :sad:
 		var trace = TraceBBox( Position, Position, 0, 10f );
@@ -107,6 +96,17 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 		else
 		{
 			CurrentEyeHeight = CurrentEyeHeight.LerpTo( target, Time.Delta * 10f );
+		}
+
+		Player.EyeRotation = Player.LookInput.ToRotation();
+		Player.EyeLocalPosition = Vector3.Up * CurrentEyeHeight;
+	}
+
+	protected void SimulateMechanics()
+	{
+		foreach ( var mechanic in Mechanics )
+		{
+			mechanic.TrySimulate( this );
 		}
 	}
 
@@ -137,11 +137,6 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 				DebugOverlay.ScreenText( $"{mechanic}", ++lineOffset );
 			}
 		}
-	}
-
-	public virtual void FrameSimulate( IClient cl )
-	{
-		SimulateEyes();
 	}
 
 	/// <summary>

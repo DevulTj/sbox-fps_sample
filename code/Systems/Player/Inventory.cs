@@ -121,9 +121,4 @@ public partial class Inventory : EntityComponent<Player>, ISingletonComponent
 
 		ActiveWeapon?.Simulate( cl );
 	}
-
-	public void FrameSimulate( IClient cl )
-	{
-		ActiveWeapon?.FrameSimulate( cl );
-	}
 }

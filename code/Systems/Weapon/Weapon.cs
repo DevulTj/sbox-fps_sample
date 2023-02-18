@@ -4,30 +4,19 @@ namespace GameTemplate.Weapons;
 public partial class Weapon : AnimatedEntity
 {
 	// Won't be Net eventually, when we serialize prefabs on client
-
-	[Net, Prefab, Category( "Animation" )]
-	public WeaponHoldType HoldType { get; set; } = WeaponHoldType.Pistol;
-
-	[Net, Prefab, Category( "Animation" )]
-	public WeaponHandedness Handedness { get; set; } = WeaponHandedness.Both;
-
-	[Net, Prefab, Category( "Animation" )]
-	public float HoldTypePose { get; set; } = 0;
+	[Net, Prefab, Category( "Animation" )] public WeaponHoldType HoldType { get; set; } = WeaponHoldType.Pistol;
+	[Net, Prefab, Category( "Animation" )] public WeaponHandedness Handedness { get; set; } = WeaponHandedness.Both;
+	[Net, Prefab, Category( "Animation" )] public float HoldTypePose { get; set; } = 0;
 
 	public AnimatedEntity EffectEntity => ViewModelEntity.IsValid() ? ViewModelEntity : this;
 	public WeaponViewModel ViewModelEntity { get; protected set; }
 	public Player Player => Owner as Player;
-	public PickupTrigger PickupTrigger { get; protected set; }
 
 	public override void Spawn()
 	{
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 		EnableDrawing = false;
-
-		PickupTrigger = new PickupTrigger();
-		PickupTrigger.Parent = this;
-		PickupTrigger.Position = Position;
 	}
 
 	/// <summary>
@@ -45,12 +34,6 @@ public partial class Weapon : AnimatedEntity
 	public void OnHolster( Player player )
 	{
 		EnableDrawing = false;
-
-		if ( PickupTrigger.IsValid() )
-		{
-			PickupTrigger.PhysicsEnabled = true;
-			PickupTrigger.EnableTouch = true;
-		}
 
 		if ( Game.IsServer )
 			DestroyViewModel( To.Single( player ) );
@@ -74,12 +57,6 @@ public partial class Weapon : AnimatedEntity
 		Owner = player;
 
 		EnableDrawing = true;
-
-		if ( PickupTrigger.IsValid() )
-		{
-			PickupTrigger.PhysicsEnabled = false;
-			PickupTrigger.EnableTouch = false;
-		}
 
 		if ( Game.IsServer )
 			CreateViewModel( To.Single( player ) );

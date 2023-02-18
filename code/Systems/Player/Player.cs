@@ -128,9 +128,6 @@ public partial class Player : AnimatedEntity
 	public override void FrameSimulate( IClient cl )
 	{
 		Rotation = LookInput.WithPitch( 0f ).ToRotation();
-
-		Controller?.FrameSimulate( cl );
-		Inventory?.FrameSimulate( cl );
 		Camera?.Update( this );
 	}
 
@@ -175,7 +172,7 @@ public partial class Player : AnimatedEntity
 			}
 		}
 
-		this.ProceduralHitReaction( info, 0.05f );
+		this.ProceduralHitReaction( info );
 	}
 
 	private async void AsyncRespawn()
@@ -248,7 +245,7 @@ public partial class Player : AnimatedEntity
 		(ConsoleSystem.Caller.Pawn as Player)?.TakeDamage( DamageInfo.Generic( 1000f ) );
 	}
 
-	[ConCmd.Server( "sethp" )]
+	[ConCmd.Admin( "sethp" )]
 	public static void SetHP( float value )
 	{
 		(ConsoleSystem.Caller.Pawn as Player).Health = value;
