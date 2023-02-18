@@ -99,6 +99,7 @@ public partial class Player : AnimatedEntity
 
 		var inventory = Components.Create<Inventory>();
 		inventory.AddWeapon( PrefabLibrary.Spawn<Weapon>( "prefabs/pistol.prefab" ) );
+		inventory.AddWeapon( PrefabLibrary.Spawn<Weapon>( "prefabs/smg.prefab" ), false );
 
 		SetupClothing();
 

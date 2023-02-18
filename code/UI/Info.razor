@@ -7,6 +7,18 @@
         <label class="with-header">@Health</label>
         <i class="with-header with-icon">monitor_heart</i>
     </cell>
+
+    @{
+        int i = 0;
+        foreach( var weapon in Inventory.Weapons )
+        {
+            i++;
+            <cell class="with-center with-padding-large with-gap @(weapon == Weapon ? "active" : "")">
+                <label class="with-text name">@weapon.Name</label>
+                <label class="with-subheader id">@i</label>
+            </cell>
+        }
+    }
 </root>
 
 @code 
@@ -14,9 +26,10 @@
     public string Health => $"{Player.Health:F0}";
     public Player Player => Game.LocalPawn as Player;
     public Weapon Weapon => Player?.ActiveWeapon;
+    public Inventory Inventory => Player.Inventory;
 
     protected override int BuildHash()
     {
-        return HashCode.Combine( Player?.Health );
+        return HashCode.Combine( Player?.Health, Weapon );
     }
 }

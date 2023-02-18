@@ -8,7 +8,7 @@ namespace GameTemplate;
 /// </summary>
 public partial class Inventory : EntityComponent<Player>, ISingletonComponent
 {
-	[Net] protected IList<Weapon> Weapons { get; set; }
+	[Net] public IList<Weapon> Weapons { get; set; }
 	[Net, Predicted] public Weapon ActiveWeapon { get; set; }
 
 	public bool AddWeapon( Weapon weapon, bool makeActive = true )

@@ -5,4 +5,25 @@ Info
     right: 64px;
     width: 150px;
     flex-direction: column-reverse;
+
+    cell
+    {
+        transition: all 0.2s ease;
+
+        &.active
+        {
+            padding: 16px;
+
+            .name
+            {
+                color: white;
+                font-size: 24px;
+            }
+        }
+
+        .id
+        {
+            font-size: 12px;
+        }
+    }
 }
