@@ -7,7 +7,7 @@ public partial class Player
 	/// <summary>
 	/// Set the clothes to whatever the player is wearing
 	/// </summary>
-	public void UpdateClothes()
+	public void SetupClothing()
 	{
 		Clothing = new();
 
