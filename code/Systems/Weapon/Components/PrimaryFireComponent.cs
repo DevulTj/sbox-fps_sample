@@ -12,7 +12,6 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 		if ( TimeUntilCanFire > 0 ) return false;
 		if ( !Input.Down( InputButton.PrimaryAttack ) ) return false;
 		if ( Weapon.Tags.Has( "reloading" ) ) return false;
-		// Optional
 		if ( GetComponent<Ammo>() is Ammo ammo && !ammo.HasEnoughAmmo() ) return false; 
 
 		return TimeSinceActivated > Data.FireDelay;
@@ -52,26 +51,6 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 		Game.AssertClient();
 		WeaponViewModel.Current?.SetAnimParameter( "fire", true );
 	}
-
-	/// <summary>
-	/// When penetrating a surface, this is the trace increment amount.
-	/// </summary>
-	protected float PenetrationIncrementAmount => 15f;
-
-	/// <summary>
-	/// How many increments?
-	/// </summary>
-	protected int PenetrationMaxSteps => 2;
-
-	/// <summary>
-	/// How many ricochet hits until we stop traversing
-	/// </summary>
-	protected float MaxAmtOfHits => 2f;
-
-	/// <summary>
-	/// Maximum angle in degrees for ricochet to be possible
-	/// </summary>
-	protected float MaxRicochetAngle => 45f;
 
 	public IEnumerable<TraceResult> TraceBullet( Vector3 start, Vector3 end, float radius )
 	{
@@ -113,8 +92,6 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 
 			var damage = Data.BaseDamage;
 
-			Vector3 LastImpact = Vector3.Zero;
-			int count = 0;
 			foreach ( var tr in TraceBullet( Player.AimRay.Position, Player.AimRay.Position + forward * bulletRange, bulletSize ) )
 			{
 				tr.Surface.DoBulletImpact( tr );
@@ -128,14 +105,6 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 					.WithWeapon( Weapon );
 
 				tr.Entity.TakeDamage( damageInfo );
-
-				if ( count == 1 )
-				{
-					Particles.Create( "particles/gameplay/guns/trail/rico_trail_impact_spark.vpcf", LastImpact );
-				}
-
-				LastImpact = tr.EndPosition;
-				count++;
 			}
 		}
 	}

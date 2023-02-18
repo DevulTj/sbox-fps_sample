@@ -11,7 +11,7 @@ public partial class Ammo : WeaponComponent, ISingletonComponent
 
 	public bool IsFull
 	{
-		get => AmmoCount >= ( Data.AllowChamber ? Data.MaximumAmmo + 1 : Data.MaximumAmmo ); 
+		get => AmmoCount >= Data.MaximumAmmo; 
 	}
 
 	public override void Initialize( Weapon weapon )
@@ -28,12 +28,6 @@ public partial class Ammo : WeaponComponent, ISingletonComponent
 
 	public void Fill()
 	{
-		if ( AmmoCount == Data.MaximumAmmo && Data.AllowChamber )
-		{
-			++AmmoCount;
-			return;
-		}
-
 		AmmoCount = Data.DefaultAmmo;
 	}
 
@@ -111,9 +105,6 @@ public partial class Ammo : WeaponComponent, ISingletonComponent
 	{
 		public int DefaultAmmo { get; set; }
 		public int MaximumAmmo { get; set; }
-		public bool AllowChamber { get; set; }
-
-		[Category( "Reloading" )]
 		public float ReloadTime { get; set; }
 	}
 }
