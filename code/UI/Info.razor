@@ -9,6 +9,7 @@
     </cell>
 
     @{
+        if ( Inventory == null ) return;
         int i = 0;
         foreach( var weapon in Inventory.Weapons )
         {
