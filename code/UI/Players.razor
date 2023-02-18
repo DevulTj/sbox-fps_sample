@@ -7,12 +7,13 @@
         <label class="with-subheader">Players: @Game.Clients.Count / @Game.Server.MaxPlayers</label>
     </column>
 
-    <column class="with-flex row wrap with-gap" style="max-width: 500px;">
+    <column class="with-flex row wrap with-gap" style="max-width: 600px;">
         @foreach( var cl in Game.Clients )
         {
-            <cell class="with-center with-padding">
+            <cell class="with-center with-padding with-gap-small">
                 <img class="with-avatar" src=@($"avatar:{cl.SteamId}") />
                 <label class="with-subheader">@cl.Name</label>
+                <label class="with-description">@(cl.Ping)ms</label>
             </cell>
         }
     </column>
