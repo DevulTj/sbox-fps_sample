@@ -1,0 +1,193 @@
+{
+  "SchemaVersion": 1,
+  "Name": null,
+  "Description": null,
+  "Root": {
+    "Guid": "60f4b990-4b49-4a59-aec6-45558e69826c",
+    "Class": "Weapon",
+    "Entities": [],
+    "Components": [
+      {
+        "Guid": "55e6a030-4330-4721-87c5-6364a351dab8",
+        "Class": "PrimaryFire",
+        "Keys": {
+          "BulletCount": {
+            "Type": "Int32",
+            "Value": "1"
+          },
+          "BulletForce": {
+            "Type": "Single",
+            "Value": "50"
+          },
+          "BulletSize": {
+            "Type": "Single",
+            "Value": "2"
+          },
+          "BulletSpread": {
+            "Type": "Single",
+            "Value": "0.05"
+          },
+          "FireDelay": {
+            "Type": "Single",
+            "Value": "0.25"
+          },
+          "BaseDamage": {
+            "Type": "Single",
+            "Value": "25"
+          },
+          "BulletRange": {
+            "Type": "Single",
+            "Value": "1024"
+          },
+          "FireSound": {
+            "Type": "String",
+            "Value": "\u0022weapons/rust_pistol/sound/rust_pistol.shoot.sound\u0022"
+          },
+          "_name": {
+            "Value": "\u0022Pistol Shoot\u0022"
+          },
+          "_tags": {
+            "Value": "[]"
+          }
+        }
+      },
+      {
+        "Guid": "89f43426-e4ff-4080-8d5d-1747fe2f56b9",
+        "Class": "ViewModelComponent",
+        "Keys": {
+          "OverallWeight": {
+            "Type": "Single",
+            "Value": "1"
+          },
+          "WeightReturnForce": {
+            "Type": "Single",
+            "Value": "100"
+          },
+          "WeightDamping": {
+            "Type": "Single",
+            "Value": "10"
+          },
+          "AccelerationDamping": {
+            "Type": "Single",
+            "Value": "1"
+          },
+          "VelocityScale": {
+            "Type": "Single",
+            "Value": "0.5"
+          },
+          "RotationalPivotForce": {
+            "Type": "Single",
+            "Value": "1"
+          },
+          "RotationalScale": {
+            "Type": "Single",
+            "Value": "15"
+          },
+          "WalkCycleOffset": {
+            "Type": "Vector3",
+            "Value": "\u00220,0,0\u0022"
+          },
+          "BobAmount": {
+            "Type": "Vector2",
+            "Value": "\u00220,0\u0022"
+          },
+          "GlobalLerpPower": {
+            "Type": "Single",
+            "Value": "0"
+          },
+          "GlobalPositionOffset": {
+            "Type": "Vector3",
+            "Value": "\u0022-10.5,7.05,-1.95\u0022"
+          },
+          "GlobalAngleOffset": {
+            "Type": "Angles",
+            "Value": "\u00220,0,0\u0022"
+          },
+          "CrouchPositionOffset": {
+            "Type": "Vector3",
+            "Value": "\u00220,0,0\u0022"
+          },
+          "CrouchAngleOffset": {
+            "Type": "Angles",
+            "Value": "\u00220,0,0\u0022"
+          },
+          "AvoidancePositionOffset": {
+            "Type": "Vector3",
+            "Value": "\u00220,0,0\u0022"
+          },
+          "AvoidanceAngleOffset": {
+            "Type": "Angles",
+            "Value": "\u00220,0,0\u0022"
+          },
+          "SprintPositionOffset": {
+            "Type": "Vector3",
+            "Value": "\u00220,0,0\u0022"
+          },
+          "AimAngleOffset": {
+            "Type": "Angles",
+            "Value": "\u00220,0,0\u0022"
+          },
+          "AimFovOffset": {
+            "Type": "Single",
+            "Value": "0"
+          },
+          "AimPositionOffset": {
+            "Type": "Vector3",
+            "Value": "\u00220,0,0\u0022"
+          },
+          "SprintAngleOffset": {
+            "Type": "Angles",
+            "Value": "\u00220,0,0\u0022"
+          },
+          "ViewModelPath": {
+            "Type": "String",
+            "Value": "\u0022weapons/rust_pistol/v_rust_pistol.vmdl\u0022"
+          },
+          "_name": {
+            "Value": "\u0022Pistol View Model\u0022"
+          },
+          "_tags": {
+            "Value": "[]"
+          }
+        }
+      }
+    ],
+    "Keys": {
+      "HoldTypePose": {
+        "Type": "Single",
+        "Value": "0"
+      },
+      "Handedness": {
+        "Type": "WeaponHandedness",
+        "Value": "\u0022Both\u0022"
+      },
+      "ViewModelPath": {
+        "Type": "String",
+        "Value": "\u0022weapons/rust_pistol/v_rust_pistol.vmdl\u0022"
+      },
+      "HoldType": {
+        "Type": "WeaponHoldType",
+        "Value": "\u0022Pistol\u0022"
+      },
+      "_name": {
+        "Value": "\u0022Pistol\u0022"
+      },
+      "_localposition": {
+        "Value": "\u00220,0,0\u0022"
+      },
+      "_localrotation": {
+        "Value": "\u00220,0,0\u0022"
+      },
+      "_scale": {
+        "Value": "1"
+      },
+      "_tags": {
+        "Value": "\u0022\u0022"
+      },
+      "Model": {
+        "Type": "Model",
+        "Value": "\u0022weapons/rust_pistol/rust_pistol.vmdl\u0022"
+      }
+    }
+  }
+}

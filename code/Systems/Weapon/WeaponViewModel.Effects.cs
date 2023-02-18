@@ -4,8 +4,7 @@ namespace GameTemplate.Weapons;
 
 public partial class WeaponViewModel
 {
-	protected WeaponData WeaponData => Weapon.WeaponData;
-	protected ViewModelData Data => WeaponData.ViewModelData;
+	protected ViewModelComponent Data => Weapon.GetComponent<ViewModelComponent>();
 
 	// Fields
 	Vector3 SmoothedVelocity;

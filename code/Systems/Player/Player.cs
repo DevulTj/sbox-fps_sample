@@ -98,8 +98,7 @@ public partial class Player : AnimatedEntity
 		Components.Create<PlayerCamera>();
 
 		var inventory = Components.Create<Inventory>();
-		inventory.AddWeapon( WeaponData.CreateInstance( "SMG" ) );
-		inventory.AddWeapon( WeaponData.CreateInstance( "Semi-Auto Pistol" ), false );
+		inventory.AddWeapon( PrefabLibrary.Spawn<Weapon>( "prefabs/pistol.prefab" ) );
 
 		SetupClothing();
 

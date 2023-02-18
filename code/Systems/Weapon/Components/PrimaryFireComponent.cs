@@ -2,10 +2,21 @@ using GameTemplate.Mechanics;
 
 namespace GameTemplate.Weapons;
 
+[Prefab]
 public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 {
-	public ComponentData Data => Weapon.WeaponData.PrimaryFire;
 	public TimeUntil TimeUntilCanFire { get; set; }
+
+	[Net, Prefab] public float BaseDamage { get; set; }
+	[Net, Prefab] public float BulletRange { get; set; }
+	[Net, Prefab] public int BulletCount { get; set; }
+	[Net, Prefab] public float BulletForce { get; set; }
+	[Net, Prefab] public float BulletSize { get; set; }
+	[Net, Prefab] public float BulletSpread { get; set; }
+	[Net, Prefab] public float FireDelay { get; set; }
+
+	[Net, Prefab, ResourceType( "sound" )]
+	public string FireSound { get; set; }
 
 	protected override bool CanStart( Player player )
 	{
@@ -13,7 +24,7 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 		if ( !Input.Down( InputButton.PrimaryAttack ) ) return false;
 		if ( Weapon.Tags.Has( "reloading" ) ) return false;
 
-		return TimeSinceActivated > Data.FireDelay;
+		return TimeSinceActivated > FireDelay;
 	}
 
 	public override void OnGameEvent( string eventName )
@@ -37,11 +48,11 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 		// Send clientside effects to the player.
 		if ( Game.IsServer )
 		{
-			player.PlaySound( Data.FireSound );
+			player.PlaySound( FireSound );
 			DoShootEffects( To.Single( player ) );
 		}
 
-		ShootBullet( Data.BulletSpread, Data.BulletForce, Data.BulletSize, Data.BulletCount, Data.BulletRange );
+		ShootBullet( BulletSpread, BulletForce, BulletSize, BulletCount, BulletRange );
 	}
 
 	[ClientRpc]
@@ -81,7 +92,7 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 			forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
 			forward = forward.Normal;
 
-			var damage = Data.BaseDamage;
+			var damage = BaseDamage;
 
 			foreach ( var tr in TraceBullet( Player.AimRay.Position, Player.AimRay.Position + forward * bulletRange, bulletSize ) )
 			{
