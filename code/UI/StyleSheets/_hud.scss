@@ -22,6 +22,11 @@ $rounding: 4px;
         flex-direction: row;
     }
 
+    &.wrap
+    {
+        flex-wrap: wrap;
+    }
+
     &.row-reverse, row-reversed
     {
         flex-direction: row-reverse;

@@ -28,6 +28,10 @@ public partial class TemplateGameManager : GameManager
 		{
 			Game.RootPanel = new Hud();
 		}
+		else
+		{
+			Game.TickRate = 30;
+		}
 	}
 
 	/// <summary>

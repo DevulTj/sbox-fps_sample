@@ -7,7 +7,7 @@
         <label class="with-subheader">Players: @Game.Clients.Count / @Game.Server.MaxPlayers</label>
     </column>
 
-    <column class="with-flex column with-gap">
+    <column class="with-flex row wrap with-gap" style="max-width: 500px;">
         @foreach( var cl in Game.Clients )
         {
             <cell class="with-center with-padding">
