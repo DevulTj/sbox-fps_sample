@@ -56,6 +56,8 @@ public partial class Player
 
 	public override void BuildInput()
 	{
+		if ( Game.LocalClient.Components.Get<DevCamera>() != null ) return;
+
 		Inventory?.BuildInput();
 
 		MoveInput = Input.AnalogMove;
