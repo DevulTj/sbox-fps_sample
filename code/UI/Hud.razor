@@ -2,9 +2,21 @@
 @inherits RootPanel
 @attribute [StyleSheet( "/UI/StyleSheets/_hud.scss" )]
 
+@if ( IsDevCamera ) return;
+
 <root>
 	<Chat />
 	<Info />
 	<Players />
 	<Crosshair />
 </root>
+
+@code
+{
+	public bool IsDevCamera => Game.LocalClient.Components.Get<DevCamera>() != null;
+
+    protected override int BuildHash()
+    {
+        return HashCode.Combine( IsDevCamera );
+    }
+}
