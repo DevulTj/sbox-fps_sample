@@ -18,7 +18,7 @@ public partial class PrimaryFire : WeaponComponent, ISingletonComponent
 
 	protected override bool CanStart( Player player )
 	{
-		if ( !Input.Down( InputButton.PrimaryAttack ) ) return false;
+		if ( !Input.Down( "attack1") ) return false;
 		if ( TimeUntilCanFire > 0 ) return false;
 
 		return TimeSinceActivated > FireDelay;

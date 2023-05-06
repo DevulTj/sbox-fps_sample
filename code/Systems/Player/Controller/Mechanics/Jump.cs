@@ -10,7 +10,7 @@ public partial class JumpMechanic : PlayerControllerMechanic
 
 	protected override bool ShouldStart()
 	{
-		if ( !Input.Pressed( InputButton.Jump ) ) return false;
+		if ( !Input.Pressed( "jump" ) ) return false;
 		if ( !Controller.GroundEntity.IsValid() ) return false;
 		return true;
 	}

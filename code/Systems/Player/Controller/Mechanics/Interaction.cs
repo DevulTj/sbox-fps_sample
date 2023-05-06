@@ -15,7 +15,7 @@ public partial class InteractionMechanic : PlayerControllerMechanic, ISingletonC
 		// Turn prediction off
 		using ( Prediction.Off() )
 		{
-			if ( Input.Pressed( InputButton.Use ) )
+			if ( Input.Pressed( "use" ) )
 			{
 				Using = FindUsable();
 
@@ -26,7 +26,7 @@ public partial class InteractionMechanic : PlayerControllerMechanic, ISingletonC
 				}
 			}
 
-			if ( !Input.Down( InputButton.Use ) )
+			if ( !Input.Down( "use" ) )
 			{
 				StopUsing();
 				return;

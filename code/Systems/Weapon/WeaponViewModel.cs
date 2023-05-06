@@ -28,7 +28,7 @@ public partial class WeaponViewModel : AnimatedEntity
 		Current = null;
 	}
 
-	[Event.Client.PostCamera]
+	[GameEvent.Client.PostCamera]
 	public void PlaceViewmodel()
 	{
 		if ( Game.IsRunningInVR )

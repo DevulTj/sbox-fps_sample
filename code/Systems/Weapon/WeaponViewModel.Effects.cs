@@ -13,7 +13,6 @@ public partial class WeaponViewModel
 	float VelocityClamp => 20f;
 	float walkBob = 0;
 	float upDownOffset = 0;
-	float avoidance = 0;
 	float sprintLerp = 0;
 	float crouchLerp = 0;
 	float airLerp = 0;

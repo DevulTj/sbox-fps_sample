@@ -74,24 +74,24 @@ public partial class Inventory : EntityComponent<Player>, ISingletonComponent
 		return Weapons.ElementAtOrDefault( slot ) ?? null;
 	}
 
-	protected int GetSlotIndexFromInput( InputButton slot )
+	protected int GetSlotIndexFromInput( string slot )
 	{
 		return slot switch
 		{
-			InputButton.Slot1 => 0,
-			InputButton.Slot2 => 1,
-			InputButton.Slot3 => 2,
-			InputButton.Slot4 => 3,
-			InputButton.Slot5 => 4,
+			"slot1" => 0,
+			"slot2" => 1,
+			"slot3" => 2,
+			"slot4" => 3,
+			"slot5" => 4,
 			_ => -1
 		};
 	}
 
-	protected void TrySlotFromInput( InputButton slot )
+	protected void TrySlotFromInput( string slot )
 	{
 		if ( Input.Pressed( slot ) )
 		{
-			Input.SuppressButton( slot );
+			Input.ReleaseAction( slot );
 
 			if ( GetSlot( GetSlotIndexFromInput( slot ) ) is Weapon weapon )
 			{
@@ -102,11 +102,11 @@ public partial class Inventory : EntityComponent<Player>, ISingletonComponent
 
 	public void BuildInput()
 	{
-		TrySlotFromInput( InputButton.Slot1 );
-		TrySlotFromInput( InputButton.Slot2 );
-		TrySlotFromInput( InputButton.Slot3 );
-		TrySlotFromInput( InputButton.Slot4 );
-		TrySlotFromInput( InputButton.Slot5 );
+		TrySlotFromInput( "slot1" );
+		TrySlotFromInput( "slot2" );
+		TrySlotFromInput( "slot3" );
+		TrySlotFromInput( "slot4" );
+		TrySlotFromInput( "slot5" );
 
 		ActiveWeapon?.BuildInput();
 	}

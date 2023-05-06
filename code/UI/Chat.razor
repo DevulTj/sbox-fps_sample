@@ -45,7 +45,7 @@
 
 	public override void Tick()
 	{
-		if ( Sandbox.Input.Pressed( InputButton.Chat ) )
+		if ( Sandbox.Input.Pressed( "chat" ) )
 			Open();
 
 		Input.Placeholder = string.IsNullOrEmpty( Input.Text ) ? "Enter your message..." : string.Empty;

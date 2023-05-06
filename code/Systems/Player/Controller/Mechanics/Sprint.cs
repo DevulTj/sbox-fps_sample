@@ -14,7 +14,7 @@ public partial class SprintMechanic : PlayerControllerMechanic
 
 	protected override bool ShouldStart()
 	{
-		if ( !Input.Down( InputButton.Run ) ) return false;
+		if ( !Input.Down( "run" ) ) return false;
 		if ( Player.MoveInput.Length == 0 ) return false;
 
 		return true;
