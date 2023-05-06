@@ -47,7 +47,7 @@ public partial class PlayerControllerMechanic : EntityComponent<Player>
 	/// <summary>
 	/// Identifier for the Mechanic
 	/// </summary>
-	public virtual string Name => info.Name.Trim();
+	public virtual new string Name => info.Name.Trim();
 
 	public Vector3 Position
 	{
@@ -165,11 +165,19 @@ public partial class PlayerControllerMechanic : EntityComponent<Player>
 	}
 
 	/// <summary>
-	/// Runs every Simulate even if the mechanic isn't active.
+	/// Runs every Simulate **only** if the mechanic isn't active.
 	/// </summary>
 	protected virtual void Simulate()
 	{
 		//
+	}
+
+	/// <summary>
+	/// Runs every tick even if the mechanic isn't active.
+	/// </summary>
+	public virtual void Tick()
+	{
+
 	}
 
 	public override string ToString()

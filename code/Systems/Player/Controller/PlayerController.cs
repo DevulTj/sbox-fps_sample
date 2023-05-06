@@ -107,6 +107,9 @@ public partial class PlayerController : EntityComponent<Player>, ISingletonCompo
 		foreach ( var mechanic in Mechanics )
 		{
 			mechanic.TrySimulate( this );
+
+			// All mechanics can tick.
+			mechanic.Tick();
 		}
 	}
 
